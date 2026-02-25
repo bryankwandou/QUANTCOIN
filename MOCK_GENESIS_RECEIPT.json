@@ -1,0 +1,19 @@
+{
+  "protocol": "QuantCoin",
+  "version": "1.0.0-ALPHA-GENESIS",
+  "timestamp": "2026-02-24T12:40:00Z",
+  "network_id": "QC-MAINNET-SOVEREIGN-0",
+  "genesis_state": {
+    "total_supply": "22,000,000,000,000",
+    "founder_allocation": "1,100,000,000,000",
+    "algorithm": "Dilithium-5",
+    "shards": 1048576
+  },
+  "deployment_proof": {
+    "transaction_hash": "0xQC_GENESIS_ROOT_HASH_4f2a11d088c422b9",
+    "verification_status": "CERTIFIED_ARCHITECTURAL_FINALITY",
+    "arkham_mapping_id": "PENDING_PHASE_3_ACTIVATION",
+    "dex_bridge_status": "READY_FOR_WRAPPED_QC_LIQUIDITY_INJECTION"
+  },
+  "signature": "SIG_DILITHIUM5_88c422b9_ROOT_CERTIFIED"
+}
