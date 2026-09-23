@@ -67,9 +67,9 @@ against Grover.
 |---|---|
 | Program binary | 6,872 bytes |
 | Program deploy rent (`solana rent 6917`) | 0.0358 SOL (plus a temporary buffer of the same size, refunded) |
-| Spend compute units | ~651k (request 1.4M) |
+| Spend compute units | ~610k typical, ~1.09M projected worst case (request 1.4M) |
 | Spend transaction size | 1,124 / 1,232 bytes |
-| Tests (LiteSVM + real Token-2022) | 8/8 pass |
+| Tests (LiteSVM + real Token-2022) | 12/12 pass (each asserts the exact error code) |
 
 Everyday transfers are plain Token-2022 transfers (no hook, no fee), as
 fast and cheap as any Solana token. The vault is for cold storage.
@@ -86,6 +86,23 @@ Vault secrets are written to `client/keys/` (git-ignored, plaintext). Move
 them to encrypted offline storage. A vault marked `used` must never sign
 again.
 
+## Codama (IDL + generated client)
+
+`client/codama.ts` describes the program (instruction layout, accounts,
+vault PDA, error codes) as Codama nodes. It is the single source of truth:
+
+```bash
+cd client
+npm run codama   # writes idl/qc_vault.json and client/generated/ (@solana/kit)
+npm test         # proves the generated client builds byte-identical Spend to qc.ts
+```
+
+When the `Spend` layout in `programs/qc-vault/src/lib.rs` changes, update
+`codama.ts`, regenerate and run `npm test`. Never edit `client/generated/`.
+Wallets and dApps can use `getSpendInstruction`, `findVaultPda` and the
+typed `QcVaultError` codes from `client/generated`; WOTS signing still comes
+from `qc.ts`.
+
 ## Build and test
 
 ```bash
@@ -95,7 +112,7 @@ cargo test --manifest-path programs/qc-vault/Cargo.toml --release
 
 ## Before mainnet
 
-1. External audit of `programs/qc-vault`.
+1. ~~Internal audit + live devnet attack run~~ done: [audit/AUDIT.md](audit/AUDIT.md). External audit of `programs/qc-vault` still required.
 2. ~~Devnet run of the full genesis~~ done (`client/genesis.ts`, `client/spend.ts`).
 3. Deploy, then `solana program set-upgrade-authority --final`. An upgrade
    authority is an Ed25519 key, and so a quantum backdoor.
