@@ -1,0 +1,32 @@
+[package]
+name = "qc-vault"
+version = "0.1.0"
+edition = "2021"
+description = "QuantCoin hybrid quantum vault: Ed25519 + Winternitz one-time signatures guarding Token-2022 balances (Pinocchio)"
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+no-entrypoint = []
+
+[dependencies]
+pinocchio = { version = "=0.11.2", default-features = false, features = ["cpi"] }
+
+[target.'cfg(not(target_os = "solana"))'.dependencies]
+sha2 = "0.10"
+
+[dev-dependencies]
+litesvm = "=0.16.0"
+solana-keypair = "3.1.2"
+solana-signer = "3.0.1"
+solana-transaction = "4.1.5"
+solana-instruction = "~3.4.0"
+solana-address = { version = "~2.6.1", features = ["curve25519"] }
+solana-system-interface = { version = "3.2.0", features = ["bincode"] }
+solana-message = "4.2.4"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
