@@ -22,3 +22,7 @@ Thumbs.db
 # Keypairs never go in git
 *-keypair.json
 *.key.json
+
+# vault secrets
+/client/keys/
+/client/node_modules/
