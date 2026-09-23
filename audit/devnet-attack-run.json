@@ -1,0 +1,118 @@
+{
+  "date": "2026-09-23T15:34:20.481Z",
+  "program": "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
+  "mint": "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8",
+  "steps": [
+    {
+      "step": "fund audit vault via legit treasury spend",
+      "tx": "5wRJp1Hig1wo8a6SAAw5J1p6uWUWFpJx5V9hWB3H4h7G4zyrNvUrb89FfGXvAFEpPuujo56GzLMeq3ftPFP1aQny",
+      "auditVault": "100000000",
+      "newTreasury": "2199999899900000000"
+    },
+    {
+      "attack": "no Ed25519 owner signature (WOTS only)",
+      "expected": "7",
+      "got": "{\"InstructionError\":[1,{\"Custom\":7}]}",
+      "tx": "3Cdhh9Lz1egZv33rtQ4rwUkS4XVV3o8fAbZaLHgXgeADq5BrV1mYKQi8SeoJZYrSYh3xo4MCjoKfkTmtfrMjbpo",
+      "blocked": true
+    },
+    {
+      "attack": "thief replaces owner key",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "3h5Fm6iPsHQGyj5v8askqoXJNdTEqYE7hMKQe6wvzQadF2AhrecgM1gApjyW71rX4GJXwziWKzn3dgeXPBeBp8eP",
+      "blocked": true
+    },
+    {
+      "attack": "redirect destination to attacker",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "CZEtkCKoMMPqHGeNSN8H7rzxSVduezemmdJhbvZGD3FA3MkGVqoHxiA9ZZveireL3zY8kKzC9V8kzFUXKGWTz6b",
+      "blocked": true
+    },
+    {
+      "attack": "redirect refund to attacker",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "3iJ117M8SR9kFNWrFPkebfEFV2kfBCzChuNVReVHdJ1D7KjswH1BcupxDAgf5C5cBgThU3E7tcaUYEDUbKs99UMn",
+      "blocked": true
+    },
+    {
+      "attack": "redirect rent to attacker",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "4ZQB9YM3EahFc9wQ78X1DmB2QFJ546fn7oQga3UCM19nTC7vwWzh4sgY9NNKFon9vaUmUCPRED8S98YTs8nWoaaB",
+      "blocked": true
+    },
+    {
+      "attack": "raise amount after signing",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "MV4WWmV9KTiTWCM2qi43aTGx5pStL6SobhHrgJGeoGEAf3MDML6JLosFGKX9FFDnYrpHDysRZz6HbvWnqNV7eLv",
+      "blocked": true
+    },
+    {
+      "attack": "flip one WOTS signature bit",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "3GbqKPGZFm34mZEb6jtHJTJuoQStmt2aLo5VzYDc8wimDuVPwpcSoukXPzdoUmwqdUkoYxwx1HPu1RTuuuPuqyMV",
+      "blocked": true
+    },
+    {
+      "attack": "change WOTS seed",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "5m1ybWkHr5kxeL8vd9C8CviojfNYoEpWoE6HK8EqUQYekGyfpfWmFJeGPJ5orL2qnNXLqSXBtKkkZYKwBaKR2WSW",
+      "blocked": true
+    },
+    {
+      "attack": "wrong bump",
+      "expected": "2",
+      "got": "{\"InstructionError\":[1,{\"Custom\":2}]}",
+      "tx": "io3v5E9xCHeFDyQSc7RW79ZBqqHCuxtadVa8KUvxBjwke6UDqa4BjYXYtT6UY8RB2UvbNHWCrLgnLhAPwBXq4a7",
+      "blocked": true
+    },
+    {
+      "attack": "legacy SPL Token as token program",
+      "expected": "5",
+      "got": "{\"InstructionError\":[1,{\"Custom\":5}]}",
+      "tx": "3wHbVDLgY64fT1jbMPAJkdSWNSK6KqiZECtZdiAcPCNY1Mmx6FBF95aZhvxqS9c5vbFpWn7KAXiJtSV1LCZokJpd",
+      "blocked": true
+    },
+    {
+      "attack": "destination == refund",
+      "expected": "6",
+      "got": "{\"InstructionError\":[1,{\"Custom\":6}]}",
+      "tx": "2htBrn1QJwBZo94C1PWCmjEuAp8q2GaC1LeQxzcZoFSwjFWGmDGrehKSXZx5QUHGgAdVeHiS2Ysm3do2Lp7pc6kr",
+      "blocked": true
+    },
+    {
+      "attack": "truncated instruction",
+      "expected": "1",
+      "got": "{\"InstructionError\":[1,{\"Custom\":1}]}",
+      "tx": "2oPxbDswK7xBAv7rfYUPfHjAaHjuiyDdA4f7cCKpf4BbTdATHQ35CTdzBmSb1nhWUF6LCr7XDBuUeiTw9ZKE3cjs",
+      "blocked": true
+    },
+    {
+      "step": "vault balance unchanged after all attacks",
+      "before": "100000000",
+      "after": "100000000",
+      "attackerGot": "0"
+    },
+    {
+      "step": "legit spend of the signed message",
+      "tx": "3BFfv5DsfPa81twFrcBqG6ewnY7u7sggH629euvDCZC6RtNNo8kRwFN5PXSYEnoUXaNC7hyx2u2KQdgdkwPBbbCF",
+      "dest": "60000000",
+      "refund": "40000000",
+      "vault": "closed"
+    },
+    {
+      "attack": "replay the executed spend",
+      "expected": "",
+      "got": "{\"InstructionError\":[1,{\"Custom\":4}]}",
+      "tx": "5U2895UXdnP5FNEGiD43TkcJDghsrhj9nDpyFq6u8334YqcS7YMUHmg4w2aA5Eys3RotkU2nsGXNF8DqukfZxYC",
+      "blocked": true
+    }
+  ],
+  "result": "ALL ATTACKS BLOCKED"
+}

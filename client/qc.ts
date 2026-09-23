@@ -52,7 +52,12 @@ export function spendDigest(program: PublicKey, vault: PublicKey, mint: PublicKe
 }
 
 /** One hybrid vault = Ed25519 owner + one-time WOTS key. Both secrets must be backed up. */
-export interface VaultKeys { name: string; owner: Keypair; master: Buffer; seed: Buffer; used: boolean }
+export interface VaultKeys {
+  name: string; owner: Keypair; master: Buffer; seed: Buffer; used: boolean;
+  /** The one message this key signed (hex digest). Re-signing the SAME digest
+   *  gives the identical signature, so a failed broadcast can be retried safely. */
+  signed?: string;
+}
 
 export function vaultAddress(program: PublicKey, v: VaultKeys): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
@@ -75,23 +80,29 @@ export function saveVault(v: VaultKeys) {
   const file = new URL(`vault-${v.name}.json`, KEYDIR);
   writeFileSync(file, JSON.stringify({
     owner: [...v.owner.secretKey], master: v.master.toString("hex"), seed: v.seed.toString("hex"), used: v.used,
+    signed: v.signed,
   }, null, 1));
 }
 
 export function loadVault(name: string): VaultKeys {
   const j = JSON.parse(readFileSync(new URL(`vault-${name}.json`, KEYDIR), "utf8"));
   return { name, owner: Keypair.fromSecretKey(Uint8Array.from(j.owner)),
-    master: Buffer.from(j.master, "hex"), seed: Buffer.from(j.seed, "hex"), used: j.used };
+    master: Buffer.from(j.master, "hex"), seed: Buffer.from(j.seed, "hex"), used: j.used, signed: j.signed };
 }
 
 export const vaultExists = (name: string) => existsSync(new URL(`vault-${name}.json`, KEYDIR));
 
 export function spendIxs(program: PublicKey, mint: PublicKey, v: VaultKeys, dest: PublicKey,
   refund: PublicKey, rentTo: PublicKey, amount: bigint): TransactionInstruction[] {
-  if (v.used) throw new Error(`vault ${v.name} already signed once; WOTS keys are one-time`);
   const [pda, bump] = vaultAddress(program, v);
   const ta = vaultTokenAccount(program, mint, v);
-  const sig = sign(v.master, v.seed, spendDigest(program, pda, mint, dest, refund, rentTo, amount));
+  const digest = spendDigest(program, pda, mint, dest, refund, rentTo, amount);
+  // One-time rule: a key may only ever sign ONE digest. Retrying that same
+  // digest is safe (identical signature); any other message is refused.
+  if (v.signed ? v.signed !== digest.toString("hex") : v.used)
+    throw new Error(`vault ${v.name} already signed a different message; WOTS keys are one-time`);
+  if (!v.signed) { v.signed = digest.toString("hex"); v.used = true; saveVault(v); }
+  const sig = sign(v.master, v.seed, digest);
   const a = Buffer.alloc(8); a.writeBigUInt64LE(amount);
   const data = Buffer.concat([Buffer.from([0, bump]), v.seed, a, sig]);
   return [
