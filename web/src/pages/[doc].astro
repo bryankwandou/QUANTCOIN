@@ -1,0 +1,55 @@
+---
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { Marked } from "marked";
+import Base from "../layouts/Base.astro";
+
+const DOCS = [
+  ["WHITEPAPER.md", "whitepaper", "Whitepaper"],
+  ["docs/LAUNCH.md", "launch", "Launch commitments"],
+  ["docs/INTEGRATION.md", "docs", "Integration guide"],
+  ["audit/AUDIT.md", "audit", "Internal audit"],
+];
+
+export function getStaticPaths() {
+  return [
+    ["WHITEPAPER.md", "whitepaper", "Whitepaper"],
+    ["docs/LAUNCH.md", "launch", "Launch commitments"],
+    ["docs/INTEGRATION.md", "docs", "Integration guide"],
+    ["audit/AUDIT.md", "audit", "Internal audit"],
+  ].map(([src, doc, label]) => ({ params: { doc }, props: { src, label } }));
+}
+
+const { src, label } = Astro.props;
+const ROOT = join(process.cwd(), "..");
+const GH = "https://github.com/bryankwandou/QUANTCOIN/blob/main/";
+const linkMap = Object.fromEntries(DOCS.map(([s, r]) => [s, `/${r}/`]));
+
+const marked = new Marked({
+  gfm: true,
+  renderer: {
+    link({ href, title, tokens }) {
+      const text = this.parser.parseInline(tokens);
+      const clean = href.replace(/^(\.\.\/|\.\/)+/, "");
+      const [file, hash] = clean.split("#");
+      const hit = [file, `docs/${file}`, `audit/${file}`].find((c) => linkMap[c]);
+      let h = href;
+      if (hit) h = linkMap[hit] + (hash ? `#${hash}` : "");
+      else if (!/^(https?:|mailto:|#|\/)/.test(href)) h = GH + clean;
+      return `<a href="${h}"${title ? ` title="${title}"` : ""}>${text}</a>`;
+    },
+  },
+});
+
+const md = readFileSync(join(ROOT, src), "utf8");
+const h1 = (md.match(/^#\s+(.+)$/m) || [, label])[1];
+const html = (await marked.parse(md))
+  .replace(/<table>/g, '<div class="table-scroll"><table>')
+  .replace(/<\/table>/g, "</table></div>");
+---
+<Base title={`${h1} | QuantCoin`} description={`${label} for QuantCoin (QC), a Solana token with a quantum-resistant vault.`} current={`/${Astro.params.doc}/`}>
+  <main class="doc"><div class="wrap">
+    <p class="source">Rendered from <a href={GH + src}>{src}</a></p>
+    <article set:html={html} />
+  </div></main>
+</Base>

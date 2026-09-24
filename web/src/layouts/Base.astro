@@ -1,0 +1,47 @@
+---
+interface Props { title: string; description?: string; current?: string }
+const DESC = "A Solana token with a vault that holds even if quantum computers break Ed25519. Devnet, not on mainnet yet.";
+const { title, description = DESC, current = "" } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site);
+const og = new URL("/og.png", Astro.site);
+const NAV = [["/app/", "Quantum Safe"], ["/transparency/", "Transparency"], ["/whitepaper/", "Whitepaper"], ["/docs/", "Docs"], ["/audit/", "Audit"]];
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="theme-color" content="#0B1020">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href={url}>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuantCoin">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={url}>
+<meta property="og:image" content={og}>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">QuantCoin</a>
+  <span class="badge">Devnet</span>
+  <nav class="nav" aria-label="Main">{NAV.map(([h, t]) => <a href={h} aria-current={h === current ? "page" : undefined}>{t}</a>)}</nav>
+</div></header>
+<slot />
+<footer><div class="wrap">
+  <p><strong>Risk.</strong> QuantCoin runs on Solana devnet only. Devnet tokens are worth nothing. On mainnet, QC will have no guaranteed value, and most new tokens lose most of theirs. The vault program has had an internal audit only; the external one hasn't happened yet. Lose either key of a vault and the funds in it stay locked. Nobody knows when quantum computers will break Ed25519. None of this is investment advice.</p>
+  <div class="fl">
+    <a href="/whitepaper/">Whitepaper</a><a href="/launch/">Launch</a><a href="/docs/">Docs</a><a href="/audit/">Audit</a><a href="/transparency/">Transparency</a><a href="https://github.com/bryankwandou/QUANTCOIN">GitHub</a>
+  </div>
+</div></footer>
+</body>
+</html>

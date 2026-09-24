@@ -1,0 +1,5 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [{ "source": "/app/:path*", "destination": "/app/index.html" }]
+}
