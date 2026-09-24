@@ -110,6 +110,8 @@ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
 cargo test --manifest-path programs/qc-vault/Cargo.toml --release
 ```
 
+Whitepaper: [WHITEPAPER.md](WHITEPAPER.md). Integration guide: [docs/INTEGRATION.md](docs/INTEGRATION.md).
+
 ## Before mainnet
 
 1. ~~Internal audit + live devnet attack run~~ done: [audit/AUDIT.md](audit/AUDIT.md). External audit of `programs/qc-vault` still required.
