@@ -1,0 +1,151 @@
+---
+import Base from "../layouts/Base.astro";
+
+const ex = (a: string) => `https://explorer.solana.com/address/${a}?cluster=devnet`;
+const MINT = "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8";
+const PROGRAM = "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms";
+const BOUNTY = "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE";
+
+const alloc = [
+  ["Treasury / ecosystem", 45, "9.9T", "4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381", "#2EE6D6"],
+  ["Liquidity", 20, "4.4T", "5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG", "#5B8CFF"],
+  ["Airdrop / community", 15, "3.3T", "BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw", "#F5C451"],
+  ["Founder / team", 10, "2.2T", "7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6", "#E07A9A"],
+  ["Reserve (audit, market making)", 10, "2.2T", "3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ", "#8A93B0"],
+] as const;
+
+const facts = [
+  ["Supply", "22,000,000,000,000 QC, fixed"], ["Decimals", "5"], ["Standard", "SPL Token-2022"],
+  ["Mint authority", "None"], ["Freeze authority", "None"], ["Metadata update authority", "None"],
+  ["Transfer fee", "None"], ["Transfer hook", "None"],
+];
+
+const roadmap = [
+  ["Program, tests, devnet genesis, internal audit, Codama client", "Done"],
+  ["Allocation vaults on devnet, whitepaper, integration guide", "Done"],
+  ["External audit and fixes", "Next"],
+  ["Mainnet: program deployed final, genesis, allocations, liquidity", "After audit"],
+  ["Quantum Safe on mainnet, first airdrop wave", ""],
+  ["Browser extension, desktop, Android and iOS apps", "Designed"],
+  ["Wallet and explorer integrations, grants", ""],
+  ["Hybrid vault for any Token-2022 mint", "Research"],
+];
+---
+<Base title="QuantCoin (QC): a Solana token with a quantum-resistant vault">
+<main>
+<section class="hero"><div class="wrap">
+  <img class="logo" src="/logo.svg" alt="QuantCoin logo" width="88" height="88">
+  <h1>QuantCoin</h1>
+  <p class="tagline">A Solana token with a vault that stays shut even if quantum computers break Ed25519.</p>
+  <p class="status"><strong>Devnet only. Not on mainnet.</strong> We've run an internal audit. The external audit hasn't happened yet.</p>
+  <div class="actions">
+    <a class="btn primary" href="/app/">Open Quantum Safe</a>
+    <a class="btn" href="/transparency/">Check the vaults</a>
+    <a class="btn" href="/whitepaper/">Read the whitepaper</a>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p>
+  <h2>Two keys. The vault wants both.</h2>
+  <div class="cols">
+    <div>
+      <p>A QuantCoin vault is an address owned by an on-chain program. Moving anything out of it takes two signatures in one transaction.</p>
+      <p><strong>Ed25519</strong> is the signature your Solana wallet already makes. It guards the vault today, and it also guards against bugs in the newer code.</p>
+      <p><strong>Winternitz</strong> is a one-time signature made only from SHA-256. Shor's algorithm breaks elliptic curves. It doesn't touch hash functions.</p>
+      <p>A Winternitz key signs once and is done. When you withdraw, the amount goes where you sent it, the rest moves into your next vault, and the old vault closes.</p>
+    </div>
+    <svg class="diagram" viewBox="0 0 520 300" role="img" aria-labelledby="dg-t">
+      <title id="dg-t">An Ed25519 signature and a Winternitz signature both go into the vault. The spend only goes through with both.</title>
+      <g fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--line)"><rect x="10" y="30" width="170" height="64" rx="6"/><rect x="10" y="190" width="170" height="64" rx="6"/></g>
+      <rect x="250" y="100" width="120" height="84" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      <g stroke="var(--muted)" stroke-width="1.5" fill="none"><path d="M180 62 H215 V130 H244"/><path d="M180 222 H215 V154 H244"/><path d="M370 142 H450"/></g>
+      <g fill="var(--muted)"><path d="M244 125 l8 5 -8 5z"/><path d="M244 149 l8 5 -8 5z"/><path d="M450 137 l8 5 -8 5z"/></g>
+      <g font-size="15" fill="var(--fg)">
+        <text x="24" y="58" font-weight="600">Ed25519</text><text x="24" y="80" fill="var(--muted)" font-size="13">your wallet key</text>
+        <text x="24" y="218" font-weight="600">Winternitz</text><text x="24" y="240" fill="var(--muted)" font-size="13">hash-based, one-time</text>
+        <text x="310" y="138" text-anchor="middle" font-weight="600">Vault</text><text x="310" y="160" text-anchor="middle" fill="var(--muted)" font-size="13">checks both</text>
+        <text x="462" y="147" font-weight="600">Spend</text>
+      </g>
+    </svg>
+  </div>
+  <h3 style="margin-top:56px">What's protected and what isn't</h3>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Where your QC sits</th><th>The day Ed25519 falls</th></tr></thead>
+    <tbody>
+      <tr><td>QuantCoin vault</td><td class="yes">Still locked. Nobody can move it without the Winternitz key.</td></tr>
+      <tr><td>Normal wallet, exchange, DEX pool</td><td>Same exposure as every other Solana token.</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:20px;color:var(--muted)">QC is a token on Solana, not a new chain and not a Layer 2. It can't make Solana quantum-safe. It protects the QC you keep in a vault.</p>
+</div></section>
+
+<section id="apps"><div class="wrap">
+  <p class="eyebrow">Quantum Safe</p>
+  <h2>One app, four places to run it.</h2>
+  <p class="lead">The web version works on devnet today. The extension, desktop and phone versions below are designs. We haven't built them yet.</p>
+  <div class="shots">
+    <figure><img src="/design/extension-popup.png" alt="Browser extension popup: vault balance, both keys, deposit and withdraw" width="720" height="1200" loading="lazy"><figcaption>Browser extension</figcaption></figure>
+    <figure><img src="/design/mobile-home.png" alt="Phone home screen: balance, keys and history" width="780" height="1688" loading="lazy"><figcaption>Android and iOS: vault</figcaption></figure>
+    <figure><img src="/design/mobile-withdraw.png" alt="Phone withdraw screen listing exactly what gets signed" width="780" height="1688" loading="lazy"><figcaption>Android and iOS: withdraw</figcaption></figure>
+    <figure class="wide"><img src="/design/desktop-vaults.png" alt="Desktop app with vault list, history, keys and backup status" width="2560" height="1600" loading="lazy"><figcaption>Desktop</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="token"><div class="wrap">
+  <p class="eyebrow">Token</p>
+  <h2>A plain Token-2022 mint. Nobody holds the controls.</h2>
+  <p class="lead">Every authority on a Solana mint is an Ed25519 key, so each one would be a way in for a quantum attacker. We revoked all of them. Nobody, the founder included, can mint, freeze or edit QC.</p>
+  <dl class="facts">{facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+  <p style="margin-top:24px;color:var(--muted)">Mint (devnet): <a class="addr" href={ex(MINT)}>{MINT}</a></p>
+</div></section>
+
+<section id="tokenomics"><div class="wrap">
+  <p class="eyebrow">Tokenomics</p>
+  <h2>Every allocation sits in a vault.</h2>
+  <p class="lead">No private sale, no presale, no inflation. These are devnet addresses. Mainnet gets new ones, published on launch day.</p>
+  <div class="bar" aria-hidden="true">{alloc.map(([, p, , , c]) => <span style={`width:${p}%;background:${c}`}></span>)}</div>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Allocation</th><th>Share</th><th>QC</th><th>Vault (devnet)</th></tr></thead>
+    <tbody>{alloc.map(([n, p, q, a, c]) => <tr><td><span class="swatch" style={`background:${c}`}></span>{n}</td><td class="num">{p}%</td><td class="num">{q}</td><td><a class="addr" href={ex(a)}>{a}</a></td></tr>)}</tbody>
+  </table></div>
+  <div class="grid3" style="margin-top:48px">
+    <div class="card"><h3>Founder lock</h3><p>Founder tokens stay put until <strong>24 September 2027</strong>, then unlock monthly over 24 months. The program has no time-lock, so this is a promise, not code. An early spend would show up on-chain for anyone to see.</p></div>
+    <div class="card"><h3>Liquidity</h3><p>Goes into a Raydium or Orca pool at mainnet launch. The LP tokens get burned.</p></div>
+    <div class="card"><h3>Reserve</h3><p>Pays for audits, the bug bounty and market making. 1 billion QC from it already sits in the bounty vault.</p></div>
+  </div>
+</div></section>
+
+<section id="security"><div class="wrap">
+  <p class="eyebrow">Security</p>
+  <h2>Internal audit done. The external one hasn't happened yet.</h2>
+  <p class="lead">The people who wrote the code also did the internal review, so it doesn't count as independent. Mainnet waits for an outside auditor.</p>
+  <div class="stats">
+    <div class="stat"><b>12/12</b><span>local attack tests pass</span></div>
+    <div class="stat"><b>13/13</b><span>live devnet attacks blocked</span></div>
+    <div class="stat"><b>0</b><span>admin keys anywhere</span></div>
+  </div>
+  <p>Bug bounty: a vault holds 1,000,000,000 QC. Move it out without both keys and you keep it, then tell us how through a GitHub security advisory. Vault: <a class="addr" href={ex(BOUNTY)}>{BOUNTY}</a></p>
+  <p><a href="/audit/">Read the internal audit</a>, open findings included.</p>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <p class="eyebrow">Roadmap</p>
+  <h2>No dates until the external audit is done.</h2>
+  <ol class="roadmap">{roadmap.map(([t, s], i) => <li><span class="ph">{i}</span><span>{t}</span><span class={s === "Done" ? "st done" : "st"}>{s}</span></li>)}</ol>
+</div></section>
+
+<section id="build"><div class="wrap">
+  <p class="eyebrow">Build on QC</p>
+  <h2>If you support Token-2022, you already support QC.</h2>
+  <p class="lead">Wallets and explorers can go one step further and read vaults. Projects that do can apply for a treasury grant.</p>
+  <ul class="links">
+    <li><a href="/docs/">Integration guide</a>: transfers, reading vaults, labelling spent vaults</li>
+    <li><a href="/idl/qc_vault.json">Program IDL</a> (qc_vault.json)</li>
+    <li><a href="https://github.com/bryankwandou/QUANTCOIN">Source on GitHub</a>: program, client, tests</li>
+    <li><a href="/launch/">Launch commitments</a> and the mainnet runbook</li>
+    <li>Vault program (devnet): <a class="addr" href={ex(PROGRAM)}>{PROGRAM}</a></li>
+  </ul>
+</div></section>
+</main>
+</Base>
