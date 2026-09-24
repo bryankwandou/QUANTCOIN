@@ -161,7 +161,10 @@ No dates are promised before the audit.
 | Founder vault | `7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6` |
 | Liquidity vault | `5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG` |
 | Airdrop vault | `BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw` |
-| Reserve vault | `4wdqvoXevFCoAnSKPUJBKA33DDjszqFh383z7XpxiTSn` |
+| Reserve vault | `3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ` |
+| Bug bounty vault (1B QC) | `D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE` |
+
+Launch commitments and runbook: [docs/LAUNCH.md](docs/LAUNCH.md).
 
 Mainnet addresses will be different and published at launch.
 

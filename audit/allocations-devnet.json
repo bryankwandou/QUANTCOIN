@@ -21,12 +21,28 @@
     "vault": "4wdqvoXevFCoAnSKPUJBKA33DDjszqFh383z7XpxiTSn",
     "tokenAccount": "Au2Yrp9VxxoUiJNYsFPxgrt5zQuujX2kVBTGNUTiGEDj",
     "balance": "2200000000000",
-    "tx": "42HLvStxTmLRDH5HbmYfzKJ8xYreM9CmRMZuuYWbMbqsqd4MkCWnomQo6FjCc42biErLWqAx42HhLfT8d17SPQTZ"
+    "tx": "42HLvStxTmLRDH5HbmYfzKJ8xYreM9CmRMZuuYWbMbqsqd4MkCWnomQo6FjCc42biErLWqAx42HhLfT8d17SPQTZ",
+    "spent": true,
+    "note": "rotated: 1B QC to bounty vault"
   },
   "treasury": {
     "name": "treasury-8",
     "vault": "4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381",
     "tokenAccount": "9WwJgAPzPmk5pwmyoQAtQRkNHKJbfoCC4fdUkufKK4ZP",
     "balance": "9899997999000"
+  },
+  "alloc-reserve-2": {
+    "vault": "3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ",
+    "tokenAccount": "8wpC6xsAEmxxqXwuNgcmC6U4T4dB6jC7q7ERbWh7iKGX",
+    "balance": "2199000000000",
+    "tx": "2QHHSKQd7hnhTDLE1eSCprhRUX7LdaWTDpcepWXF1zSbjvZxj7Nz84j95EvETDDg4XYxg9LB2JVA526hTNGXiwxQ"
+  },
+  "bounty": {
+    "vault": "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE",
+    "tokenAccount": "Td6fb9jUospBikdZy948bosHtcvsbRp9PPwftEFiDjs",
+    "ownerPublicKey": "7Xu64rz6VvqzGK9TtwWh4C9DAsp3WZTec2MWNpuYosh2",
+    "wotsSeed": "5c637a7e867a0996c0965563a67fc6aa",
+    "balance": "1000000000",
+    "tx": "2QHHSKQd7hnhTDLE1eSCprhRUX7LdaWTDpcepWXF1zSbjvZxj7Nz84j95EvETDDg4XYxg9LB2JVA526hTNGXiwxQ"
   }
 }
