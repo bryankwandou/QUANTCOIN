@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuantCoin Transparency</title>
+<meta name="description" content="Live on-chain view of the QuantCoin (QC) mint, program, allocation vaults and bug bounty.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%230B1020'/%3E%3Ccircle cx='256' cy='256' r='130' fill='none' stroke='%23F2F4FA' stroke-width='42'/%3E%3Cpath d='M310 310 L392 392' stroke='%23F2F4FA' stroke-width='42' stroke-linecap='round'/%3E%3Cellipse cx='256' cy='256' rx='200' ry='70' fill='none' stroke='%232EE6D6' stroke-width='16' transform='rotate(-30 256 256)'/%3E%3Ccircle cx='430' cy='160' r='24' fill='%232EE6D6'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0B1020;--surface:#131A30;--line:#243052;--text:#F2F4FA;--muted:#9AA3BD;--accent:#2EE6D6;--ok:#2EE6D6;--bad:#FF5C6C;--warn:#F5B942;
+--c1:#2EE6D6;--c2:#6C8CFF;--c3:#F5B942;--c4:#FF7AA8;--c5:#9AA3BD}
+@media (prefers-color-scheme: light){:root{--bg:#F6F7FB;--surface:#FFFFFF;--line:#DCE0EC;--text:#0B1020;--muted:#566080;--accent:#0B8F85;--ok:#0B8F85;--bad:#C62839;--warn:#A86B00;
+--c1:#0FA89C;--c2:#3D5FE0;--c3:#C98A00;--c4:#D2467A;--c5:#6B7390}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:24px 16px 64px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+header svg{width:40px;height:40px;flex:none}
+h1{font-size:22px;margin:0}
+h2{font-size:17px;margin:32px 0 12px}
+.sub{color:var(--muted);font-size:13px}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:1px 8px;font-size:12px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.v{font-variant-numeric:tabular-nums;word-break:break-all;margin-top:2px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+a{color:var(--accent)}
+code,.mono{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:flex;height:28px;border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.bar div{height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;font-size:13px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+#err{display:none;border-color:var(--bad);color:var(--bad);margin:12px 0}
+button{background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:4px 12px;font:inherit;cursor:pointer}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="256" fill="#0B1020"/><circle cx="256" cy="256" r="130" fill="none" stroke="#F2F4FA" stroke-width="42"/><path d="M310 310 L392 392" stroke="#F2F4FA" stroke-width="42" stroke-linecap="round"/><ellipse cx="256" cy="256" rx="200" ry="70" fill="none" stroke="#2EE6D6" stroke-width="16" transform="rotate(-30 256 256)"/><circle cx="430" cy="160" r="24" fill="#2EE6D6"/></svg>
+<div><h1>QuantCoin transparency</h1>
+<div class="sub">Read live from <span id="cluster" class="badge"></span> via <code id="rpcurl"></code> · <span id="updated">loading…</span> <button id="reload">Refresh</button></div></div>
+</header>
+<div id="err" class="card" role="alert"></div>
+
+<h2>Mint &amp; program</h2>
+<div class="grid" id="facts"></div>
+
+<h2>Allocation split</h2>
+<div class="card"><div class="bar" id="bar"></div><div class="legend" id="legend"></div>
+<div class="note">Target allocation from the whitepaper. Live balances are in the table below.</div></div>
+
+<h2>Allocation vaults</h2>
+<div class="card tablewrap"><table>
+<thead><tr><th>Allocation</th><th class="num">Target</th><th class="num">Live balance (QC)</th><th class="num">% of supply</th><th>Last activity</th><th>Status</th></tr></thead>
+<tbody id="vaults"><tr><td colspan="6" class="note">Loading…</td></tr></tbody></table></div>
+
+<h2>Security</h2>
+<div class="card">
+<div class="grid">
+<div><div class="k">Internal audit</div><div class="v ok">Done — 13/13 on-chain attacks blocked</div></div>
+<div><div class="k">External audit</div><div class="v warn">Pending</div></div>
+</div>
+<p class="note"><a id="auditlink" target="_blank" rel="noopener">AUDIT.md</a> · <a id="wplink" target="_blank" rel="noopener">Whitepaper</a> · The program has not had an external audit yet. Nothing here is investment advice.</p>
+</div>
+
+<h2>Bug bounty</h2>
+<div class="card" id="bounty"></div>
+</main>
+
+<script>
+// ---- All addresses live here. Swap for mainnet. ----
+const CONFIG = {
+  cluster: "devnet",
+  defaultRpc: "https://api.devnet.solana.com",
+  mint: "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8",
+  program: "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
+  founderLockUntil: "2027-09-24T00:00:00Z", // genesis 2026-09-24 + 12 months
+  repo: "https://github.com/bryankwandou/QUANTCOIN",
+  vaults: [
+    {key:"treasury",  label:"Treasury / ecosystem", pct:45, vault:"4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381", tokenAccount:"9WwJgAPzPmk5pwmyoQAtQRkNHKJbfoCC4fdUkufKK4ZP", color:"--c1"},
+    {key:"liquidity", label:"Liquidity",            pct:20, vault:"5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG", tokenAccount:"CaocTaAG3ihgerVjojN4oo8w5ZdBEer1L3RWgZDJ6XPG", color:"--c2"},
+    {key:"airdrop",   label:"Airdrop / community",  pct:15, vault:"BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw", tokenAccount:"HW3Y7uLnHeqFMRcE89CgN5c7i3QwPsck3PuEWcaPhtkd", color:"--c3"},
+    {key:"founder",   label:"Founder / team",       pct:10, vault:"7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6", tokenAccount:"3vYAe7m93Cd9F6SN4LyJsBQyXQSyftHqPoXJxSXZ3tBK", color:"--c4", founder:true},
+    {key:"reserve",   label:"Reserve (audit, MM)",  pct:10, vault:"3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ", tokenAccount:"8wpC6xsAEmxxqXwuNgcmC6U4T4dB6jC7q7ERbWh7iKGX", color:"--c5",
+      note:"Rotated vault (reserve-2). 1,000,000,000 QC moved to the bug bounty vault."}
+  ]
+};
+const BOUNTY = {
+  vault: "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE",
+  tokenAccount: "Td6fb9jUospBikdZy948bosHtcvsbRp9PPwftEFiDjs",
+  ownerPublicKey: "7Xu64rz6VvqzGK9TtwWh4C9DAsp3WZTec2MWNpuYosh2",
+  rule: "Drain it without both keys and keep it.",
+  report: "https://github.com/bryankwandou/QUANTCOIN/security/advisories/new"
+}; // set to null to show "coming soon"
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const RPC = new URLSearchParams(location.search).get("rpc") || CONFIG.defaultRpc;
+const exp = (kind, id) => `https://explorer.solana.com/${kind}/${id}${CONFIG.cluster === "mainnet-beta" ? "" : "?cluster=" + CONFIG.cluster}`;
+const short = a => a.slice(0,4) + "…" + a.slice(-4);
+const addrLink = a => `<a class="mono" href="${exp("address",a)}" target="_blank" rel="noopener" title="${a}">${short(a)}</a>`;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let DECIMALS = 5;
+
+let rpcId = 0;
+async function rpc(method, params, tries = 6) {
+  let delay = 800;
+  for (let i = 0; i < tries; i++) {
+    let res;
+    try {
+      res = await fetch(RPC, {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({jsonrpc:"2.0", id:++rpcId, method, params})});
+    } catch (e) {
+      if (i === tries-1) throw new Error(`network error calling ${method}: ${e.message}`);
+      await sleep(delay); delay *= 2; continue;
+    }
+    if (res.status === 429 || res.status >= 500) {
+      if (i === tries-1) throw new Error(res.status === 429
+        ? `the RPC is rate-limiting requests (HTTP 429 on ${method}, ${tries} tries). Wait a minute and press Refresh, or add ?rpc=<your endpoint> to the URL.`
+        : `RPC returned HTTP ${res.status} on ${method}.`);
+      const ra = Number(res.headers.get("retry-after"));
+      await sleep(ra > 0 ? ra*1000 : delay + Math.random()*300); delay *= 2; continue;
+    }
+    const j = await res.json();
+    if (j.error) throw new Error(`${method}: ${j.error.message}`);
+    return j.result;
+  }
+}
+
+function fmtRaw(raw, dec = DECIMALS) {
+  const b = BigInt(raw), d = 10n ** BigInt(dec);
+  const whole = (b / d).toLocaleString("en-US"), frac = (b % d).toString().padStart(dec, "0").replace(/0+$/, "");
+  return frac ? `${whole}.${frac}` : whole;
+}
+const pctOf = (raw, total) => BigInt(total) === 0n ? "—" : (Number(BigInt(raw) * 1000000n / BigInt(total)) / 10000).toFixed(4) + "%";
+const fmtTime = t => t ? new Date(t*1000).toISOString().replace("T"," ").slice(0,16) + " UTC" : "—";
+const none = v => v ? addrLink(v) : `<span class="ok">None ✓</span>`;
+const fact = (k, v, note) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${note ? `<div class="note">${note}</div>` : ""}</div>`;
+
+function staticParts() {
+  $("cluster").textContent = CONFIG.cluster;
+  try { $("rpcurl").textContent = new URL(RPC).host; } catch { $("rpcurl").textContent = RPC; }
+  $("auditlink").href = CONFIG.repo + "/blob/main/audit/AUDIT.md";
+  $("wplink").href = CONFIG.repo + "/blob/main/WHITEPAPER.md";
+  $("bar").innerHTML = CONFIG.vaults.map(v => `<div style="width:${v.pct}%;background:var(${v.color})" title="${esc(v.label)} ${v.pct}%"></div>`).join("");
+  $("legend").innerHTML = CONFIG.vaults.map(v => `<span><span class="sw" style="background:var(${v.color})"></span>${esc(v.label)} ${v.pct}%</span>`).join("");
+  $("bounty").innerHTML = BOUNTY
+    ? `<div class="grid">
+        ${fact("Bounty vault", addrLink(BOUNTY.vault), `token account ${addrLink(BOUNTY.tokenAccount)}`)}
+        ${fact("Live balance", `<span id="bountybal">loading…</span> QC`, `<span id="bountylast"></span>`)}
+        ${fact("Owner public key", addrLink(BOUNTY.ownerPublicKey))}
+       </div>
+       <p style="margin:12px 0 0"><strong>Rule:</strong> ${esc(BOUNTY.rule)} Report via a <a href="${esc(BOUNTY.report)}" target="_blank" rel="noopener">GitHub security advisory</a>.</p>`
+    : `<div class="v">Coming soon.</div>`;
+}
+
+async function loadFacts() {
+  const mint = await rpc("getAccountInfo", [CONFIG.mint, {encoding:"jsonParsed"}]);
+  if (!mint.value) throw new Error("mint account not found on this cluster.");
+  const info = mint.value.data.parsed.info;
+  DECIMALS = info.decimals;
+  const ext = info.extensions || [];
+  const md = ext.find(e => e.extension === "tokenMetadata");
+  const prog = await rpc("getAccountInfo", [CONFIG.program, {encoding:"jsonParsed"}]);
+  let upg = "unknown", upgNote = "";
+  const pdAddr = prog.value && prog.value.data.parsed && prog.value.data.parsed.info.programData;
+  if (pdAddr) {
+    const pd = await rpc("getAccountInfo", [pdAddr, {encoding:"jsonParsed"}]);
+    const a = pd.value.data.parsed.info.authority;
+    upg = a ? `${addrLink(a)}` : `<span class="ok">None ✓ (immutable)</span>`;
+    upgNote = a ? `<span class="warn">Upgradeable (${esc(CONFIG.cluster)}); will be deployed <code>--final</code> on mainnet.</span>` : "";
+  }
+  $("facts").innerHTML = [
+    fact("Supply", `${fmtRaw(info.supply)} QC`, `Mint ${addrLink(CONFIG.mint)} · Token-2022`),
+    fact("Decimals", info.decimals),
+    fact("Mint authority", none(info.mintAuthority), info.mintAuthority ? "" : "No one can mint more QC."),
+    fact("Freeze authority", none(info.freezeAuthority), info.freezeAuthority ? "" : "No one can freeze holders."),
+    fact("Metadata update authority", md ? none(md.state.updateAuthority) : "no metadata extension", md && !md.state.updateAuthority ? "Name and symbol cannot be edited." : ""),
+    fact("Program upgrade authority", upg, `Program ${addrLink(CONFIG.program)}<br>${upgNote}`)
+  ].join("");
+  return info;
+}
+
+// A spend = this token account's balance went down in a transaction.
+async function outgoingBefore(tokenAccount, sigs, until) {
+  const out = [];
+  for (const s of sigs) {
+    if (s.err || !s.blockTime || s.blockTime >= until) continue;
+    const tx = await rpc("getTransaction", [s.signature, {encoding:"jsonParsed", maxSupportedTransactionVersion:0}]);
+    if (!tx || !tx.meta) continue;
+    const idx = tx.transaction.message.accountKeys.map(k => k.pubkey || k).indexOf(tokenAccount);
+    const pre = (tx.meta.preTokenBalances||[]).find(b => b.accountIndex === idx);
+    const post = (tx.meta.postTokenBalances||[]).find(b => b.accountIndex === idx);
+    const a = BigInt(pre ? pre.uiTokenAmount.amount : 0), b = BigInt(post ? post.uiTokenAmount.amount : 0);
+    if (b < a) out.push({sig:s.signature, amount:(a-b).toString()});
+  }
+  return out;
+}
+
+async function loadVaults(supplyRaw) {
+  const accts = await rpc("getMultipleAccounts", [CONFIG.vaults.map(v => v.tokenAccount), {encoding:"jsonParsed"}]);
+  const lockEnd = Math.floor(Date.parse(CONFIG.founderLockUntil)/1000);
+  const lockDate = CONFIG.founderLockUntil.slice(0,10);
+  const rows = [];
+  for (let i = 0; i < CONFIG.vaults.length; i++) {
+    const v = CONFIG.vaults[i], a = accts.value[i];
+    const raw = a ? a.data.parsed.info.tokenAmount.amount : "0";
+    const sigs = await rpc("getSignaturesForAddress", [v.tokenAccount, {limit:100}]);
+    let status = a ? `<span class="ok">Live</span>` : `<span class="bad">Token account missing</span>`;
+    if (v.founder && a) {
+      const out = await outgoingBefore(v.tokenAccount, sigs, lockEnd);
+      status = out.length
+        ? `<span class="bad">Lock broken: ${out.length} outgoing spend(s) before ${lockDate}</span><br>` + out.map(o => `<a class="mono bad" href="${exp("tx",o.sig)}" target="_blank" rel="noopener">${short(o.sig)}</a> −${fmtRaw(o.amount)} QC`).join("<br>")
+        : `<span class="ok">Locked until ${lockDate}</span><div class="note">Public commitment, not enforced by the program. No outgoing spend seen.</div>`;
+    }
+    rows.push(`<tr data-key="${v.key}" data-raw="${raw}"><td><span class="sw" style="background:var(${v.color})"></span>${esc(v.label)}<div class="note">vault ${addrLink(v.vault)} · token acct ${addrLink(v.tokenAccount)}${v.note ? "<br>" + esc(v.note) : ""}</div></td>
+      <td class="num">${v.pct}%</td><td class="num">${fmtRaw(raw)}</td><td class="num">${pctOf(raw, supplyRaw)}</td>
+      <td>${sigs[0] ? `<a href="${exp("tx",sigs[0].signature)}" target="_blank" rel="noopener">${fmtTime(sigs[0].blockTime)}</a>` : "—"}</td><td>${status}</td></tr>`);
+    $("vaults").innerHTML = rows.join("");
+  }
+}
+
+async function loadBounty() {
+  if (!BOUNTY) return;
+  const acc = await rpc("getAccountInfo", [BOUNTY.tokenAccount, {encoding:"jsonParsed"}]);
+  const raw = acc.value ? acc.value.data.parsed.info.tokenAmount.amount : "0";
+  $("bountybal").textContent = fmtRaw(raw);
+  $("bountybal").dataset.raw = raw;
+  const sigs = await rpc("getSignaturesForAddress", [BOUNTY.tokenAccount, {limit:1}]);
+  if (sigs[0]) $("bountylast").innerHTML = `last activity <a href="${exp("tx",sigs[0].signature)}" target="_blank" rel="noopener">${fmtTime(sigs[0].blockTime)}</a>`;
+  if (raw === "0") $("bountybal").className = "bad";
+}
+
+async function load() {
+  $("err").style.display = "none";
+  $("updated").textContent = "loading…";
+  try {
+    const info = await loadFacts();
+    await loadVaults(info.supply);
+    await loadBounty();
+    $("updated").textContent = "updated " + new Date().toISOString().replace("T"," ").slice(0,19) + " UTC";
+    document.body.dataset.loaded = "1";
+  } catch (e) {
+    $("err").textContent = "Could not load on-chain data: " + e.message;
+    $("err").style.display = "block";
+    $("updated").textContent = "failed";
+    document.body.dataset.loaded = "error";
+  }
+}
+staticParts();
+$("reload").onclick = load;
+load();
+</script>
+</body>
+</html>
