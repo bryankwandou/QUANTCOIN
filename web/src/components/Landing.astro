@@ -1,0 +1,175 @@
+---
+import Base from "../layouts/Base.astro";
+import { t, type Lang } from "../i18n";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang);
+
+const ex = (a: string) => `https://explorer.solana.com/address/${a}?cluster=devnet`;
+const MINT = "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8";
+const PROGRAM = "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms";
+const BOUNTY = "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE";
+
+const alloc = [
+  ["a.treasury", 45, "9.9T", "4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381", "#2EE6D6"],
+  ["a.liq", 20, "4.4T", "5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG", "#5B8CFF"],
+  ["a.air", 15, "3.3T", "BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw", "#F5C451"],
+  ["a.founder", 10, "2.2T", "7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6", "#E07A9A"],
+  ["a.reserve", 10, "2.2T", "3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ", "#8A93B0"],
+] as const;
+
+const none = T("f.none");
+const facts = [
+  [T("f.supply"), T("f.supplyv")], [T("f.dec"), "5"], [T("f.std"), "SPL Token-2022"],
+  [T("f.mint"), none], [T("f.freeze"), none], [T("f.meta"), none], [T("f.fee"), none], [T("f.hook"), none],
+];
+
+const roadmap = [
+  ["rm.0", "st.done"], ["rm.1", "st.done"], ["rm.2", "st.next"], ["rm.3", "st.after"],
+  ["rm.4", ""], ["rm.5", "st.designed"], ["rm.6", ""], ["rm.7", "st.research"],
+] as const;
+
+const shots = [
+  ["/design/extension-popup.png", 720, 1200, "apps.t1", ""],
+  ["/design/mobile-home.png", 780, 1688, "apps.t2", ""],
+  ["/design/mobile-withdraw.png", 780, 1688, "apps.t3", ""],
+  ["/design/desktop-vaults.png", 2560, 1600, "apps.t4", "wide"],
+] as const;
+---
+<Base lang={lang}>
+<main id="main">
+<section class="hero"><div class="wrap hero-grid">
+  <div class="hero-copy">
+    <p class="kicker reveal"><span class="dot" aria-hidden="true"></span>{T("hero.kicker")}</p>
+    <h1 class="reveal">{T("hero.title")}</h1>
+    <p class="tagline reveal">{T("hero.tag")}</p>
+    <p class="status reveal">{T("hero.status")}</p>
+    <div class="actions reveal">
+      <a class="btn primary" href="/app/">{T("hero.cta1")}<span aria-hidden="true">→</span></a>
+      <a class="btn" href="/transparency/">{T("hero.cta2")}</a>
+      <a class="btn ghost" href="/whitepaper/">{T("hero.cta3")}</a>
+    </div>
+  </div>
+  <div class="stage" aria-hidden="true">
+    <canvas id="qubit"></canvas>
+    <img class="stage-fallback" src="/logo.svg" alt="" width="320" height="320">
+    <span class="stage-hint">{T("hero.drag")}</span>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <p class="eyebrow reveal">{T("how.eye")}</p>
+  <h2 class="reveal">{T("how.h")}</h2>
+  <div class="cols">
+    <div class="reveal">
+      <p>{T("how.p1")}</p>
+      <p set:html={T("how.p2")}></p>
+      <p set:html={T("how.p3")}></p>
+      <p>{T("how.p4")}</p>
+    </div>
+    <div class="reveal">
+      <svg class="diagram draw" viewBox="0 0 520 300" role="img" aria-labelledby="dg-t">
+        <title id="dg-t">Ed25519 + Winternitz → Vault → Spend</title>
+        <g fill="none" stroke="var(--line)" stroke-width="1.5"><rect x="10" y="30" width="170" height="64" rx="8"/><rect x="10" y="190" width="170" height="64" rx="8"/></g>
+        <rect class="vault-box" x="250" y="100" width="120" height="84" rx="8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <g class="wires" stroke="var(--muted)" stroke-width="1.5" fill="none"><path d="M180 62 H215 V130 H244"/><path d="M180 222 H215 V154 H244"/><path d="M370 142 H450"/></g>
+        <g class="pulses" fill="var(--accent)"><circle r="4"><animateMotion dur="2.4s" repeatCount="indefinite" path="M180 62 H215 V130 H244"/></circle><circle r="4"><animateMotion dur="2.4s" begin="0.6s" repeatCount="indefinite" path="M180 222 H215 V154 H244"/></circle><circle r="4"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M370 142 H450"/></circle></g>
+        <g font-size="15" fill="var(--fg)">
+          <text x="24" y="58" font-weight="600">Ed25519</text><text x="24" y="80" fill="var(--muted)" font-size="13">{T("how.d1")}</text>
+          <text x="24" y="218" font-weight="600">Winternitz</text><text x="24" y="240" fill="var(--muted)" font-size="13">{T("how.d2")}</text>
+          <text x="310" y="138" text-anchor="middle" font-weight="600">Vault</text><text x="310" y="160" text-anchor="middle" fill="var(--muted)" font-size="13">{T("how.d3")}</text>
+          <text x="462" y="147" font-weight="600">{T("how.d4")}</text>
+        </g>
+      </svg>
+      <div class="sim" id="sim">
+        <p class="sim-q">{T("how.try")}</p>
+        <div class="sim-keys">
+          <button type="button" class="key" data-k="a" aria-pressed="false"><span class="sw"></span>{T("how.k1")}</button>
+          <button type="button" class="key" data-k="b" aria-pressed="false"><span class="sw"></span>{T("how.k2")}</button>
+        </div>
+        <p class="sim-out" data-state="0" aria-live="polite"
+           data-r0={T("how.r0")} data-r1={T("how.r1")} data-r2={T("how.r2")}>{T("how.r0")}</p>
+      </div>
+    </div>
+  </div>
+  <h3 class="reveal" style="margin-top:64px">{T("prot.h")}</h3>
+  <div class="table-scroll reveal"><table>
+    <thead><tr><th>{T("prot.c1")}</th><th>{T("prot.c2")}</th></tr></thead>
+    <tbody>
+      <tr><td>{T("prot.v")}</td><td class="yes">{T("prot.vr")}</td></tr>
+      <tr><td>{T("prot.w")}</td><td>{T("prot.wr")}</td></tr>
+    </tbody>
+  </table></div>
+  <p class="reveal" style="margin-top:20px;color:var(--muted)">{T("prot.note")}</p>
+</div></section>
+
+<section id="apps"><div class="wrap">
+  <p class="eyebrow reveal">{T("apps.eye")}</p>
+  <h2 class="reveal">{T("apps.h")}</h2>
+  <p class="lead reveal">{T("apps.lead")}</p>
+  <div class="shots">
+    {shots.map(([src, w, h, k, cls]) => <figure class={`tilt reveal ${cls}`}><img src={src} alt={T(k)} width={w} height={h} loading="lazy"><figcaption>{T(k)}</figcaption></figure>)}
+  </div>
+</div></section>
+
+<section id="token"><div class="wrap">
+  <p class="eyebrow reveal">{T("tok.eye")}</p>
+  <h2 class="reveal">{T("tok.h")}</h2>
+  <p class="lead reveal">{T("tok.lead")}</p>
+  <dl class="facts reveal">{facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+  <p class="reveal" style="margin-top:24px;color:var(--muted)">{T("tok.mint")} <a class="addr" href={ex(MINT)}>{MINT}</a></p>
+</div></section>
+
+<section id="tokenomics"><div class="wrap">
+  <p class="eyebrow reveal">{T("tn.eye")}</p>
+  <h2 class="reveal">{T("tn.h")}</h2>
+  <p class="lead reveal">{T("tn.lead")}</p>
+  <div class="bar grow" aria-hidden="true">{alloc.map(([, p, , , c]) => <span style={`--w:${p}%;background:${c}`}></span>)}</div>
+  <div class="table-scroll reveal"><table>
+    <thead><tr><th>{T("tn.c1")}</th><th>{T("tn.c2")}</th><th>QC</th><th>{T("tn.c4")}</th></tr></thead>
+    <tbody>{alloc.map(([n, p, q, a, c]) => <tr><td><span class="swatch" style={`background:${c}`}></span>{T(n)}</td><td class="num">{p}%</td><td class="num">{q}</td><td><a class="addr" href={ex(a)}>{a}</a></td></tr>)}</tbody>
+  </table></div>
+  <div class="grid3" style="margin-top:48px">
+    <div class="card reveal"><h3>{T("tn.k1")}</h3><p set:html={T("tn.k1p")}></p></div>
+    <div class="card reveal"><h3>{T("tn.k2")}</h3><p>{T("tn.k2p")}</p></div>
+    <div class="card reveal"><h3>{T("tn.k3")}</h3><p>{T("tn.k3p")}</p></div>
+  </div>
+</div></section>
+
+<section id="security"><div class="wrap">
+  <p class="eyebrow reveal">{T("sec.eye")}</p>
+  <h2 class="reveal">{T("sec.h")}</h2>
+  <p class="lead reveal">{T("sec.lead")}</p>
+  <div class="stats">
+    <div class="stat reveal"><b><span data-count="12">12</span>/12</b><span>{T("sec.s1")}</span></div>
+    <div class="stat reveal"><b><span data-count="13">13</span>/13</b><span>{T("sec.s2")}</span></div>
+    <div class="stat reveal"><b>0</b><span>{T("sec.s3")}</span></div>
+  </div>
+  <p class="reveal">{T("sec.bounty")} <a class="addr" href={ex(BOUNTY)}>{BOUNTY}</a></p>
+  <p class="reveal"><a href="/audit/">{T("sec.read")}</a>{T("sec.read2")}</p>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <p class="eyebrow reveal">{T("rm.eye")}</p>
+  <h2 class="reveal">{T("rm.h")}</h2>
+  <ol class="roadmap">{roadmap.map(([k, s], i) => <li class="reveal"><span class="ph">{i}</span><span>{T(k)}</span><span class={s === "st.done" ? "st done" : "st"}>{s ? T(s) : ""}</span></li>)}</ol>
+</div></section>
+
+<section id="build"><div class="wrap">
+  <p class="eyebrow reveal">{T("b.eye")}</p>
+  <h2 class="reveal">{T("b.h")}</h2>
+  <p class="lead reveal">{T("b.lead")}</p>
+  <ul class="links reveal">
+    <li><a href="/docs/">{T("b.l1")}</a>: {T("b.l1d")}</li>
+    <li><a href="/idl/qc_vault.json">{T("b.l2")}</a> (qc_vault.json)</li>
+    <li><a href="https://github.com/bryankwandou/QUANTCOIN">{T("b.l3")}</a>: {T("b.l3d")}</li>
+    <li><a href="/launch/">{T("b.l4")}</a> {T("b.l4d")}</li>
+    <li>{T("b.l5")} <a class="addr" href={ex(PROGRAM)}>{PROGRAM}</a></li>
+  </ul>
+</div></section>
+</main>
+<script>
+  import "../scripts/motion";
+  import "../scripts/hero3d";
+</script>
+</Base>

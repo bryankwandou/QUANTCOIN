@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "astro": "^5.0.0",
-    "marked": "^14.0.0"
+    "marked": "^14.0.0",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
   }
 }

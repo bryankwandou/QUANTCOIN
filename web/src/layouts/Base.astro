@@ -1,23 +1,35 @@
 ---
-interface Props { title: string; description?: string; current?: string }
-const DESC = "A Solana token with a vault that holds even if quantum computers break Ed25519. Devnet, not on mainnet yet.";
-const { title, description = DESC, current = "" } = Astro.props;
+import { LANGS, HTML_LANG, t, type Lang } from "../i18n";
+interface Props { title?: string; description?: string; current?: string; lang?: Lang }
+const { lang = "en", current = "" } = Astro.props;
+const T = t(lang);
+const title = Astro.props.title ?? T("meta.title");
+const description = Astro.props.description ?? T("meta.desc");
 const url = new URL(Astro.url.pathname, Astro.site);
 const og = new URL("/og.png", Astro.site);
-const NAV = [["/app/", "Quantum Safe"], ["/transparency/", "Transparency"], ["/whitepaper/", "Whitepaper"], ["/docs/", "Docs"], ["/audit/", "Audit"]];
+const NAV = [["/app/", T("nav.app")], ["/transparency/", T("nav.transparency")], ["/whitepaper/", T("nav.whitepaper")], ["/docs/", T("nav.docs")], ["/audit/", T("nav.audit")]];
+const home = (l: string) => (l === "en" ? "/" : `/${l}/`);
+const isHome = Astro.url.pathname === home(lang);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={HTML_LANG[lang]}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content={description}>
-<meta name="theme-color" content="#0B1020">
+<meta name="theme-color" content="#0B1020" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
+<script is:inline>
+  // Apply the saved theme before first paint so there is no flash.
+  try { const s = localStorage.getItem("qc-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="canonical" href={url}>
+{isHome && Object.keys(LANGS).map((l) => <link rel="alternate" hreflang={HTML_LANG[l as Lang]} href={new URL(home(l), Astro.site)} />)}
+{isHome && <link rel="alternate" hreflang="x-default" href={new URL("/", Astro.site)} />}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="QuantCoin">
 <meta property="og:title" content={title}>
@@ -31,17 +43,57 @@ const NAV = [["/app/", "Quantum Safe"], ["/transparency/", "Transparency"], ["/w
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
-  <a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">QuantCoin</a>
+  <a class="brand" href={home(lang)}><img src="/logo.svg" alt="" width="28" height="28">QuantCoin</a>
   <span class="badge">Devnet</span>
-  <nav class="nav" aria-label="Main">{NAV.map(([h, t]) => <a href={h} aria-current={h === current ? "page" : undefined}>{t}</a>)}</nav>
+  <nav class="nav" aria-label="Main">{NAV.map(([h, x]) => <a href={h} aria-current={h === current ? "page" : undefined}>{x}</a>)}</nav>
+  <div class="tools">
+    <label class="lang"><span class="sr">{T("ui.lang")}</span>
+      <select id="lang-pick" aria-label={T("ui.lang")}>
+        {Object.entries(LANGS).map(([k, n]) => <option value={home(k)} selected={k === lang}>{n}</option>)}
+        <option value="more">{T("ui.more")}</option>
+      </select>
+    </label>
+    <button id="theme" class="icon-btn" type="button" aria-label={T("ui.theme")} title={T("ui.theme")}>
+      <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
 </div></header>
+<div id="gt" class="gt" hidden></div>
 <slot />
 <footer><div class="wrap">
-  <p><strong>Risk.</strong> QuantCoin runs on Solana devnet only. Devnet tokens are worth nothing. On mainnet, QC will have no guaranteed value, and most new tokens lose most of theirs. The vault program has had an internal audit only; the external one hasn't happened yet. Lose either key of a vault and the funds in it stay locked. Nobody knows when quantum computers will break Ed25519. None of this is investment advice.</p>
+  <p set:html={T("ft.risk")}></p>
   <div class="fl">
-    <a href="/whitepaper/">Whitepaper</a><a href="/launch/">Launch</a><a href="/docs/">Docs</a><a href="/audit/">Audit</a><a href="/transparency/">Transparency</a><a href="https://github.com/bryankwandou/QUANTCOIN">GitHub</a>
+    <a href="/whitepaper/">{T("nav.whitepaper")}</a><a href="/launch/">{T("ft.launch")}</a><a href="/docs/">{T("nav.docs")}</a><a href="/audit/">{T("nav.audit")}</a><a href="/transparency/">{T("nav.transparency")}</a><a href="https://github.com/bryankwandou/QUANTCOIN">GitHub</a>
   </div>
 </div></footer>
+<script is:inline>
+(() => {
+  const root = document.documentElement;
+  const dark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  document.getElementById("theme").addEventListener("click", () => {
+    const next = dark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("qc-theme", next); } catch (e) {}
+    window.dispatchEvent(new Event("qc-theme"));
+  });
+  const pick = document.getElementById("lang-pick");
+  const start = pick.value;
+  pick.addEventListener("change", () => {
+    if (pick.value !== "more") { location.href = pick.value; return; }
+    pick.value = start;
+    // Machine translation for every language we haven't written by hand.
+    const box = document.getElementById("gt");
+    box.hidden = false;
+    if (window.google && window.google.translate) return;
+    window.gtInit = () => new google.translate.TranslateElement({ pageLanguage: root.lang.slice(0, 2), layout: 0 }, "gt");
+    const s = document.createElement("script");
+    s.src = "https://translate.google.com/translate_a/element.js?cb=gtInit";
+    document.head.appendChild(s);
+  });
+})();
+</script>
 </body>
 </html>
