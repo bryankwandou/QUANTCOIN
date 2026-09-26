@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quantum Safe · Foley</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1020;--bg2:#121933;--line:#232C4D;--fg:#E8ECF7;--mut:#8A93B2;--acc:#2EE6D6;--blue:#5B8CFF;--ok:#3DD68C;--ink:#04121A;--stage:#161C30;--shadow:#0009}
+:root[data-theme=light]{--bg:#FAFAF7;--bg2:#FFFFFF;--line:#DDDDD3;--fg:#111526;--mut:#5C6480;--acc:#0FA89B;--stage:#E6E6DF;--shadow:#0003}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.4 "IBM Plex Sans",system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;gap:16px;padding:20px 16px}
+.mono{font-family:"IBM Plex Mono",monospace}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.bar button{font:inherit;font-size:13px;color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+.bar button.go{background:var(--acc);color:var(--ink);border-color:transparent;font-weight:600}
+.stage{position:relative;width:min(420px,100%);aspect-ratio:9/16;background:var(--stage);border-radius:28px;overflow:hidden;perspective:1100px}
+.o{position:absolute;left:50%;top:50%;opacity:0;will-change:transform,opacity}
+.cap{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-size:13px;color:var(--mut);letter-spacing:.02em}
+/* coin: face + edge for depth */
+.coin{width:120px;height:120px;margin:-60px 0 0 -60px;transform-style:preserve-3d}
+.coin i{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;font:600 34px "IBM Plex Mono";color:var(--ink);background:var(--acc);box-shadow:inset 0 0 0 7px var(--acc),inset 0 0 0 10px var(--ink)}
+.coin i.b{transform:rotateY(180deg)}
+.coin i.e{background:#1FB3A6;box-shadow:none;transform:translateZ(-6px)}
+.shadow{width:110px;height:18px;margin:62px 0 0 -55px;border-radius:50%;background:var(--shadow);filter:blur(8px)}
+/* vault card */
+.card{width:280px;height:176px;margin:-88px 0 0 -140px;border-radius:18px;background:var(--acc);color:var(--ink);padding:18px;box-shadow:0 30px 50px -20px var(--shadow);transform-style:preserve-3d}
+.card small{font-size:12px;opacity:.8}.card b{display:block;font:600 30px "IBM Plex Mono";margin-top:40px}.card em{font-style:normal;font-size:12px;font-family:"IBM Plex Mono"}
+.card .chip{position:absolute;right:18px;top:18px;width:34px;height:26px;border-radius:6px;border:2px solid var(--ink)}
+/* key slabs + signer */
+.signer{width:250px;height:120px;margin:40px 0 0 -125px;border-radius:18px;background:var(--bg2);border:1px solid var(--line);box-shadow:0 30px 50px -24px var(--shadow)}
+.signer .slot{position:absolute;left:30px;right:30px;top:18px;height:8px;border-radius:4px;background:var(--bg)}
+.signer .led{position:absolute;left:30px;bottom:22px;display:flex;gap:10px}
+.signer .led span{width:10px;height:10px;border-radius:50%;background:var(--line);transition:background .15s}
+.signer .t{position:absolute;right:30px;bottom:18px;font:500 12px "IBM Plex Mono";color:var(--mut)}
+.key{width:190px;height:110px;margin:-150px 0 0 -95px;border-radius:14px;background:var(--bg2);border:2px solid var(--c);padding:14px;box-shadow:0 20px 40px -18px var(--shadow)}
+.key b{display:block;font-size:14px}.key i{font:500 11px "IBM Plex Mono";color:var(--c);font-style:normal}
+.k1{--c:var(--acc)}.k2{--c:var(--blue)}
+/* receipts */
+.rc{width:150px;height:210px;margin:-105px 0 0 -75px;background:#FBFBF7;color:#111526;border-radius:4px;padding:14px;font:500 10px/1.7 "IBM Plex Mono";transform-origin:50% 100%;box-shadow:0 18px 30px -16px var(--shadow)}
+.rc b{display:block;font-size:13px;margin-bottom:8px}
+/* bubbles */
+.bub{margin-left:-150px;width:300px;padding:12px 14px;border-radius:16px;background:var(--bg2);border:1px solid var(--line);font-size:14px;box-shadow:0 16px 30px -18px var(--shadow)}
+.bub.me{background:var(--acc);color:var(--ink);border-color:transparent;margin-left:-110px;width:260px}
+/* tile wall */
+.wall{left:0;top:0;width:100%;height:100%;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-content:center;gap:6px;padding:16px;opacity:1}
+.wall span{border-radius:6px;background:var(--acc);color:var(--ink);font:600 9px "IBM Plex Mono";display:grid;place-items:center;aspect-ratio:1;opacity:0}
+.wall span.used{background:var(--line);color:var(--mut)}
+/* ring */
+.ring{width:0;height:0;transform-style:preserve-3d}
+.ring div{position:absolute;width:120px;height:74px;margin:-37px 0 0 -60px;border-radius:10px;background:var(--bg2);border:2px solid var(--acc);display:grid;place-items:center;font:600 11px "IBM Plex Mono";color:var(--acc);backface-visibility:hidden}
+.ring div:nth-child(even){border-color:var(--blue);color:var(--blue)}
+/* logo */
+.logo{margin:-40px 0 0 -150px;width:300px;text-align:center}
+.logo .m{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font:600 20px "IBM Plex Mono";color:var(--ink)}
+.logo b{display:block;font-size:30px;font-weight:600}.logo span{font-size:14px;color:var(--mut)}
+@media (prefers-reduced-motion:reduce){.stage *{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button class="go" id="play">Play with sound</button>
+  <button id="snd">Sound: on</button>
+  <button id="thm">Light</button>
+</div>
+<div class="stage" id="st">
+  <div class="o shadow" id="sh"></div>
+  <div class="o coin" id="coin"><i class="e"></i><i class="b">QC</i><i>QC</i></div>
+  <div class="o card" id="card"><small>Savings vault</small><div class="chip"></div><b>1,284,000</b><em>QC · locked by 2 keys</em></div>
+  <div class="o signer" id="signer"><div class="slot"></div><div class="led"><span id="l1"></span><span id="l2"></span></div><div class="t" id="st1">waiting</div></div>
+  <div class="o key k1" id="k1"><b>Wallet key</b><i>Ed25519</i></div>
+  <div class="o key k2" id="k2"><b>Hash key #742</b><i>Winternitz · one-time</i></div>
+  <div class="o rc" id="r1"><b>Receipt</b>To Maya<br>−40,000 QC<br>fee 0.000005<br>keys 2/2 ✓<br>#742 burned</div>
+  <div class="o rc" id="r2"><b>Receipt</b>From 3Fq…9aZ<br>+2,000 QC<br>final ✓</div>
+  <div class="o rc" id="r3"><b>Receipt</b>Deposit<br>+1,000,000 QC<br>final ✓</div>
+  <div class="o bub" id="b1" style="top:34%">Maya is asking for 40,000 QC.</div>
+  <div class="o bub me" id="b2" style="top:46%">Sign with both keys.</div>
+  <div class="o bub" id="b3" style="top:58%">Signed. Arrived in 2.1 s.</div>
+  <div class="o wall" id="wall"></div>
+  <div class="o ring" id="ring"></div>
+  <div class="o logo" id="logo"><div class="m">QC</div><b>Quantum Safe</b><span>Two keys. One vault.</span></div>
+  <div class="cap" id="cap">Press play</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+// ---------- foley, synthesized (no files). Peak kept under -18 dBFS.
+let ac,on=true,master;
+function A(){if(!ac){ac=new AudioContext();master=ac.createGain();master.gain.value=.125;master.connect(ac.destination)}return ac}
+function noise(d){const a=A(),b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),c=b.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;return s}
+function env(g,t,a,d,peak=1){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.001,t+a+d)}
+function tone(f,d,type="sine",peak=1,at=0,slide){if(!on)return;const a=A(),t=a.currentTime+at,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);env(g,t,.004,d,peak);o.connect(g).connect(master);o.start(t);o.stop(t+d+.05)}
+function hiss(d,f,q,peak=1,at=0,sweep){if(!on)return;const a=A(),t=a.currentTime+at,s=noise(d+.05),bp=a.createBiquadFilter(),g=a.createGain();bp.type="bandpass";bp.frequency.setValueAtTime(f,t);if(sweep)bp.frequency.exponentialRampToValueAtTime(sweep,t+d);bp.Q.value=q;env(g,t,.01,d,peak);s.connect(bp).connect(g).connect(master);s.start(t)}
+const SFX={
+  thud:()=>{tone(90,.22,"sine",1,0,45);hiss(.06,300,1,.5)},
+  ring:()=>{[1320,1980,2640].forEach((f,i)=>tone(f,.5-i*.1,"sine",.25-i*.06,.02))},
+  spin:()=>{for(let i=0;i<7;i++)tone(2200-i*120,.03,"triangle",.18,i*.07)},
+  flick:()=>{hiss(.12,2500,2,.8);tone(700,.05,"square",.08)},
+  whoosh:()=>hiss(.45,300,1.2,.7,0,2400),
+  swipe:()=>{hiss(.22,900,3,.8,0,3200);tone(140,.08,"sine",.6,.2)},
+  k1:()=>{tone(1320,.12,"triangle",.5)},
+  k2:()=>{tone(990,.1,"triangle",.5);tone(660,.12,"sine",.3,.1);tone(880,.16,"sine",.3,.2)},
+  paper:()=>{hiss(.18,4200,.8,.6);hiss(.1,6000,1,.35,.08)},
+  pop:()=>{tone(520,.08,"sine",.6,0,900)},
+  tick:()=>tone(3000,.015,"square",.12),
+  rise:()=>hiss(1.6,200,1,.5,0,5000),
+  chime:()=>{tone(784,.35,"sine",.5);tone(988,.35,"sine",.45,.09);tone(1319,.5,"sine",.4,.18)}
+};
+const S=n=>SFX[n]&&SFX[n]();
+// ---------- timeline helpers
+const an=(el,k,d,o={})=>el.animate(k,{duration:RM?1:d,easing:o.e||"cubic-bezier(.2,.8,.2,1)",fill:"forwards",delay:0});
+const wait=ms=>new Promise(r=>setTimeout(r,RM?Math.min(ms,300):ms));
+const hide=(...els)=>els.forEach(e=>an(e,[{opacity:getComputedStyle(e).opacity},{opacity:0}],200));
+const cap=t=>$("cap").textContent=t;
+// build wall + ring once
+for(let i=0;i<64;i++){const s=document.createElement("span");s.textContent="#"+(700+i);if(i<42)s.className="used";$("wall").appendChild(s)}
+for(let i=0;i<12;i++){const d=document.createElement("div");d.textContent=i%2?"hash":"wallet";d.style.transform=`rotateY(${i*30}deg) translateZ(220px)`;$("ring").appendChild(d)}
+
+let running=false;
+async function play(){
+  if(running)return;running=true;A();if(ac.state==="suspended")await ac.resume();
+  document.querySelectorAll(".o").forEach(e=>{e.getAnimations().forEach(a=>a.cancel())});
+  document.querySelectorAll("#wall span").forEach(s=>s.getAnimations().forEach(a=>a.cancel()));
+  $("l1").style.background=$("l2").style.background="";$("st1").textContent="waiting";
+
+  // 1 coin drop + bounce + spin (foley: thud, metal ring, spin ticks)
+  cap("A coin lands");
+  an($("sh"),[{opacity:0,transform:"scale(.3)"},{opacity:1,transform:"scale(1)"}],600);
+  an($("coin"),[{opacity:1,transform:"translateY(-420px) rotateX(60deg) rotateY(0)"},{opacity:1,transform:"translateY(0) rotateX(0) rotateY(360deg)",offset:.6},{opacity:1,transform:"translateY(-40px) rotateY(540deg)",offset:.8},{opacity:1,transform:"translateY(0) rotateY(720deg)"}],1300,{e:"cubic-bezier(.5,0,.5,1)"});
+  await wait(780);S("thud");S("ring");await wait(260);S("spin");await wait(500);S("thud");
+  await wait(600);
+
+  // 2 coin becomes vault card: coin slides away, card flips up from flat
+  cap("…into a vault");hide($("sh"));
+  an($("coin"),[{opacity:1,transform:"rotateY(720deg)"},{opacity:0,transform:"translate(0,-40px) rotateY(900deg) scale(.4)"}],420);S("whoosh");
+  await wait(250);
+  an($("card"),[{opacity:0,transform:"translateY(260px) rotateX(75deg) rotateZ(-8deg)"},{opacity:1,transform:"translateY(-10px) rotateX(-6deg) rotateZ(1deg)",offset:.75},{opacity:1,transform:"translateY(-80px) rotateX(0) rotateZ(0)"}],800);
+  await wait(560);S("flick");await wait(900);
+
+  // 3 two keys swipe into the signer (foley: card swipe + key tones + LEDs)
+  cap("Both keys have to sign");
+  an($("card"),[{transform:"translateY(-80px)",opacity:1},{transform:"translateY(-330px) scale(.6)",opacity:.0}],500);
+  an($("signer"),[{opacity:0,transform:"translateY(200px)"},{opacity:1,transform:"translateY(40px)"}],500);S("whoosh");
+  await wait(550);
+  for(const [k,l,snd,c,txt] of [["k1","l1","k1","var(--acc)","wallet ✓"],["k2","l2","k2","var(--blue)","both ✓"]]){
+    an($(k),[{opacity:0,transform:"translateY(-80px) rotateX(20deg)"},{opacity:1,transform:"translateY(0) rotateX(0)",offset:.35},{opacity:1,transform:"translateY(0)",offset:.55},{opacity:0,transform:"translateY(110px) scaleY(.2)"}],1000);
+    await wait(560);S("swipe");await wait(200);$(l).style.background=c;$("st1").textContent=txt;S(snd);await wait(500);
+  }
+  await wait(400);
+
+  // 4 receipts fan out (foley: paper)
+  cap("Every send prints a receipt");hide($("signer"));
+  [["r3",-18],["r2",-4],["r1",12]].forEach(([id,r],i)=>setTimeout(()=>{an($(id),[{opacity:0,transform:"translateY(300px) rotate(0)"},{opacity:1,transform:`translateY(0) rotate(${r}deg) translateX(${r*3}px)`}],520,{e:"cubic-bezier(.3,1.4,.5,1)"});S("paper")},RM?0:i*180));
+  await wait(1700);
+
+  // 5 chat bubbles (foley: pops)
+  cap("You approve. Nobody else can.");hide($("r1"),$("r2"),$("r3"));await wait(200);
+  for(const b of ["b1","b2","b3"]){an($(b),[{opacity:0,transform:"translateY(14px) scale(.9)"},{opacity:1,transform:"none"}],260,{e:"cubic-bezier(.3,1.6,.5,1)"});S("pop");await wait(620)}
+  await wait(500);
+
+  // 6 wall of one-time hash keys (foley: ticks)
+  cap("1,024 one-time keys. Each used once.");hide($("b1"),$("b2"),$("b3"));await wait(200);
+  $("wall").style.opacity=1;const ts=[...$("wall").children];
+  for(let i=0;i<ts.length;i++){an(ts[i],[{opacity:0,transform:"scale(.3) rotateX(80deg)"},{opacity:1,transform:"none"}],240);if(i%3==0)S("tick");await wait(RM?0:22)}
+  await wait(900);
+
+  // 7 3D ring of keys (foley: rising air)
+  cap("Signed by hashes, not curves");ts.forEach(t=>an(t,[{opacity:1},{opacity:0}],250));
+  S("rise");an($("ring"),[{opacity:0,transform:"rotateX(-14deg) rotateY(0deg) scale(.6)"},{opacity:1,transform:"rotateX(-14deg) rotateY(-200deg) scale(1)",offset:.8},{opacity:1,transform:"rotateX(-14deg) rotateY(-240deg) scale(1)"}],2000,{e:"cubic-bezier(.3,0,.2,1)"});
+  await wait(2100);
+
+  // 8 logo resolve (foley: chime)
+  cap("");hide($("ring"));
+  an($("logo"),[{opacity:0,transform:"translateY(20px) scale(.94)"},{opacity:1,transform:"none"}],500);S("chime");
+  await wait(1200);running=false;$("play").textContent="Replay";
+}
+$("play").onclick=play;
+$("snd").onclick=e=>{on=!on;e.target.textContent="Sound: "+(on?"on":"off")};
+$("thm").onclick=e=>{const d=document.documentElement,l=d.dataset.theme==="light";d.dataset.theme=l?"":"light";e.target.textContent=l?"Light":"Dark"};
+</script>
+</body>
+</html>
