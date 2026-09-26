@@ -48,8 +48,8 @@ body{background:var(--bg);color:var(--fg);font:15px/1.4 "IBM Plex Sans",system-u
 .wall span{border-radius:6px;background:var(--acc);color:var(--ink);font:600 9px "IBM Plex Mono";display:grid;place-items:center;aspect-ratio:1;opacity:0}
 .wall span.used{background:var(--line);color:var(--mut)}
 /* ring */
-.ring{width:0;height:0;transform-style:preserve-3d}
-.ring div{position:absolute;width:120px;height:74px;margin:-37px 0 0 -60px;border-radius:10px;background:var(--bg2);border:2px solid var(--acc);display:grid;place-items:center;font:600 11px "IBM Plex Mono";color:var(--acc);backface-visibility:hidden}
+.ring{width:0;height:0;transform-style:preserve-3d;margin-top:-20px}
+.ring div{position:absolute;width:84px;height:54px;margin:-27px 0 0 -42px;border-radius:10px;background:var(--bg2);border:2px solid var(--acc);display:grid;place-items:center;font:600 11px "IBM Plex Mono";color:var(--acc)}
 .ring div:nth-child(even){border-color:var(--blue);color:var(--blue)}
 /* logo */
 .logo{margin:-40px 0 0 -150px;width:300px;text-align:center}
@@ -115,7 +115,8 @@ const hide=(...els)=>els.forEach(e=>an(e,[{opacity:getComputedStyle(e).opacity},
 const cap=t=>$("cap").textContent=t;
 // build wall + ring once
 for(let i=0;i<64;i++){const s=document.createElement("span");s.textContent="#"+(700+i);if(i<42)s.className="used";$("wall").appendChild(s)}
-for(let i=0;i<12;i++){const d=document.createElement("div");d.textContent=i%2?"hash":"wallet";d.style.transform=`rotateY(${i*30}deg) translateZ(220px)`;$("ring").appendChild(d)}
+for(let i=0;i<12;i++){const d=document.createElement("div");d.textContent=i%2?"hash":"wallet";d.style.transform=`rotateY(${i*30}deg) translateZ(165px)`;$("ring").appendChild(d)}
+function shadeRing(){const m=new DOMMatrix(getComputedStyle($("ring")).transform);const a=Math.atan2(m.m13,m.m11);[...$("ring").children].forEach((d,i)=>{const t=i*Math.PI/6-a;const z=Math.cos(t);d.style.opacity=(.35+.65*(z+1)/2).toFixed(2);d.style.zIndex=Math.round(z*100)+100});if(running)requestAnimationFrame(shadeRing)}
 
 let running=false;
 async function play(){
@@ -167,7 +168,7 @@ async function play(){
 
   // 7 3D ring of keys (foley: rising air)
   cap("Signed by hashes, not curves");ts.forEach(t=>an(t,[{opacity:1},{opacity:0}],250));
-  S("rise");an($("ring"),[{opacity:0,transform:"rotateX(-14deg) rotateY(0deg) scale(.6)"},{opacity:1,transform:"rotateX(-14deg) rotateY(-200deg) scale(1)",offset:.8},{opacity:1,transform:"rotateX(-14deg) rotateY(-240deg) scale(1)"}],2000,{e:"cubic-bezier(.3,0,.2,1)"});
+  S("rise");requestAnimationFrame(shadeRing);an($("ring"),[{opacity:0,transform:"rotateX(-32deg) rotateY(0deg) scale(.6)"},{opacity:1,transform:"rotateX(-32deg) rotateY(-200deg) scale(1)",offset:.8},{opacity:1,transform:"rotateX(-32deg) rotateY(-240deg) scale(1)"}],2000,{e:"cubic-bezier(.3,0,.2,1)"});
   await wait(2100);
 
   // 8 logo resolve (foley: chime)
