@@ -1,0 +1,11 @@
+{
+  "multisig": "A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P",
+  "vault": "45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez",
+  "threshold": 2,
+  "members": [
+    "4oz6HpcXuG7BeEGwQuBKcS9rUqSNPDhTPY8JFLggvvNd",
+    "DmP8jheo1NpFjNerM7GhVpzPA59F4EygJcJxPwPshKyE",
+    "ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m"
+  ],
+  "tx": "3cJwQyMJHYTG8NbTzvCPDzARX9gyfyPQqpgqoU7HZ38ghKQ51V3ewtDqKZo32E4hdiWNhjNRQSThWq3qC6DgcFq7"
+}

@@ -1,0 +1,13 @@
+{
+  "mint": "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2",
+  "program": "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
+  "vault": "AXGekkWG8ZmbFWFpPzMrJGLbE1UibZDuiPNbVqHYV3VU",
+  "vaultTokenAccount": "gi7yse4N8Wje1JhBSMjAexLu6tjdgwFc7wCwAxbzU15",
+  "supply": "2200000000000000000",
+  "decimals": 5,
+  "txs": [
+    "58R4pxrHnu7Kd5y6PSVNuRsoHaAghorMvDxxFHWiMxyySHPZ8oYamX85TnmspbpJDLFZeiGXSK1hgzRZQkdZP47P",
+    "pzWurMyLi9YLnDVLpiDDmPf99DAgSTndrYKZTzQFoSyUCjReUKCxooeQiutmbxnNiqW6FBfMtgK4sWozjbPabRB"
+  ],
+  "costSol": 0.0044346
+}

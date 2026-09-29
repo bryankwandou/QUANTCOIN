@@ -1,0 +1,43 @@
+{
+  "alloc-founder-1": {
+    "vault": "8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq",
+    "qc": "1100000000000",
+    "tx": "5MTPB9VSRhMDEsVcyB5XjpCATT8SkN4YJdAa68R5HUQbFnEQHK2Tb7NMezvfCAVW4TkxH3CZnGKYvhBD66PpbXmP"
+  },
+  "alloc-founder-2": {
+    "vault": "7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz",
+    "qc": "1100000000000",
+    "tx": "4uJbafTNRhe4mqeN9wEdAC5WQFHuveNYF4kNL2XD17FftRnPXLBBDQcDRYoYX4oeiVje4BPX5HJjc81zzfLC7sLt"
+  },
+  "alloc-founder-3": {
+    "vault": "5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG",
+    "qc": "1100000000000",
+    "tx": "5nWRAeAoq1HtbbCqt6TpfpNUFpfgQesxCTexNgU7zkBMZU3gJN7McYSCR3gWrGNHUvn8UZwSXrLxZLAHkgPaXhfK"
+  },
+  "alloc-founder-4": {
+    "vault": "8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd",
+    "qc": "1100000000000",
+    "tx": "FYxm8gC9x36kBfqnoS5hmbyaAmfA2QoCZL9xUd2Rc1xzVmjYVrHtmJNsjifhv9xUvyUpa2nJhaA8Y6pNYYNzFYj"
+  },
+  "alloc-liquidity": {
+    "vault": "9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx",
+    "qc": "4400000000000",
+    "tx": "43rQpn8Mv68spyVKZEQ9ZFFfQqeax2CwB3W8zdf8AuzM8Rzmq1UU1TyzqdTndWymTu8sRDdRkjECvMpabYs9qVvR"
+  },
+  "alloc-airdrop": {
+    "vault": "9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T",
+    "qc": "3300000000000",
+    "tx": "4Jvogfpd6zBNhp7bgbF1AV3AziLy88H8jAwXpumxHqCdmurXTihmfK3UKEkVSyZYeyBcSWWSny1P7jMuCwHmy6yX"
+  },
+  "alloc-reserve": {
+    "vault": "3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93",
+    "qc": "2200000000000",
+    "tx": "s7Aeyx2RS8MaFKufTt7Ve3uC3XY37jSTFxKggGBiM8kZKCfNrHQcep7V2tQK8pqJ4kxzB1JLf43BSRhJM43XEPF"
+  },
+  "treasury": {
+    "name": "treasury-8",
+    "vault": "E89KqeLS2UXHioabSunDDrHEGcCRbh8Ct5wZMNFighxd",
+    "qc": "7700000000000",
+    "note": "rotated from treasury-7 by the mainnet attack run"
+  }
+}

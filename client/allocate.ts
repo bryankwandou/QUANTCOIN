@@ -4,12 +4,20 @@
 import { PublicKey, Transaction, sendAndConfirmTransaction } from "@solana/web3.js";
 import { TOKEN_2022_PROGRAM_ID, createAssociatedTokenAccountIdempotentInstruction } from "@solana/spl-token";
 import { writeFileSync } from "node:fs";
-import { env, loadVault, newVault, vaultExists, spendIxs, vaultAddress, vaultTokenAccount } from "./qc.ts";
+import { NET, env, loadVault, newVault, vaultExists, spendIxs, vaultAddress, vaultTokenAccount } from "./qc.ts";
 
 const { conn, payer, program } = env();
 const mint = new PublicKey(process.env.MINT!);
 const UNIT = 100_000n; // 5 decimals
-const PLAN: [string, bigint][] = [ // % of 22T supply
+const PLAN: [string, bigint][] = NET === "mainnet" ? [ // % of 22T supply; treasury keeps the remaining 35%
+  ["alloc-founder-1", 1_100_000_000_000n], // 5%
+  ["alloc-founder-2", 1_100_000_000_000n], // 5%
+  ["alloc-founder-3", 1_100_000_000_000n], // 5%
+  ["alloc-founder-4", 1_100_000_000_000n], // 5%
+  ["alloc-liquidity", 4_400_000_000_000n], // 20%
+  ["alloc-airdrop", 3_300_000_000_000n],   // 15%
+  ["alloc-reserve", 2_200_000_000_000n],   // 10%
+] : [
   ["alloc-founder", 2_200_000_000_000n],   // 10%
   ["alloc-liquidity", 4_400_000_000_000n], // 20%
   ["alloc-airdrop", 3_300_000_000_000n],   // 15%
@@ -17,7 +25,7 @@ const PLAN: [string, bigint][] = [ // % of 22T supply
 ];
 const load = (n: string) => (vaultExists(n) ? loadVault(n) : newVault(n));
 let from = loadVault(process.env.FROM!);
-let t = Number(process.env.FROM!.split("-").pop());
+let t = Number(process.env.FROM!.split("-").pop()) || 0; // FROM=genesis starts at treasury-1
 const out: Record<string, unknown> = {};
 for (const [name, qc] of PLAN) {
   const alloc = load(name), next = load(`treasury-${++t}`);
@@ -36,4 +44,4 @@ out.treasury = { name: from.name, vault: vaultAddress(program, from)[0].toBase58
   tokenAccount: vaultTokenAccount(program, mint, from).toBase58(),
   balance: (await conn.getTokenAccountBalance(vaultTokenAccount(program, mint, from))).value.uiAmountString };
 console.log(out.treasury);
-writeFileSync("allocations-devnet.json", JSON.stringify(out, null, 2));
+writeFileSync(`allocations-${NET}.json`, JSON.stringify(out, null, 2));
