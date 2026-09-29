@@ -1,0 +1,7 @@
+{
+  "name": "QuantCoin",
+  "symbol": "QC",
+  "description": "Token-2022 on Solana. Balances held in QC vaults need both an Ed25519 and a Winternitz (SHA-256) signature to move.",
+  "image": "https://raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/logo-512.png",
+  "external_url": "https://github.com/bryankwandou/QUANTCOIN"
+}

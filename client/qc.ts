@@ -67,9 +67,13 @@ export function vaultAddress(program: PublicKey, v: VaultKeys): [PublicKey, numb
 export const vaultTokenAccount = (program: PublicKey, mint: PublicKey, v: VaultKeys) =>
   getAssociatedTokenAddressSync(mint, vaultAddress(program, v)[0], true, TOKEN_2022_PROGRAM_ID);
 
-const KEYDIR = new URL("./keys/", import.meta.url);
+// QC_NET=mainnet keeps mainnet secrets apart from the devnet ones in keys/.
+export const NET = process.env.QC_NET ?? "devnet";
+const KEYDIR = new URL(NET === "devnet" ? "./keys/" : `./keys-${NET}/`, import.meta.url);
 
 export function newVault(name: string): VaultKeys {
+  // Overwriting a key file loses whatever that vault holds.
+  if (vaultExists(name)) throw new Error(`vault-${name}.json already exists in ${KEYDIR.pathname}; refusing to overwrite`);
   const v = { name, owner: Keypair.generate(), master: randomBytes(32), seed: randomBytes(SEED_LEN), used: false };
   saveVault(v);
   return v;

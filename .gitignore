@@ -25,4 +25,5 @@ Thumbs.db
 
 # vault secrets
 /client/keys/
+/client/keys-*/
 /client/node_modules/
