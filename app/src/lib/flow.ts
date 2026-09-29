@@ -27,6 +27,8 @@ export function markSpent(id: string) {
 /** Spend `amount` to the wallet's token account; the rest goes to a NEW vault.
  *  If this vault already signed a spend, only that identical spend is retried. */
 export async function withdraw(ctx: FlowCtx, rec: VaultRecord, amount: bigint, password: string) {
+  // AUDIT-2 C-1: never trust the caller's (possibly stale) copy of the record.
+  rec = getVault(rec.id) ?? rec;
   if (rec.status === "spent") throw new Error("vault already spent");
   const { secret, payload } = await openVault(rec, password);
   const collector = rentCollector(secret);
