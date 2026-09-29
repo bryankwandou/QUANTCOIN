@@ -57,6 +57,8 @@ jobs:
         with: { channel: stable, cache: true }
       - run: flutter create --platforms=windows --org dev.quantcoin .
       - run: flutter pub get
+      # local_auth_windows still includes <experimental/coroutine>, which MSVC 14.5x rejects by default.
       - run: flutter build windows --release
+        env: { CL: /D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS }
       - uses: actions/upload-artifact@v4
         with: { name: windows, path: apps/native/build/windows/x64/runner/Release/ }

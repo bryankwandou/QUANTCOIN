@@ -2,6 +2,8 @@
 import { fromHex, toHex } from "./wots";
 
 export const PBKDF2_ITERATIONS = 600_000;
+/** Upper bound for imported blobs: a crafted backup must not freeze the tab (AUDIT-2 C-3). */
+export const PBKDF2_MAX_ITERATIONS = 10_000_000;
 
 export interface EncBlob { kdf: "PBKDF2-SHA256"; iter: number; salt: string; iv: string; ct: string }
 
@@ -27,7 +29,7 @@ export async function seal(p: SecretPayload, password: string, aad: string): Pro
 }
 
 export async function unseal(b: EncBlob, password: string, aad: string): Promise<SecretPayload> {
-  if (b.kdf !== "PBKDF2-SHA256" || b.iter < PBKDF2_ITERATIONS) throw new Error("unsupported backup format");
+  if (b.kdf !== "PBKDF2-SHA256" || !Number.isSafeInteger(b.iter) || b.iter < PBKDF2_ITERATIONS || b.iter > PBKDF2_MAX_ITERATIONS) throw new Error("unsupported backup format");
   const key = await deriveKey(password, fromHex(b.salt), b.iter);
   try {
     const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf(fromHex(b.iv)), additionalData: te.encode(aad) },

@@ -3,6 +3,7 @@
 import { PublicKey } from "@solana/web3.js";
 import { EncBlob, SecretPayload, seal, unseal } from "./seal";
 import { VaultSecret, generateSecret, tokenAccountOf, vaultAddress } from "./vault";
+import { PROGRAM_ID, QC_MINT } from "./config";
 import { fromHex, toHex } from "./wots";
 
 export interface PendingSpend { amount: string; dest: string; refund: string; rentTo: string; nextId: string; digest: string }
@@ -62,11 +63,17 @@ export async function openVault(r: VaultRecord, password: string): Promise<{ sec
 /** Persist the signed digest (public field AND inside the encrypted payload) BEFORE broadcasting. */
 export async function recordSigned(r: VaultRecord, payload: SecretPayload, password: string, pending: PendingSpend) {
   const signed = pending.digest;
-  const prior = r.signed ?? payload.signed;
+  // AUDIT-2 C-1: the caller's record/payload may be stale (second tab, old UI
+  // state). The stored record is authoritative; re-read it and decrypt its blob.
+  const stored = getVault(r.id);
+  let storedSigned = stored?.signed;
+  if (stored && !storedSigned) storedSigned = (await unseal(stored.enc, password, aadOf(stored))).signed;
+  if (stored?.status === "spent" && !storedSigned) throw new Error("vault already spent");
+  const prior = storedSigned ?? r.signed ?? payload.signed;
   if (prior && prior !== signed) throw new Error("this vault already signed a different spend; WOTS keys are one-time");
   if (!prior && payload.used) throw new Error("this vault key is marked used");
   const enc = await seal({ ...payload, signed, used: true }, password, aadOf(r));
-  const next: VaultRecord = { ...r, signed, pending, enc };
+  const next: VaultRecord = { ...(stored ?? r), signed, pending: (stored?.pending ?? pending), enc };
   putVault(next);
   return next;
 }
@@ -75,11 +82,20 @@ export function backupJson(r: VaultRecord) {
   return JSON.stringify(r, null, 1);
 }
 
-/** Validates the structure only; the password check happens in openVault. */
+/** Validates structure and every public field that is NOT covered by the AES-GCM
+ *  AAD (AUDIT-2 C-2): program, mint and the displayed deposit address are
+ *  re-derived instead of trusted. The password check happens in openVault. */
 export function parseBackup(text: string): VaultRecord {
   const r = JSON.parse(text) as VaultRecord;
-  if (r.format !== "quantum-safe-vault/1" || !r.id || !r.owner || !r.enc?.ct) throw new Error("not a Quantum Safe backup file");
-  new PublicKey(r.id); new PublicKey(r.owner);
+  if (r?.format !== "quantum-safe-vault/1" || typeof r.id !== "string" || typeof r.owner !== "string" || typeof r.enc?.ct !== "string")
+    throw new Error("not a Quantum Safe backup file");
+  const id = new PublicKey(r.id); new PublicKey(r.owner);
+  if (r.program !== PROGRAM_ID.toBase58()) throw new Error("backup is for a different program");
+  if (r.mint !== QC_MINT.toBase58()) throw new Error("backup is for a different mint");
+  if (r.ata !== tokenAccountOf(QC_MINT, id).toBase58()) throw new Error("backup deposit address does not match the vault");
+  if (r.status !== "active" && r.status !== "spent") throw new Error("bad vault status in backup");
+  if (r.signed !== undefined && !/^[0-9a-f]{48}$/.test(r.signed)) throw new Error("bad signed digest in backup");
+  if (r.pending && r.pending.digest !== r.signed) throw new Error("backup pending spend does not match its signed digest");
   return r;
 }
 
