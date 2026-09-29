@@ -10,7 +10,7 @@ import {
 } from "@solana/spl-token";
 import { createInitializeInstruction, createUpdateAuthorityInstruction, pack, type TokenMetadata } from "@solana/spl-token-metadata";
 import { writeFileSync } from "node:fs";
-import { env, newVault, vaultAddress, vaultTokenAccount } from "./qc.ts";
+import { NET, env, newVault, vaultAddress, vaultTokenAccount } from "./qc.ts";
 
 const DECIMALS = 5;
 const SUPPLY = 22_000_000_000_000n * 10n ** BigInt(DECIMALS);
@@ -20,7 +20,8 @@ const mintKp = Keypair.generate();
 const mint = mintKp.publicKey;
 const meta: TokenMetadata = {
   mint, updateAuthority: payer.publicKey,
-  name: "QuantCoin", symbol: "QC", uri: "", additionalMetadata: [["vault", "hybrid Ed25519 + WOTS"]],
+  // The update authority is revoked below, so this URI is permanent.
+  name: "QuantCoin", symbol: "QC", uri: process.env.QC_META_URI ?? "", additionalMetadata: [["vault", "hybrid Ed25519 + WOTS"]],
 };
 
 const start = await conn.getBalance(payer.publicKey);
@@ -56,5 +57,5 @@ console.log("supply minted to vault + authorities revoked", s2);
 const cost = (start - (await conn.getBalance(payer.publicKey))) / 1e9;
 const out = { mint: mint.toBase58(), program: program.toBase58(), vault: pda.toBase58(), vaultTokenAccount: ta.toBase58(),
   supply: SUPPLY.toString(), decimals: DECIMALS, txs: [s1, s2], costSol: cost };
-writeFileSync(new URL("./genesis.json", import.meta.url), JSON.stringify(out, null, 2));
+writeFileSync(new URL(NET === "devnet" ? "./genesis.json" : `./genesis-${NET}.json`, import.meta.url), JSON.stringify(out, null, 2));
 console.log(out);
