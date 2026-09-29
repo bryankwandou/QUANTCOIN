@@ -5,9 +5,23 @@ vault**: a Pinocchio program that releases funds only when two signatures are
 present, one classical (Ed25519) and one hash-based (Winternitz one-time
 signature over SHA-256).
 
-Status: **pre-audit. Live on devnet only.** Earlier versions of this repo
-claimed a live mainnet, 1 trillion TPS and audit certificates. None of those
-existed. They were removed (they remain in git history, commit "archive: …").
+Status: **live on mainnet since 2026-09-30. Internal audit only; no
+independent audit yet.** Earlier versions of this repo claimed a live mainnet,
+1 trillion TPS and audit certificates before any of that existed. Those claims
+were removed (they remain in git history, commit "archive: …").
+
+## Mainnet (2026-09-30)
+
+| | Address |
+|---|---|
+| Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` (binary SHA-256 `93abe8ef…9b2e`, same as devnet and the audited source) |
+| Upgrade authority | Squads 2-of-3 multisig `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`. To be set final after the external audit. |
+| QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2`: supply 22T, mint/freeze/metadata authorities revoked |
+| Allocations | `client/allocations-mainnet.json`: founder 4 × 5%, liquidity 20%, airdrop 15%, reserve 10%, treasury 35% |
+| Live attack run | `audit/mainnet-attack-run.json`: 13 attacks on the real treasury vault, all rejected with the expected error code |
+
+Measured on mainnet: a spend uses 568,604 CU (limit 1.4M), fee 0.00001 SOL.
+Total SOL spent on the launch, including the multisig and the attack run: ~0.064.
 
 ## What is and is not quantum-resistant
 
