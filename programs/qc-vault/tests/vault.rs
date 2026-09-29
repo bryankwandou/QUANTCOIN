@@ -136,7 +136,7 @@ fn spend_ix(env: &Env, v: &Vault, dest: Address, refund: Address, rent_to: Addre
         env.prog,
         &d,
         vec![
-            AccountMeta::new_readonly(v.pda, false),
+            AccountMeta::new(v.pda, false),
             AccountMeta::new(v.ta, false),
             AccountMeta::new_readonly(env.mint, false),
             AccountMeta::new(dest, false),
@@ -144,6 +144,7 @@ fn spend_ix(env: &Env, v: &Vault, dest: Address, refund: Address, rent_to: Addre
             AccountMeta::new(rent_to, false),
             AccountMeta::new_readonly(T22, false),
             AccountMeta::new_readonly(v.owner.pubkey(), true),
+            AccountMeta::new_readonly(Address::default(), false),
         ],
     )
 }

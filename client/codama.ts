@@ -44,7 +44,8 @@ const root = rootNode(
           instructionArgumentNode({ name: "wotsSignature", type: fixed(624), docs: ["26 chains x 24 bytes"] }),
         ],
         accounts: [
-          instructionAccountNode({ name: "vault", isWritable: false, isSigner: false }),
+          instructionAccountNode({ name: "vault", isWritable: true, isSigner: false,
+            docs: ["Becomes the spent marker (assigned to the program) after the spend"] }),
           instructionAccountNode({ name: "vaultTokenAccount", isWritable: true, isSigner: false }),
           instructionAccountNode({ name: "mint", isWritable: false, isSigner: false }),
           instructionAccountNode({ name: "destination", isWritable: true, isSigner: false }),
@@ -54,6 +55,8 @@ const root = rootNode(
           instructionAccountNode({ name: "tokenProgram", isWritable: false, isSigner: false,
             defaultValue: publicKeyValueNode("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb", "token2022") }),
           instructionAccountNode({ name: "owner", isWritable: false, isSigner: true }),
+          instructionAccountNode({ name: "systemProgram", isWritable: false, isSigner: false,
+            defaultValue: publicKeyValueNode("11111111111111111111111111111111", "systemProgram") }),
         ],
       }),
     ],
@@ -65,6 +68,7 @@ const root = rootNode(
       errorNode({ name: "badTokenProgram", code: 5, message: "Not the Token-2022 program" }),
       errorNode({ name: "duplicateAccount", code: 6, message: "Accounts must be distinct" }),
       errorNode({ name: "missingOwnerSignature", code: 7, message: "Owner (Ed25519) did not sign" }),
+      errorNode({ name: "alreadySpent", code: 8, message: "This vault already spent; its one-time key is used" }),
     ],
   }),
 );

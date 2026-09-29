@@ -19,7 +19,7 @@
 //!   [26..650]    WOTS signature (26 chains x 24 bytes)
 //!
 //! Accounts:
-//!   0. `[]`         vault PDA
+//!   0. `[writable]` vault PDA (becomes the spent marker, see below)
 //!   1. `[writable]` vault token account (owned by the PDA)
 //!   2. `[]`         mint
 //!   3. `[writable]` destination token account
@@ -28,11 +28,18 @@
 //!   5. `[writable]` rent receiver for the closed vault token account
 //!   6. `[]`         Token-2022 program
 //!   7. `[signer]`   owner (Ed25519), bound into the vault address
+//!   8. `[]`         System program
 //!
 //! The signed message binds program, vault, mint, all three recipients and
 //! the amount, so whoever relays the transaction (and pays its fee) cannot
-//! redirect anything. The vault token account is closed after the spend, so
-//! the one-time key is never asked to sign again.
+//! redirect anything. The vault token account is closed after the spend.
+//!
+//! One spend per vault, enforced on chain: the closed account's rent is paid
+//! into the vault PDA, which is then assigned to this program (0 bytes,
+//! rent-exempt). A vault owned by this program is spent and refused forever,
+//! so the public WOTS signature cannot be replayed against a token account
+//! created later for the same vault (finding M-1). Tokens sent to a spent
+//! vault stay locked. The rent above the 0-byte minimum goes to `rent_to`.
 #![cfg_attr(target_os = "solana", no_std)]
 
 pub mod wots;
@@ -54,11 +61,11 @@ mod entry {
     #[no_mangle]
     pub unsafe extern "C" fn entrypoint(input: *mut u8) -> u64 {
         let mut ctx = InstructionContext::new_unchecked(input);
-        if ctx.remaining() != 8 {
+        if ctx.remaining() != 9 {
             return super::VaultError::BadInstruction as u64;
         }
-        let mut accounts: [core::mem::MaybeUninit<pinocchio::AccountView>; 8] =
-            [const { core::mem::MaybeUninit::uninit() }; 8];
+        let mut accounts: [core::mem::MaybeUninit<pinocchio::AccountView>; 9] =
+            [const { core::mem::MaybeUninit::uninit() }; 9];
         for slot in accounts.iter_mut() {
             match ctx.next_account_unchecked() {
                 MaybeAccount::Account(a) => {
@@ -68,7 +75,7 @@ mod entry {
                 MaybeAccount::Duplicated(_) => return super::VaultError::DuplicateAccount as u64,
             }
         }
-        let accounts = &mut *(&mut accounts as *mut _ as *mut [pinocchio::AccountView; 8]);
+        let accounts = &mut *(&mut accounts as *mut _ as *mut [pinocchio::AccountView; 9]);
         match super::process_instruction(
             ctx.program_id_unchecked(),
             accounts,
@@ -85,6 +92,9 @@ mod entry {
 
 pub const VAULT_SEED: &[u8] = b"qcv";
 pub const TOKEN_2022: Address = Address::new_from_array([6, 221, 246, 225, 238, 117, 143, 222, 24, 66, 93, 188, 228, 108, 205, 218, 182, 26, 252, 77, 131, 185, 13, 39, 254, 189, 249, 40, 216, 161, 139, 252]); // TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+pub const SYSTEM: Address = Address::new_from_array([0; 32]);
+/// Rent-exempt minimum for a 0-byte account (128 bytes overhead x 6960).
+pub const MARKER_RENT: u64 = 890_880;
 pub const IX_SPEND: u8 = 0;
 pub const SPEND_DATA_LEN: usize = 26 + wots::SIG_LEN;
 
@@ -99,6 +109,7 @@ pub enum VaultError {
     BadTokenProgram = 5,
     DuplicateAccount = 6,
     MissingOwnerSignature = 7,
+    AlreadySpent = 8,
 }
 
 
@@ -130,13 +141,19 @@ pub fn spend_digest(
 
 pub fn process_instruction(
     program_id: &Address,
-    accounts: &mut [AccountView; 8],
+    accounts: &mut [AccountView; 9],
     data: &[u8],
 ) -> Result<(), VaultError> {
     if data.len() != SPEND_DATA_LEN || data[0] != IX_SPEND {
         return Err(VaultError::BadInstruction);
     }
-    let [vault, vault_ta, mint, destination, refund, rent_to, token_program, owner] = accounts;
+    let [vault, vault_ta, mint, destination, refund, rent_to, token_program, owner, system] = accounts;
+    if vault.owned_by(program_id) {
+        return Err(VaultError::AlreadySpent);
+    }
+    if system.address() != &SYSTEM {
+        return Err(VaultError::BadInstruction);
+    }
 
     // Hybrid rule, part 1: the classical Ed25519 owner must sign. Today this
     // alone already protects the vault; it also covers any flaw in part 2.
@@ -212,20 +229,38 @@ pub fn process_instruction(
     if rest > 0 {
         transfer_checked(tp, vault_ta, mint, refund, vault, rest, decimals, &signer);
     }
+    // Close into the vault PDA itself: its lamports fund the spent marker.
     let accs = [
         InstructionAccount::writable(vault_ta.address()),
-        InstructionAccount::writable(rent_to.address()),
-        InstructionAccount::readonly_signer(vault.address()),
+        InstructionAccount::writable(vault.address()),
+        InstructionAccount::writable_signer(vault.address()),
     ];
     let ix = InstructionView { program_id: tp, data: &[9], accounts: &accs };
     // SAFETY: no account data borrow is held across the CPI.
     unsafe {
         invoke_signed_unchecked(
             &ix,
-            &[CpiAccount::from(&*vault_ta), CpiAccount::from(&*rent_to), CpiAccount::from(&*vault)],
+            &[CpiAccount::from(&*vault_ta), CpiAccount::from(&*vault), CpiAccount::from(&*vault)],
             &signer,
         )
     };
+
+    // 4. Mark spent: System Assign(vault -> this program), signed by the PDA.
+    let mut assign = [0u8; 36];
+    assign[0] = 1;
+    // SAFETY: 4 + 32 = 36 bytes; raw copy keeps panic machinery out.
+    unsafe { core::ptr::copy_nonoverlapping(program_id.as_array().as_ptr(), assign.as_mut_ptr().add(4), 32) };
+    let accs = [InstructionAccount::writable_signer(vault.address())];
+    let ix = InstructionView { program_id: &SYSTEM, data: &assign, accounts: &accs };
+    // SAFETY: no account data borrow is held across the CPI.
+    unsafe { invoke_signed_unchecked(&ix, &[CpiAccount::from(&*vault)], &signer) };
+
+    // 5. The program now owns the vault and may move its surplus lamports.
+    let surplus = vault.lamports().saturating_sub(MARKER_RENT);
+    if surplus > 0 {
+        vault.set_lamports(vault.lamports() - surplus);
+        rent_to.set_lamports(rent_to.lamports().wrapping_add(surplus)); // total SOL supply < u64::MAX
+    }
     Ok(())
 }
 

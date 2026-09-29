@@ -3,7 +3,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import {
-  ComputeBudgetProgram, Connection, Keypair, PublicKey, TransactionInstruction,
+  ComputeBudgetProgram, Connection, Keypair, PublicKey, SystemProgram, TransactionInstruction,
 } from "@solana/web3.js";
 import { TOKEN_2022_PROGRAM_ID, getAssociatedTokenAddressSync } from "@solana/spl-token";
 
@@ -110,7 +110,7 @@ export function spendIxs(program: PublicKey, mint: PublicKey, v: VaultKeys, dest
     new TransactionInstruction({
       programId: program, data,
       keys: [
-        { pubkey: pda, isSigner: false, isWritable: false },
+        { pubkey: pda, isSigner: false, isWritable: true },
         { pubkey: ta, isSigner: false, isWritable: true },
         { pubkey: mint, isSigner: false, isWritable: false },
         { pubkey: dest, isSigner: false, isWritable: true },
@@ -118,6 +118,7 @@ export function spendIxs(program: PublicKey, mint: PublicKey, v: VaultKeys, dest
         { pubkey: rentTo, isSigner: false, isWritable: true },
         { pubkey: TOKEN_2022_PROGRAM_ID, isSigner: false, isWritable: false },
         { pubkey: v.owner.publicKey, isSigner: true, isWritable: false },
+        { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
       ],
     }),
   ];
