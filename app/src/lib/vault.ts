@@ -60,7 +60,7 @@ export function spendIxs(program: PublicKey, mint: PublicKey, s: VaultSecret, ow
     new TransactionInstruction({
       programId: program, data: Buffer.from(data),
       keys: [
-        { pubkey: p.pda, isSigner: false, isWritable: false },
+        { pubkey: p.pda, isSigner: false, isWritable: true },
         { pubkey: p.vaultTa, isSigner: false, isWritable: true },
         { pubkey: mint, isSigner: false, isWritable: false },
         { pubkey: p.dest, isSigner: false, isWritable: true },
@@ -68,6 +68,7 @@ export function spendIxs(program: PublicKey, mint: PublicKey, s: VaultSecret, ow
         { pubkey: p.rentTo, isSigner: false, isWritable: true },
         { pubkey: TOKEN_2022_PROGRAM_ID, isSigner: false, isWritable: false },
         { pubkey: owner, isSigner: true, isWritable: false },
+        { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
       ],
     }),
   ];

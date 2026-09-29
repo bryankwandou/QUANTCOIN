@@ -56,13 +56,15 @@ export type SpendInstruction<
   TAccountTokenProgram extends string | AccountMeta<string> =
     "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
   TAccountOwner extends string | AccountMeta<string> = string,
+  TAccountSystemProgram extends string | AccountMeta<string> =
+    "11111111111111111111111111111111",
   TRemainingAccounts extends readonly AccountMeta<string>[] = [],
 > = Instruction<TProgram> &
   InstructionWithData<ReadonlyUint8Array> &
   InstructionWithAccounts<
     [
       TAccountVault extends string
-        ? ReadonlyAccount<TAccountVault>
+        ? WritableAccount<TAccountVault>
         : TAccountVault,
       TAccountVaultTokenAccount extends string
         ? WritableAccount<TAccountVaultTokenAccount>
@@ -86,6 +88,9 @@ export type SpendInstruction<
         ? ReadonlySignerAccount<TAccountOwner> &
             AccountSignerMeta<TAccountOwner>
         : TAccountOwner,
+      TAccountSystemProgram extends string
+        ? ReadonlyAccount<TAccountSystemProgram>
+        : TAccountSystemProgram,
       ...TRemainingAccounts,
     ]
   >;
@@ -152,7 +157,10 @@ export type SpendInput<
   TAccountTokenProgram extends InstructionAccountInput =
     InstructionAccountInput,
   TAccountOwner extends InstructionSignerInput = InstructionSignerInput,
+  TAccountSystemProgram extends InstructionAccountInput =
+    InstructionAccountInput,
 > = {
+  /** Becomes the spent marker (assigned to the program) after the spend */
   vault: TAccountVault;
   vaultTokenAccount: TAccountVaultTokenAccount;
   mint: TAccountMint;
@@ -162,6 +170,7 @@ export type SpendInput<
   rentReceiver: TAccountRentReceiver;
   tokenProgram?: TAccountTokenProgram;
   owner: TAccountOwner;
+  systemProgram?: TAccountSystemProgram;
   bump: SpendInstructionDataArgs["bump"];
   wotsSeed: SpendInstructionDataArgs["wotsSeed"];
   amount: SpendInstructionDataArgs["amount"];
@@ -177,6 +186,7 @@ export function getSpendInstruction<
   TAccountRentReceiver extends InstructionAccountInput,
   TAccountTokenProgram extends InstructionAccountInput,
   TAccountOwner extends InstructionSignerInput,
+  TAccountSystemProgram extends InstructionAccountInput,
   TProgramAddress extends Address = typeof QC_VAULT_PROGRAM_ADDRESS,
 >(
   input: SpendInput<
@@ -187,7 +197,8 @@ export function getSpendInstruction<
     TAccountRefund,
     TAccountRentReceiver,
     TAccountTokenProgram,
-    TAccountOwner
+    TAccountOwner,
+    TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
 ): SpendInstruction<
@@ -223,6 +234,10 @@ export function getSpendInstruction<
   ResolvedInstructionAccountMeta<
     TAccountOwner,
     InstructionAccountInputAddress<TAccountOwner>
+  >,
+  ResolvedInstructionAccountMeta<
+    TAccountSystemProgram,
+    InstructionAccountInputAddress<TAccountSystemProgram>
   >
 > {
   // Program address.
@@ -233,7 +248,7 @@ export function getSpendInstruction<
 
   // Original accounts.
   const originalAccounts = {
-    vault: { value: input.vault ?? null, isSigner: false, isWritable: false },
+    vault: { value: input.vault ?? null, isSigner: false, isWritable: true },
     vaultTokenAccount: {
       value: input.vaultTokenAccount ?? null,
       isSigner: false,
@@ -257,6 +272,11 @@ export function getSpendInstruction<
       isWritable: false,
     },
     owner: { value: input.owner ?? null, isSigner: true, isWritable: false },
+    systemProgram: {
+      value: input.systemProgram ?? null,
+      isSigner: false,
+      isWritable: false,
+    },
   };
   const accounts = originalAccounts as Record<
     keyof typeof originalAccounts,
@@ -271,6 +291,10 @@ export function getSpendInstruction<
     accounts.tokenProgram.value =
       "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb" as Address<"TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb">;
   }
+  if (!accounts.systemProgram.value) {
+    accounts.systemProgram.value =
+      "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
+  }
 
   return Object.freeze({
     accounts: [
@@ -282,6 +306,7 @@ export function getSpendInstruction<
       getAccountMeta("rentReceiver", accounts.rentReceiver),
       getAccountMeta("tokenProgram", accounts.tokenProgram),
       getAccountMeta("owner", accounts.owner),
+      getAccountMeta("systemProgram", accounts.systemProgram),
     ],
     data: getSpendInstructionDataEncoder().encode(
       args as SpendInstructionDataArgs,
@@ -320,6 +345,10 @@ export function getSpendInstruction<
     ResolvedInstructionAccountMeta<
       TAccountOwner,
       InstructionAccountInputAddress<TAccountOwner>
+    >,
+    ResolvedInstructionAccountMeta<
+      TAccountSystemProgram,
+      InstructionAccountInputAddress<TAccountSystemProgram>
     >
   >);
 }
@@ -330,6 +359,7 @@ export type ParsedSpendInstruction<
 > = {
   programAddress: Address<TProgram>;
   accounts: {
+    /** Becomes the spent marker (assigned to the program) after the spend */
     vault: TAccountMetas[0];
     vaultTokenAccount: TAccountMetas[1];
     mint: TAccountMetas[2];
@@ -339,6 +369,7 @@ export type ParsedSpendInstruction<
     rentReceiver: TAccountMetas[5];
     tokenProgram: TAccountMetas[6];
     owner: TAccountMetas[7];
+    systemProgram: TAccountMetas[8];
   };
   data: SpendInstructionData;
 };
@@ -351,12 +382,12 @@ export function parseSpendInstruction<
     InstructionWithAccounts<TAccountMetas> &
     InstructionWithData<ReadonlyUint8Array>,
 ): ParsedSpendInstruction<TProgram, TAccountMetas> {
-  if (instruction.accounts.length < 8) {
+  if (instruction.accounts.length < 9) {
     throw new SolanaError(
       SOLANA_ERROR__PROGRAM_CLIENTS__INSUFFICIENT_ACCOUNT_METAS,
       {
         actualAccountMetas: instruction.accounts.length,
-        expectedAccountMetas: 8,
+        expectedAccountMetas: 9,
       },
     );
   }
@@ -377,6 +408,7 @@ export function parseSpendInstruction<
       rentReceiver: getNextAccount(),
       tokenProgram: getNextAccount(),
       owner: getNextAccount(),
+      systemProgram: getNextAccount(),
     },
     data: getSpendInstructionDataDecoder().decode(instruction.data),
   };

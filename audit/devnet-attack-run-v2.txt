@@ -1,0 +1,111 @@
+{
+  step: 'fund audit vault via legit treasury spend',
+  tx: '4e3jCyWZ9Zwxj4uQ1v5sZePK66zuxmdkiUEddMihRy9fku7QWkdLbRMv1fsPziZ1DHB6kTwMVn5XzssRef2woUmD',
+  auditVault: '100000000',
+  newTreasury: '989999799799800000'
+}
+{
+  attack: 'no Ed25519 owner signature (WOTS only)',
+  expected: '7',
+  got: '{"InstructionError":[1,{"Custom":7}]}',
+  tx: '5E8gfXufjZmycpd3WpvG4qDPcQuLmJD8KgmPoz9a5Avx2swcdAHJm4gT3QgvZD4toHSwGK9r3gweiToPpt8wVvYt',
+  blocked: true
+}
+{
+  attack: 'thief replaces owner key',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '5uGJBc8McSXbwxtw8jCg5WaLRxDhYYdH7hST5VwkD2EFFMv9JMuEbgTbv1QYbEPNHxb4vX4B3bnJsSrwtDH7PcbR',
+  blocked: true
+}
+{
+  attack: 'redirect destination to attacker',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '5561QQJMKE2wxUCVtRLeUvbeNdFkkZyipdNXv9GnUwSnmhiKmTw8AhPistNzwAhtfuszPSUe2ftDaUz3292waerN',
+  blocked: true
+}
+{
+  attack: 'redirect refund to attacker',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '33Pb2aYyU6V9crb7DvK4hqi5pddute2Mxt7hwTfvA3yWdobvCrnvAqXJ5Trt4f4ztH3b5oe6yCYtpa3RtpVWjB3B',
+  blocked: true
+}
+{
+  attack: 'redirect rent to attacker',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: 'grjji5RCeSZ1rEycJfB7knDYC6zjLC4kQmfU6iywjMB4JVqPGyF2i6JvP99tw9TubxFzwsnA5kyutt85nZXqe1v',
+  blocked: true
+}
+{
+  attack: 'raise amount after signing',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '2sBA9nDJYqTGR7V4kSTSZPU5QEpHfXFYVnqLt47FB8CAgNVGW7umoQ6axpVYPEWqzrz5MaKYaLmdTSRctR6yJwaq',
+  blocked: true
+}
+{
+  attack: 'flip one WOTS signature bit',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '2ibXC5sCcuRYL3c9JdiUcij8emNkiZEhTcM8noyLKxk64p3WpuoApED4QkP6qERsXnBZRaiF3qZ27kJndHoZt2AX',
+  blocked: true
+}
+{
+  attack: 'change WOTS seed',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '3jBMdzQgzNzVoKYidbkcG1w9n8vzHFjEpp2iMQSBQK5d57s52ShfhTaC7owZZZenqSv9eTSU3kFFwLR56YeZukH',
+  blocked: true
+}
+{
+  attack: 'wrong bump',
+  expected: '2',
+  got: '{"InstructionError":[1,{"Custom":2}]}',
+  tx: '4SnNTo8ouskJmA7RVTzGBwa47G9MfSprFTfSFn3zJ8FBhEADvQNuZnyBMi8Nts5GeAMyfVYcDJP1MNvRRKfmMRj2',
+  blocked: true
+}
+{
+  attack: 'legacy SPL Token as token program',
+  expected: '5',
+  got: '{"InstructionError":[1,{"Custom":5}]}',
+  tx: '2CDx9HwjcpxhD2sNbeqPpwN1E8wxKKnLTrSSZgGvj4C1qXbxVCirnnw8we8LvLwyuSz2LcuhrbkF6GuVVKs3W5qp',
+  blocked: true
+}
+{
+  attack: 'destination == refund',
+  expected: '6',
+  got: '{"InstructionError":[1,{"Custom":6}]}',
+  tx: '46AS43LbNF5zvj6SNVPMHtgfTr6UfXHc77KcPHNiyzujSpDu28iHYpQoZyhk8SiXLmQQhkEd2prvo18n7HRmto95',
+  blocked: true
+}
+{
+  attack: 'truncated instruction',
+  expected: '1',
+  got: '{"InstructionError":[1,{"Custom":1}]}',
+  tx: 'gxXWntJ3GrPo9b6hY4DTvKQLfRhnFXiKftqcpmd3MrrA577wQZz8CeTQ8UdkXnREkuu88BZmUbZR1zzFrX68t7H',
+  blocked: true
+}
+{
+  step: 'vault balance unchanged after all attacks',
+  before: '100000000',
+  after: '100000000',
+  attackerGot: '0'
+}
+{
+  step: 'legit spend of the signed message',
+  tx: '3egtZmFxMfrMfk7AVirsq2XSXDEFM9a4nT9dL9mKT4ZpCGFWJaP4WABWNC281yGCAmgzMNfjBnuUCa3C5w5BcRVv',
+  dest: '60000000',
+  refund: '40000000',
+  vault: 'closed'
+}
+{
+  attack: 'replay the executed spend',
+  expected: '',
+  got: '{"InstructionError":[1,{"Custom":8}]}',
+  tx: '4gqLn6f9GasnnorsaeQRsvQbfZik4GXUAQ9Y3jBGYSLhEuSVGuCBKYFHYbbDHmDC49y8FYDHrLnCifNFQ9qmmKwg',
+  blocked: true
+}
+ALL ATTACKS BLOCKED

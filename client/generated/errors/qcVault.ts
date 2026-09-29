@@ -21,8 +21,10 @@ export const QC_VAULT_ERROR__NOT_A_TOKEN_ACCOUNT = 0x4; // 4
 export const QC_VAULT_ERROR__BAD_TOKEN_PROGRAM = 0x5; // 5
 export const QC_VAULT_ERROR__DUPLICATE_ACCOUNT = 0x6; // 6
 export const QC_VAULT_ERROR__MISSING_OWNER_SIGNATURE = 0x7; // 7
+export const QC_VAULT_ERROR__ALREADY_SPENT = 0x8; // 8
 
 export type QcVaultError =
+  | typeof QC_VAULT_ERROR__ALREADY_SPENT
   | typeof QC_VAULT_ERROR__BAD_INSTRUCTION
   | typeof QC_VAULT_ERROR__BAD_SIGNATURE
   | typeof QC_VAULT_ERROR__BAD_TOKEN_PROGRAM
@@ -34,6 +36,7 @@ export type QcVaultError =
 let qcVaultErrorMessages: Record<QcVaultError, string> | undefined;
 if (process.env["NODE_ENV"] !== "production") {
   qcVaultErrorMessages = {
+    [QC_VAULT_ERROR__ALREADY_SPENT]: `This vault already spent; its one-time key is used`,
     [QC_VAULT_ERROR__BAD_INSTRUCTION]: `Malformed instruction data or account count`,
     [QC_VAULT_ERROR__BAD_SIGNATURE]: `WOTS signature does not match the vault`,
     [QC_VAULT_ERROR__BAD_TOKEN_PROGRAM]: `Not the Token-2022 program`,
