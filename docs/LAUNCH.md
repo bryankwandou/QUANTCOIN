@@ -1,12 +1,11 @@
 # QuantCoin launch plan
 
-The ten trust commitments, what each one needs, and its status. Nothing
-here happens on mainnet until item 1 is done.
+The ten trust commitments, what each one needs, and its status. Mainnet launched on 2026-09-29 before item 1 was done.
 
 | # | Commitment | Status |
 |---|---|---|
 | 1 | External audit, report published | Scope ready (below); auditor not yet hired |
-| 2 | Program `--final`, every authority revoked | Authorities revoked on devnet; `--final` runs at mainnet deploy |
+| 2 | Program `--final`, every authority revoked | Mint authorities revoked on mainnet; program upgradeable via Squads 2-of-3 until the audit |
 | 3 | LP tokens burned | Runbook below; mainnet only |
 | 4 | Live transparency dashboard | `transparency/index.html` |
 | 5 | Fair launch | Policy below |
@@ -74,9 +73,12 @@ authority. Put the explorer links on the dashboard.
 - Nobody, the founder included, buys before the pool is public.
 - The pool opens at an announced time with the pool address published in
   advance.
-- Team tokens stay in the founder vault: locked until **2027-09-24**, then
-  released monthly over 24 months. Every release is announced before the
-  spend.
+- Team tokens: 20% in four 5% founder vaults (mainnet, 2026-09-29). The
+  earlier commitment (10%, locked until 2027-09-24) was replaced at genesis
+  and broken on 2026-10-02, when founder vault 1 (5%) was spent to the
+  founder's wallet without prior announcement. See WHITEPAPER.md §4,
+  "Changes to this section". Policy for vaults 2–4: [to be announced by
+  the founder].
 
 ## 7. Airdrop policy
 
