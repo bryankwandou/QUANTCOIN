@@ -11,4 +11,6 @@ if (!existsSync(appDist) || !readFileSync(join(appDist, "index.html"), "utf8").i
   throw new Error("build app/ first with base /app/ (npm run build in app/)");
 cpSync(appDist, join(DIST, "app"), { recursive: true });
 cpSync(join(ROOT, "transparency", "index.html"), join(DIST, "transparency", "index.html"));
-console.log("[postbuild] copied app/ and transparency/");
+// Mainnet RPC proxy (Vercel function), see web/api/rpc.mjs.
+cpSync(join(ROOT, "web", "api"), join(DIST, "api"), { recursive: true });
+console.log("[postbuild] copied app/, transparency/ and api/");
