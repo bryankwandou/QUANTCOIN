@@ -77,6 +77,19 @@ fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
     kp.pubkey()
 }
 fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+const ATA: Address = Address::from_str_const("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
+/// `owner`'s Token-2022 associated token account, made by the ATA program
+/// (which sizes it for the mint's extensions). Vaults must hold funds here.
+fn ata(env: &mut Env, owner: &Address) -> Address {
+    let (a, _) = Address::find_program_address(&[owner.as_ref(), T22.as_ref(), env.mint.as_ref()], &ATA);
+    let ix = Instruction::new_with_bytes(ATA, &[1], vec![ // CreateIdempotent
+        AccountMeta::new(env.payer.pubkey(), true), AccountMeta::new(a, false),
+        AccountMeta::new_readonly(*owner, false), AccountMeta::new_readonly(env.mint, false),
+        AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(T22, false)]);
+    let payer = env.payer.insecure_clone();
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
+    a
+}
 fn balance(svm: &LiteSVM, ta: &Address) -> Option<u64> {
     svm.get_account(ta).filter(|a| a.lamports > 0).map(|a| u64::from_le_bytes(a.data[64..72].try_into().unwrap()))
 }
@@ -109,17 +122,16 @@ fn mint_to(env: &mut Env, ta: Address, amount: u64) {
     let payer = env.payer.insecure_clone();
     send(&mut env.svm, &payer, &[], &[ix]).unwrap();
 }
-fn new_vault_sized(env: &mut Env, rng: &mut Rng, fund: u64, space: u64) -> Vault {
+fn new_vault(env: &mut Env, rng: &mut Rng, fund: u64) -> Vault {
     let master: [u8; 32] = rng.arr();
     let seed: [u8; 16] = rng.arr();
     let owner = Keypair::new();
     let pk = wots::keys::public_key_hash(&master, &seed);
     let (pda, bump) = Address::find_program_address(&[VAULT_SEED, &pk, owner.pubkey().as_ref()], &env.prog);
-    let ta = token_account_sized(env, &pda, space);
+    let ta = ata(env, &pda);
     if fund > 0 { mint_to(env, ta, fund); }
     Vault { master, seed, owner, pda, bump, ta }
 }
-fn new_vault(env: &mut Env, rng: &mut Rng, fund: u64) -> Vault { new_vault_sized(env, rng, fund, 165) }
 fn spend_data(env: &Env, v: &Vault, dest: Address, refund: Address, rent_to: Address, amount: u64) -> Vec<u8> {
     let digest = spend_digest(env.prog.as_array(), v.pda.as_array(), env.mint.as_array(), dest.as_array(),
         refund.as_array(), rent_to.as_array(), amount);
@@ -455,7 +467,7 @@ fn m1_replay_on_second_token_account_is_refused() {
     // Spent marker: the vault PDA is owned by the program, rent-exempt, empty.
     let marker = env.svm.get_account(&v.pda).unwrap();
     assert_eq!(marker.owner, env.prog);
-    assert_eq!(marker.lamports, qc_vault::MARKER_RENT);
+    assert_eq!(marker.lamports, env.svm.minimum_balance_for_rent_exemption(0));
     assert!(marker.data.is_empty());
     // The closed account's rent above the marker minimum reached rent_to.
     assert!(env.svm.get_account(&rent_to).map_or(0, |a| a.lamports) > 0);
@@ -476,6 +488,37 @@ fn m1_replay_on_second_token_account_is_refused() {
     assert!(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).is_err());
 }
 
+/// F9: a decoy token account owned by the vault PDA is refused. Before the fix
+/// a forged owner signature (post-quantum) plus a public WOTS signature could
+/// drain a decoy instead, mark the vault spent and lock the real balance.
+#[test]
+fn f9_decoy_vault_token_account_is_refused() {
+    let mut rng = Rng::from_env(14);
+    let mut env = setup();
+    let v = new_vault(&mut env, &mut rng, 1_000);
+    let decoy = token_account(&mut env, &v.pda);
+    mint_to(&mut env, decoy, 1_000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let rent_to = Address::new_unique();
+    let payer = env.payer.insecure_clone();
+    let data = spend_data(&env, &v, dest, refund, rent_to, 100);
+    let mut acc = metas(&env, &v, dest, refund, rent_to);
+    acc[1].pubkey = decoy;
+    let e = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), Instruction { program_id: env.prog, accounts: acc, data: data.clone() }])
+        .expect_err("decoy vault token account accepted");
+    assert!(e.contains("0x4"), "expected NotATokenAccount, got {e}");
+    assert_ne!(env.svm.get_account(&v.pda).map(|a| a.owner), Some(env.prog), "vault marked spent");
+    assert_eq!(balance(&env.svm, &v.ta), Some(1_000));
+    assert_eq!(balance(&env.svm, &decoy), Some(1_000));
+    // The same signed message still works on the real account.
+    env.svm.expire_blockhash();
+    let ix = Instruction { program_id: env.prog, accounts: metas(&env, &v, dest, refund, rent_to), data };
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+    assert_eq!(balance(&env.svm, &dest), Some(100));
+    assert_eq!(balance(&env.svm, &refund), Some(900));
+}
+
 /// Lamports sent to the vault PDA before its spend (griefing) do not block it;
 /// the surplus goes to rent_to.
 #[test]
@@ -491,8 +534,8 @@ fn prefunded_vault_pda_still_spends() {
     let ix = Instruction { program_id: env.prog, accounts: metas(&env, &v, dest, refund, rent_to),
         data: spend_data(&env, &v, dest, refund, rent_to, 1_000) };
     send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
-    assert_eq!(env.svm.get_account(&v.pda).unwrap().lamports, qc_vault::MARKER_RENT);
-    assert!(env.svm.get_account(&rent_to).unwrap().lamports > 5_000_000 - qc_vault::MARKER_RENT);
+    assert_eq!(env.svm.get_account(&v.pda).unwrap().lamports, env.svm.minimum_balance_for_rent_exemption(0));
+    assert!(env.svm.get_account(&rent_to).unwrap().lamports > 5_000_000 - env.svm.minimum_balance_for_rent_exemption(0));
 }
 
 /// A fake system program is refused.
@@ -547,7 +590,7 @@ fn transfer_fee_mint_blocks_spend_until_harvest() {
     let src_owner = Keypair::new();
     let src = token_account_sized(&mut env, &src_owner.pubkey(), 178);
     mint_to(&mut env, src, 100_000);
-    let v = new_vault_sized(&mut env, &mut rng, 0, 178);
+    let v = new_vault(&mut env, &mut rng, 0);
     // deposit via TransferChecked -> 1% withheld on the vault token account
     let mut d = vec![12u8];
     d.extend_from_slice(&100_000u64.to_le_bytes());

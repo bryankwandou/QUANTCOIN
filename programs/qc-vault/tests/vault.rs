@@ -11,6 +11,7 @@ use solana_transaction::Transaction;
 
 const T22: Address = Address::from_str_const("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 const CB: Address = Address::from_str_const("ComputeBudget111111111111111111111111111111");
+const ATA: Address = Address::from_str_const("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
 const DECIMALS: u8 = 5;
 const SUPPLY: u64 = 22_000_000_000_000 * 100_000; // 22T QC at 5 decimals
 
@@ -96,7 +97,14 @@ fn new_vault(env: &mut Env, fund: u64) -> Vault {
     let owner = Keypair::new();
     let pk = wots::keys::public_key_hash(&master, &seed);
     let (pda, bump) = Address::find_program_address(&[VAULT_SEED, &pk, owner.pubkey().as_ref()], &env.prog);
-    let ta = token_account(env, &pda);
+    // The program only drains the PDA's associated token account.
+    let (ta, _) = Address::find_program_address(&[pda.as_ref(), T22.as_ref(), env.mint.as_ref()], &ATA);
+    let ix = Instruction::new_with_bytes(ATA, &[1], vec![ // CreateIdempotent
+        AccountMeta::new(env.payer.pubkey(), true), AccountMeta::new(ta, false),
+        AccountMeta::new_readonly(pda, false), AccountMeta::new_readonly(env.mint, false),
+        AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(T22, false)]);
+    let payer = env.payer.insecure_clone();
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
     if fund > 0 {
         let mut d = vec![14u8]; // MintToChecked
         d.extend_from_slice(&fund.to_le_bytes());
@@ -198,6 +206,54 @@ fn genesis_supply_spend_and_rotate() {
     assert_eq!(balance(&env.svm, &dest), Some(amount));
     assert_eq!(balance(&env.svm, &next.ta), Some(SUPPLY - amount));
     assert_eq!(balance(&env.svm, &v.ta), None, "spent vault token account is closed");
+}
+
+/// The spent marker keeps exactly the network's rent-exempt minimum for 0 bytes
+/// and everything above it goes to rent_to, so a brand-new rent receiver always
+/// ends up rent-exempt, at any rent. Mainnet rent on 2026-10-02 is 5,080
+/// lamports/byte at threshold 1.0: the old hard-coded 890,880 marker left a fresh
+/// receiver 622,960 lamports, below the 650,240 it needs, and the spend failed.
+/// An exemption threshold the program cannot evaluate without floats leaves
+/// everything in the marker (always rent-exempt) and rent_to untouched.
+#[test]
+fn spends_to_fresh_rent_receiver_at_any_rent() {
+    for (per_byte, threshold) in [
+        (5_080u64, 1.0f64), // mainnet and devnet today
+        (6_960, 1.0),       // SDK default
+        (3_480, 2.0),       // pre-SIMD-0194 layout
+        (1, 1.0),
+        (2_000, 1.0),
+        (4_000, 1.0),
+        (5_240, 1.0),
+        (50_000, 1.0),
+        (5_080, 1.5),       // threshold the program does not evaluate
+    ] {
+        let mut env = setup();
+        #[allow(deprecated)]
+        env.svm.set_sysvar(&solana_rent::Rent {
+            lamports_per_byte: per_byte,
+            exemption_threshold: threshold.to_le_bytes(),
+            burn_percent: 50,
+        });
+        let v = new_vault(&mut env, 1_000);
+        let dest = token_account(&mut env, &Address::new_unique());
+        let refund = token_account(&mut env, &Address::new_unique());
+        let rent_to = Address::new_unique();
+        let closed_rent = env.svm.get_account(&v.ta).unwrap().lamports;
+        let ix = spend_ix(&env, &v, dest, refund, rent_to, 400, 400);
+        let payer = env.payer.insecure_clone();
+        send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix])
+            .unwrap_or_else(|e| panic!("rent {per_byte} x {threshold}: spend failed\n{e}"));
+        let marker = env.svm.get_account(&v.pda).unwrap();
+        let known = threshold == 1.0 || threshold == 2.0;
+        let keep = if known { env.svm.minimum_balance_for_rent_exemption(0) } else { closed_rent };
+        assert_eq!(marker.owner, env.prog, "rent {per_byte} x {threshold}: vault not marked spent");
+        assert_eq!(marker.lamports, keep, "rent {per_byte} x {threshold}: marker lamports");
+        assert_eq!(env.svm.get_account(&rent_to).map_or(0, |a| a.lamports), closed_rent - keep,
+            "rent {per_byte} x {threshold}: rent_to lamports");
+        assert_eq!(balance(&env.svm, &dest), Some(400));
+        assert_eq!(balance(&env.svm, &refund), Some(600));
+    }
 }
 
 #[test]

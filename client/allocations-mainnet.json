@@ -35,9 +35,10 @@
     "tx": "s7Aeyx2RS8MaFKufTt7Ve3uC3XY37jSTFxKggGBiM8kZKCfNrHQcep7V2tQK8pqJ4kxzB1JLf43BSRhJM43XEPF"
   },
   "treasury": {
-    "name": "treasury-8",
-    "vault": "E89KqeLS2UXHioabSunDDrHEGcCRbh8Ct5wZMNFighxd",
-    "qc": "7700000000000",
-    "note": "rotated from treasury-7 by the mainnet attack run"
+    "name": "treasury-9",
+    "vault": "Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h",
+    "qc": "7699999999999",
+    "note": "rotated from treasury-7 by the mainnet attack run",
+    "tx": "5K2WrxtJMCLuLcVF8Nu8jCjETFf7Hjy5VEYJqAdk5h3gbmPyyVBcr6NkTwenwzxKXpapdYbH6zdA8ubRWYcK9WsR"
   }
 }

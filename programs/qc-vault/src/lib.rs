@@ -20,7 +20,8 @@
 //!
 //! Accounts:
 //!   0. `[writable]` vault PDA (becomes the spent marker, see below)
-//!   1. `[writable]` vault token account (owned by the PDA)
+//!   1. `[writable]` vault token account: the PDA's Token-2022 associated
+//!                   token account for `mint` (any other account is refused)
 //!   2. `[]`         mint
 //!   3. `[writable]` destination token account
 //!   4. `[writable]` refund token account: receives `balance - amount`,
@@ -93,8 +94,7 @@ mod entry {
 pub const VAULT_SEED: &[u8] = b"qcv";
 pub const TOKEN_2022: Address = Address::new_from_array([6, 221, 246, 225, 238, 117, 143, 222, 24, 66, 93, 188, 228, 108, 205, 218, 182, 26, 252, 77, 131, 185, 13, 39, 254, 189, 249, 40, 216, 161, 139, 252]); // TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
 pub const SYSTEM: Address = Address::new_from_array([0; 32]);
-/// Rent-exempt minimum for a 0-byte account (128 bytes overhead x 6960).
-pub const MARKER_RENT: u64 = 890_880;
+pub const ATA_PROGRAM: Address = Address::new_from_array([140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216, 219, 233, 248, 89]); // ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL
 pub const IX_SPEND: u8 = 0;
 pub const SPEND_DATA_LEN: usize = 26 + wots::SIG_LEN;
 
@@ -185,10 +185,9 @@ pub fn process_instruction(
         amount,
     );
     let pk_hash = wots::recover_pk_hash(seed, &digest, sig);
-    let expected = Address::create_program_address(&[VAULT_SEED, &pk_hash, owner.address().as_ref(), &bump], program_id)
-        .map_err(|_| VaultError::BadSignature)?;
-    if &expected != vault.address() {
-        return Err(VaultError::BadSignature);
+    match pda(&[VAULT_SEED, &pk_hash, owner.address().as_ref(), &bump], program_id, false) {
+        Some(a) if &a == vault.address() => {}
+        _ => return Err(VaultError::BadSignature),
     }
 
     // 2. Read balance and decimals. The token program re-checks ownership,
@@ -197,6 +196,15 @@ pub fn process_instruction(
     let tp = token_program.address();
     if tp != &TOKEN_2022 {
         return Err(VaultError::BadTokenProgram);
+    }
+    // The spend drains the vault's associated token account and nothing else.
+    // The digest binds vault and mint, which fix that address, so a forged
+    // owner signature (post-quantum) cannot aim a signed spend at a decoy token
+    // account the PDA also owns: that would mark the vault spent and lock the
+    // real balance for good (finding F9).
+    match pda(&[vault.address().as_ref(), TOKEN_2022.as_ref(), mint.address().as_ref()], &ATA_PROGRAM, true) {
+        Some(ata) if &ata == vault_ta.address() => {}
+        _ => return Err(VaultError::NotATokenAccount),
     }
     // No owner check on the two accounts read below: a fake account only
     // yields a fake balance, and the Token-2022 CPIs then reject it.
@@ -256,12 +264,75 @@ pub fn process_instruction(
     unsafe { invoke_signed_unchecked(&ix, &[CpiAccount::from(&*vault)], &signer) };
 
     // 5. The program now owns the vault and may move its surplus lamports.
-    let surplus = vault.lamports().saturating_sub(MARKER_RENT);
+    let surplus = vault.lamports().saturating_sub(marker_rent());
     if surplus > 0 {
         vault.set_lamports(vault.lamports() - surplus);
         rent_to.set_lamports(rent_to.lamports().wrapping_add(surplus)); // total SOL supply < u64::MAX
     }
     Ok(())
+}
+
+/// Rent-exempt minimum of the 0-byte spent marker, read from the Rent sysvar.
+/// Only the two exemption thresholds Solana has used (1.0 and 2.0) are
+/// evaluated, as the SDK does without floats. For any other value, or if the
+/// sysvar cannot be read, the marker keeps all its lamports: they include the
+/// closed token account's rent, so they always cover a 0-byte account.
+/// A hard-coded minimum is wrong whenever rent changes: at mainnet's 5,080
+/// lamports/byte the old 890,880 left a fresh `rent_to` below its own minimum
+/// and every such spend failed.
+#[inline(always)]
+fn marker_rent() -> u64 {
+    // [u64; 3] covers the 17-byte sysvar; zeroed so a failed read gives an
+    // unknown threshold (0) and therefore u64::MAX.
+    let mut r = [0u64; 3];
+    #[cfg(target_os = "solana")]
+    // SAFETY: the syscall writes the 17-byte Rent sysvar into `r` (24 bytes).
+    #[allow(deprecated)]
+    unsafe {
+        pinocchio::syscalls::sol_get_rent_sysvar(r.as_mut_ptr() as *mut u8)
+    };
+    let (per_byte, threshold) = (u64::from_le(r[0]), u64::from_le(r[1]));
+    // 1.0 -> 128 bytes of rent-years, 2.0 -> 256 (per_byte << 7 or << 8).
+    let shift = match threshold {
+        0x3FF0_0000_0000_0000 => 7,
+        0x4000_0000_0000_0000 => 8,
+        _ => return u64::MAX,
+    };
+    if per_byte >> 56 != 0 {
+        return u64::MAX;
+    }
+    per_byte << shift
+}
+
+/// Program address for `seeds`: with `find`, the canonical bump is searched
+/// (seeds without bump); otherwise the last seed is the bump. Calls the
+/// syscalls directly: the SDK wrappers convert errors through a function that
+/// can panic, which links the panic handler and its strings (~550 bytes).
+#[inline(always)]
+fn pda(seeds: &[&[u8]], program: &Address, find: bool) -> Option<Address> {
+    #[cfg(target_os = "solana")]
+    {
+        let mut out = core::mem::MaybeUninit::<Address>::uninit();
+        let mut bump = 0u8;
+        let (s, n, p, o) = (seeds.as_ptr() as *const u8, seeds.len() as u64, program as *const _ as *const u8, out.as_mut_ptr() as *mut u8);
+        // SAFETY: the syscalls write 32 bytes to `out` (and 1 to `bump`) on success.
+        let rc = unsafe {
+            if find {
+                pinocchio::syscalls::sol_try_find_program_address(s, n, p, o, &mut bump)
+            } else {
+                pinocchio::syscalls::sol_create_program_address(s, n, p, o)
+            }
+        };
+        if rc == 0 { Some(unsafe { out.assume_init() }) } else { None }
+    }
+    #[cfg(not(target_os = "solana"))]
+    {
+        if find {
+            Address::try_find_program_address(seeds, program).map(|(a, _)| a)
+        } else {
+            Address::create_program_address(seeds, program).ok()
+        }
+    }
 }
 
 /// SPL Token `TransferChecked` (discriminator 12). A failing CPI aborts the
