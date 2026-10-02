@@ -106,9 +106,9 @@ Mainnet allocation, executed 2026-09-29 (`client/allocations-mainnet.json`):
 | Allocation | % | QC | Held in | Policy |
 |---|---|---|---|---|
 | Treasury / ecosystem | 35% | 7.7T | Hybrid vault | Grants, integrations, listings; every spend announced publicly |
-| Liquidity | 20% | 4.4T | Hybrid vault | Paired on Raydium/Orca at launch; LP tokens burned |
+| Liquidity | 20% | 4.4T | Hybrid vault | 22B QC (0.1% of supply) paired with 0.05 SOL in a Meteora DAMM v2 pool, liquidity permanently locked; the rest stays in the vault |
 | Airdrop / community | 15% | 3.3T | Hybrid vault | 3–4 waves to real users, with sybil filtering |
-| Founder / team | 20% | 4.4T | 4 hybrid vaults × 5% | See "Changes" below |
+| Founder / team | 20% | 4.4T | 5% in the founder wallet, 15% in 3 hybrid vaults | See "Changes" below |
 | Reserve (audit, market making) | 10% | 2.2T | Hybrid vault | Audits, bug bounties, market maker |
 
 All vault addresses are published (section 8). The program has no time-lock,
@@ -128,13 +128,14 @@ No private sale. No presale. No inflation.
   founder's wallet `ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m`
   (txs `28qiAZiGZ8p5MjypoYz35Y96NJfKejhNh9BnGzShESRPTSpxCmdksmwF8JQVMJenMFWG4KPWeudpyCF3C8WXN9wh`,
   `5NvE815GDStsYGtGEoyyAxZLoWDKCaRJeo9yZc59ydT5L9dLjahEjcrGAJqhzpdkrD1dNEhCYs1DxEsEhk8VGf7W`).
-  This broke the 2027-09-24 lock published in the first version. The
-  founder is returning the same 1.1T QC to a new founder vault 1r
-  (`BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T`), where the lock applies
-  again. Status: pending; this line is updated when the transfer lands.
-- Founder vaults 1r and 2–4 (4.4T QC, 20%) **stay locked until
-  2027-09-24**, the date of the original commitment. Vaults 2–4 have not
-  moved. Any later release is announced publicly before the spend.
+  This broke the 2027-09-24 lock published in the first version. A return
+  to a new founder vault 1r (`BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T`)
+  was announced the same day, then cancelled by the founder: **this 5% stays
+  in the founder wallet and is not locked.** Vault 1r was created but is
+  empty and unused.
+- Founder vaults 2–4 (3.3T QC, 15%) **stay locked until 2027-09-24**, the
+  date of the original commitment. They have not moved. Any later release
+  is announced publicly before the spend.
 
 ## 5. Utility
 
@@ -168,7 +169,8 @@ No private sale. No presale. No inflation.
 | 0 | Program, tests, devnet genesis, internal audit, Codama client | Done |
 | 1 | Allocation vaults on devnet, whitepaper, integration guide | Done |
 | 2 | Mainnet: program (upgradeable, Squads 2-of-3), genesis, allocations | Done 2026-09-29 |
-| 3 | External audit, then `--final`; liquidity | Next |
+| 3 | Liquidity pool on Meteora DAMM v2 (opened before the external audit) | In progress |
+| 3b | External audit, then `--final` | Next |
 | 4 | Quantum Safe web app, airdrop wave 1 | |
 | 5 | Wallet and explorer integrations, grants program | |
 | 6 | Generic hybrid vault for any Token-2022 mint | Research |
@@ -183,11 +185,13 @@ No further dates are promised before the audit.
 | QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2` |
 | Treasury vault | `Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h` |
 | Founder vault 1 (spent 2026-10-02) | `8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq` |
-| Founder vault 1r (return pending) | `BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T` |
+| Founder vault 1r (created, unused, empty) | `BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T` |
+| Founder wallet (holds founder share 1, 5%) | `ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m` |
 | Founder vault 2 | `7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz` |
 | Founder vault 3 | `5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG` |
 | Founder vault 4 | `8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd` |
 | Liquidity vault | `9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx` |
+| QC/SOL pool (Meteora DAMM v2, address fixed in advance) | `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB` |
 | Airdrop vault | `9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T` |
 | Reserve vault | `3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93` |
 

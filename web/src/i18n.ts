@@ -45,8 +45,8 @@ const en = {
   "tn.lead": "No private sale, no presale, no inflation. These are the mainnet vaults, split on 29 September 2026.",
   "tn.c1": "Allocation", "tn.c2": "Share", "tn.c4": "Vault (mainnet)",
   "a.treasury": "Treasury / ecosystem", "a.liq": "Liquidity", "a.air": "Airdrop / community", "a.founder": "Founder / team", "a.reserve": "Reserve (audit, market making)",
-  "tn.k1": "Founder lock", "tn.k1p": "Founder tokens are 20%, held in four 5% vaults, and stay put until <strong>24 September 2027</strong>. The program has no time-lock, so this is a promise, not code. On 2 October 2026 founder vault 1 was spent to the founder's wallet, which broke that promise. The founder is sending the same 5% back into a new founder vault (1r, address below), where the lock applies again. The <a href='/transparency/'>transparency page</a> shows every movement live.",
-  "tn.k2": "Liquidity", "tn.k2p": "Goes into a Raydium or Orca pool at mainnet launch. The LP tokens get burned.",
+  "tn.k1": "Founder lock", "tn.k1p": "Founder tokens are 20%. The 15% in founder vaults stays put until <strong>24 September 2027</strong>. The program has no time-lock, so this is a promise, not code. On 2 October 2026 founder vault 1 was spent to the founder's wallet, which broke that promise. That 5% stays in the founder's wallet, unlocked. The other 15% sits in founder vaults 2 to 4 and stays locked until 24 September 2027. The <a href='/transparency/'>transparency page</a> shows every movement live.",
+  "tn.k2": "Liquidity", "tn.k2p": "22 billion QC (0.1% of supply) and 0.05 SOL went into a Meteora pool with the liquidity locked forever. Nobody can withdraw it. The rest stays in the liquidity vault. The pool is small, so one buy moves the price a lot.",
   "tn.k3": "Reserve", "tn.k3p": "Pays for audits, the bug bounty and market making.",
   "sec.eye": "Security", "sec.h": "Internal audit done. The external one hasn't happened yet.",
   "sec.lead": "The people who wrote the code also did the internal review, so it doesn't count as independent. Mainnet launched before an outside audit. The upgrade key stays in a 2-of-3 multisig until that audit is done and every finding is fixed; then the program is made final.",
@@ -102,8 +102,8 @@ const id: Dict = {
   "tn.lead": "Tanpa private sale, tanpa presale, tanpa inflasi. Ini brankas mainnet, dibagi pada 29 September 2026.",
   "tn.c1": "Alokasi", "tn.c2": "Porsi", "tn.c4": "Brankas (mainnet)",
   "a.treasury": "Kas / ekosistem", "a.liq": "Likuiditas", "a.air": "Airdrop / komunitas", "a.founder": "Pendiri / tim", "a.reserve": "Cadangan (audit, market making)",
-  "tn.k1": "Kunci pendiri", "tn.k1p": "Jatah pendiri 20%, disimpan di empat brankas 5%, dan tidak bergerak sampai <strong>24 September 2027</strong>. Program tidak punya time-lock, jadi ini janji, bukan kode. Pada 2 Oktober 2026 brankas pendiri 1 sempat dikirim ke dompet pendiri, dan itu melanggar janji tersebut. Pendiri sedang mengembalikan 5% itu ke brankas pendiri baru (1r, alamat di bawah), dan kunci berlaku lagi di sana. Setiap pergerakan terlihat langsung di <a href='/transparency/'>halaman transparansi</a>.",
-  "tn.k2": "Likuiditas", "tn.k2p": "Masuk ke pool Raydium atau Orca saat mainnet. Token LP-nya dibakar.",
+  "tn.k1": "Kunci pendiri", "tn.k1p": "Jatah pendiri 20%. Bagian 15% di brankas pendiri tidak bergerak sampai <strong>24 September 2027</strong>. Program tidak punya time-lock, jadi ini janji, bukan kode. Pada 2 Oktober 2026 brankas pendiri 1 sempat dikirim ke dompet pendiri, dan itu melanggar janji tersebut. 5% itu tetap di dompet pendiri dan tidak dikunci. 15% sisanya ada di brankas pendiri 2 sampai 4 dan tetap terkunci sampai 24 September 2027. Setiap pergerakan terlihat langsung di <a href='/transparency/'>halaman transparansi</a>.",
+  "tn.k2": "Likuiditas", "tn.k2p": "22 miliar QC (0,1% suplai) dan 0,05 SOL masuk ke pool Meteora dengan likuiditas terkunci selamanya. Tidak ada yang bisa menariknya. Sisanya tetap di brankas likuiditas. Pool ini kecil, jadi satu pembelian bisa menggerakkan harga jauh.",
   "tn.k3": "Cadangan", "tn.k3p": "Membiayai audit, bug bounty, dan market making.",
   "sec.eye": "Keamanan", "sec.h": "Audit internal selesai. Audit eksternal belum.",
   "sec.lead": "Orang yang menulis kode juga melakukan review internal, jadi itu bukan audit independen. Mainnet diluncurkan sebelum audit eksternal. Kunci upgrade tetap di multisig 2-dari-3 sampai audit selesai dan semua temuan diperbaiki; setelah itu program dikunci permanen.",
@@ -153,7 +153,7 @@ const es: Dict = {
   "tn.c1": "Asignación", "tn.c2": "Parte",
   "a.treasury": "Tesorería / ecosistema", "a.liq": "Liquidez", "a.air": "Airdrop / comunidad", "a.founder": "Fundador / equipo", "a.reserve": "Reserva (auditoría, market making)",
   "tn.k1": "Bloqueo del fundador",
-  "tn.k2": "Liquidez", "tn.k2p": "Va a un pool de Raydium u Orca en el lanzamiento en mainnet. Los tokens LP se queman.",
+  "tn.k2": "Liquidez",
   "tn.k3": "Reserva",
   "sec.eye": "Seguridad", "sec.h": "Auditoría interna hecha. La externa, todavía no.",
 
@@ -200,7 +200,7 @@ const pt: Dict = {
   "tn.c1": "Alocação", "tn.c2": "Parte",
   "a.treasury": "Tesouraria / ecossistema", "a.liq": "Liquidez", "a.air": "Airdrop / comunidade", "a.founder": "Fundador / equipe", "a.reserve": "Reserva (auditoria, market making)",
   "tn.k1": "Trava do fundador",
-  "tn.k2": "Liquidez", "tn.k2p": "Vai para um pool na Raydium ou Orca no lançamento. Os tokens LP são queimados.",
+  "tn.k2": "Liquidez",
   "tn.k3": "Reserva",
   "sec.eye": "Segurança", "sec.h": "Auditoria interna feita. A externa ainda não.",
 
@@ -246,7 +246,7 @@ const fr: Dict = {
   "tn.c1": "Allocation", "tn.c2": "Part",
   "a.treasury": "Trésorerie / écosystème", "a.liq": "Liquidité", "a.air": "Airdrop / communauté", "a.founder": "Fondateur / équipe", "a.reserve": "Réserve (audit, market making)",
   "tn.k1": "Blocage du fondateur",
-  "tn.k2": "Liquidité", "tn.k2p": "Part dans un pool Raydium ou Orca au lancement. Les jetons LP sont brûlés.",
+  "tn.k2": "Liquidité",
   "tn.k3": "Réserve",
   "sec.eye": "Sécurité", "sec.h": "Audit interne fait. L'externe, pas encore.",
 
@@ -293,7 +293,7 @@ const de: Dict = {
   "tn.c1": "Zuteilung", "tn.c2": "Anteil",
   "a.treasury": "Treasury / Ökosystem", "a.liq": "Liquidität", "a.air": "Airdrop / Community", "a.founder": "Gründer / Team", "a.reserve": "Reserve (Audit, Market Making)",
   "tn.k1": "Gründer-Sperre",
-  "tn.k2": "Liquidität", "tn.k2p": "Geht zum Mainnet-Start in einen Raydium- oder Orca-Pool. Die LP-Token werden verbrannt.",
+  "tn.k2": "Liquidität",
   "tn.k3": "Reserve",
   "sec.eye": "Sicherheit", "sec.h": "Internes Audit erledigt. Das externe noch nicht.",
 
@@ -339,7 +339,7 @@ const ja: Dict = {
   "tn.c1": "割り当て", "tn.c2": "比率",
   "a.treasury": "トレジャリー／エコシステム", "a.liq": "流動性", "a.air": "エアドロップ／コミュニティ", "a.founder": "創業者／チーム", "a.reserve": "リザーブ（監査・マーケットメイク）",
   "tn.k1": "創業者ロック",
-  "tn.k2": "流動性", "tn.k2p": "mainnet ローンチ時に Raydium か Orca のプールへ。LP トークンはバーンします。",
+  "tn.k2": "流動性",
   "tn.k3": "リザーブ",
   "sec.eye": "セキュリティ", "sec.h": "内部監査は完了。外部監査はまだです。",
 
@@ -386,7 +386,7 @@ const zh: Dict = {
   "tn.c1": "分配", "tn.c2": "占比",
   "a.treasury": "金库 / 生态", "a.liq": "流动性", "a.air": "空投 / 社区", "a.founder": "创始人 / 团队", "a.reserve": "储备（审计、做市）",
   "tn.k1": "创始人锁定",
-  "tn.k2": "流动性", "tn.k2p": "主网上线时注入 Raydium 或 Orca 池，LP 代币全部销毁。",
+  "tn.k2": "流动性",
   "tn.k3": "储备",
   "sec.eye": "安全", "sec.h": "内部审计完成，外部审计尚未进行。",
 
@@ -433,7 +433,7 @@ const ko: Dict = {
   "tn.c1": "배분", "tn.c2": "비율",
   "a.treasury": "트레저리 / 생태계", "a.liq": "유동성", "a.air": "에어드롭 / 커뮤니티", "a.founder": "창업자 / 팀", "a.reserve": "예비 (감사, 마켓 메이킹)",
   "tn.k1": "창업자 락",
-  "tn.k2": "유동성", "tn.k2p": "메인넷 출시 때 Raydium이나 Orca 풀에 들어갑니다. LP 토큰은 소각합니다.",
+  "tn.k2": "유동성",
   "tn.k3": "예비",
   "sec.eye": "보안", "sec.h": "내부 감사는 끝났습니다. 외부 감사는 아직입니다.",
 
@@ -480,7 +480,7 @@ const ru: Dict = {
   "tn.c1": "Доля", "tn.c2": "Процент",
   "a.treasury": "Казна / экосистема", "a.liq": "Ликвидность", "a.air": "Аирдроп / сообщество", "a.founder": "Основатель / команда", "a.reserve": "Резерв (аудит, маркетмейкинг)",
   "tn.k1": "Блокировка основателя",
-  "tn.k2": "Ликвидность", "tn.k2p": "При запуске mainnet уходит в пул Raydium или Orca. LP-токены сжигаются.",
+  "tn.k2": "Ликвидность",
   "tn.k3": "Резерв",
   "sec.eye": "Безопасность", "sec.h": "Внутренний аудит есть. Внешнего пока нет.",
 
