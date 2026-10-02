@@ -128,9 +128,13 @@ No private sale. No presale. No inflation.
   founder's wallet `ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m`
   (txs `28qiAZiGZ8p5MjypoYz35Y96NJfKejhNh9BnGzShESRPTSpxCmdksmwF8JQVMJenMFWG4KPWeudpyCF3C8WXN9wh`,
   `5NvE815GDStsYGtGEoyyAxZLoWDKCaRJeo9yZc59ydT5L9dLjahEjcrGAJqhzpdkrD1dNEhCYs1DxEsEhk8VGf7W`).
-  This broke the 2027-09-24 lock published in the first version.
-- Founder vaults 2–4 (3.3T QC) have not moved. Their release policy:
-  [to be announced by the founder].
+  This broke the 2027-09-24 lock published in the first version. The
+  founder is returning the same 1.1T QC to a new founder vault 1r
+  (`BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T`), where the lock applies
+  again. Status: pending; this line is updated when the transfer lands.
+- Founder vaults 1r and 2–4 (4.4T QC, 20%) **stay locked until
+  2027-09-24**, the date of the original commitment. Vaults 2–4 have not
+  moved. Any later release is announced publicly before the spend.
 
 ## 5. Utility
 
@@ -179,6 +183,7 @@ No further dates are promised before the audit.
 | QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2` |
 | Treasury vault | `Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h` |
 | Founder vault 1 (spent 2026-10-02) | `8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq` |
+| Founder vault 1r (return pending) | `BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T` |
 | Founder vault 2 | `7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz` |
 | Founder vault 3 | `5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG` |
 | Founder vault 4 | `8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd` |

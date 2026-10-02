@@ -5,17 +5,23 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const T = t(lang);
 
-const ex = (a: string) => `https://explorer.solana.com/address/${a}?cluster=devnet`;
-const MINT = "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8";
+const ex = (a: string) => `https://explorer.solana.com/address/${a}`;
+const exDev = (a: string) => `https://explorer.solana.com/address/${a}?cluster=devnet`;
+const MINT = "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2";
 const PROGRAM = "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms";
-const BOUNTY = "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE";
+const BOUNTY = "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE"; // devnet test vault
 
+// Mainnet vaults (client/allocations-mainnet.json). Founder vault 1 was spent on
+// 2026-10-02 to the founder wallet; its 5% is being returned into founder vault 1r.
 const alloc = [
-  ["a.treasury", 45, "9.9T", "4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381", "#2EE6D6"],
-  ["a.liq", 20, "4.4T", "5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG", "#5B8CFF"],
-  ["a.air", 15, "3.3T", "BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw", "#F5C451"],
-  ["a.founder", 10, "2.2T", "7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6", "#E07A9A"],
-  ["a.reserve", 10, "2.2T", "3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ", "#8A93B0"],
+  ["a.treasury", 35, "7.7T", "Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h", "#2EE6D6", ""],
+  ["a.liq", 20, "4.4T", "9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx", "#5B8CFF", ""],
+  ["a.air", 15, "3.3T", "9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T", "#F5C451", ""],
+  ["a.founder", 5, "1.1T", "BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T", "#E07A9A", " 1r (return pending)"],
+  ["a.founder", 5, "1.1T", "7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz", "#E07A9A", " 2"],
+  ["a.founder", 5, "1.1T", "5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG", "#E07A9A", " 3"],
+  ["a.founder", 5, "1.1T", "8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd", "#E07A9A", " 4"],
+  ["a.reserve", 10, "2.2T", "3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93", "#8A93B0", ""],
 ] as const;
 
 const none = T("f.none");
@@ -25,7 +31,7 @@ const facts = [
 ];
 
 const roadmap = [
-  ["rm.0", "st.done"], ["rm.1", "st.done"], ["rm.2", "st.next"], ["rm.3", "st.after"],
+  ["rm.0", "st.done"], ["rm.1", "st.done"], ["rm.2", "st.next"], ["rm.3", "st.done"],
   ["rm.4", ""], ["rm.5", "st.designed"], ["rm.6", ""], ["rm.7", "st.research"],
 ] as const;
 
@@ -127,7 +133,7 @@ const shots = [
   <div class="bar grow" aria-hidden="true">{alloc.map(([, p, , , c]) => <span style={`--w:${p}%;background:${c}`}></span>)}</div>
   <div class="table-scroll reveal"><table>
     <thead><tr><th>{T("tn.c1")}</th><th>{T("tn.c2")}</th><th>QC</th><th>{T("tn.c4")}</th></tr></thead>
-    <tbody>{alloc.map(([n, p, q, a, c]) => <tr><td><span class="swatch" style={`background:${c}`}></span>{T(n)}</td><td class="num">{p}%</td><td class="num">{q}</td><td><a class="addr" href={ex(a)}>{a}</a></td></tr>)}</tbody>
+    <tbody>{alloc.map(([n, p, q, a, c, sfx]) => <tr><td><span class="swatch" style={`background:${c}`}></span>{T(n)}{sfx}</td><td class="num">{p}%</td><td class="num">{q}</td><td><a class="addr" href={ex(a)}>{a}</a></td></tr>)}</tbody>
   </table></div>
   <div class="grid3" style="margin-top:48px">
     <div class="card reveal"><h3>{T("tn.k1")}</h3><p set:html={T("tn.k1p")}></p></div>
@@ -141,11 +147,11 @@ const shots = [
   <h2 class="reveal">{T("sec.h")}</h2>
   <p class="lead reveal">{T("sec.lead")}</p>
   <div class="stats">
-    <div class="stat reveal"><b><span data-count="12">12</span>/12</b><span>{T("sec.s1")}</span></div>
+    <div class="stat reveal"><b><span data-count="27">27</span>/27</b><span>{T("sec.s1")}</span></div>
     <div class="stat reveal"><b><span data-count="13">13</span>/13</b><span>{T("sec.s2")}</span></div>
-    <div class="stat reveal"><b>0</b><span>{T("sec.s3")}</span></div>
+    <div class="stat reveal"><b>2/3</b><span>{T("sec.s3")}</span></div>
   </div>
-  <p class="reveal">{T("sec.bounty")} <a class="addr" href={ex(BOUNTY)}>{BOUNTY}</a></p>
+  <p class="reveal">{T("sec.bounty")} <a class="addr" href={exDev(BOUNTY)}>{BOUNTY}</a></p>
   <p class="reveal"><a href="/audit/">{T("sec.read")}</a>{T("sec.read2")}</p>
 </div></section>
 

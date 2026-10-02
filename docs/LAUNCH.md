@@ -76,9 +76,10 @@ authority. Put the explorer links on the dashboard.
 - Team tokens: 20% in four 5% founder vaults (mainnet, 2026-09-29). The
   earlier commitment (10%, locked until 2027-09-24) was replaced at genesis
   and broken on 2026-10-02, when founder vault 1 (5%) was spent to the
-  founder's wallet without prior announcement. See WHITEPAPER.md §4,
-  "Changes to this section". Policy for vaults 2–4: [to be announced by
-  the founder].
+  founder's wallet without prior announcement. The founder is returning
+  it to founder vault 1r (`BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T`). See WHITEPAPER.md §4,
+  "Changes to this section". Founder vaults 1r and 2–4 (20%) stay locked until
+  **2027-09-24**; any later release is announced before the spend.
 
 ## 7. Airdrop policy
 
