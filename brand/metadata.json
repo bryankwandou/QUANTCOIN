@@ -1,7 +1,14 @@
 {
   "name": "QuantCoin",
   "symbol": "QC",
-  "description": "Token-2022 on Solana. Balances held in QC vaults need both an Ed25519 and a Winternitz (SHA-256) signature to move.",
+  "description": "QuantCoin (QC) is a Token-2022 token on Solana. QC kept in a QC hybrid vault needs two signatures to move: Ed25519 and a hash-based Winternitz signature that quantum computers are not known to break. Fixed supply of 22 trillion; mint and freeze authority revoked. Not externally audited yet.",
   "image": "https://raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/logo-512.png",
-  "external_url": "https://github.com/bryankwandou/QUANTCOIN"
+  "external_url": "https://quantcoin-pi.vercel.app",
+  "website": "https://quantcoin-pi.vercel.app",
+  "extensions": {
+    "website": "https://quantcoin-pi.vercel.app",
+    "github": "https://github.com/bryankwandou/QUANTCOIN",
+    "whitepaper": "https://quantcoin-pi.vercel.app/whitepaper/",
+    "transparency": "https://quantcoin-pi.vercel.app/transparency/"
+  }
 }
