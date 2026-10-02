@@ -6,7 +6,7 @@ The ten trust commitments, what each one needs, and its status. Mainnet launched
 |---|---|---|
 | 1 | External audit, report published | Scope ready (below); auditor not yet hired |
 | 2 | Program `--final`, every authority revoked | Mint authorities revoked on mainnet; program upgradeable via Squads 2-of-3 until the audit |
-| 3 | LP tokens burned | Runbook below; mainnet only |
+| 3 | Pool liquidity permanently locked | Meteora DAMM v2, runbook below |
 | 4 | Live transparency dashboard | `transparency/index.html` |
 | 5 | Fair launch | Policy below |
 | 6 | Quantum Safe app | `app/` (devnet) |
@@ -55,17 +55,26 @@ Afterwards, verify publicly: `solana program show <ID>` shows no upgrade
 authority, and `spl-token display <MINT>` shows no mint, freeze or metadata
 authority. Put the explorer links on the dashboard.
 
-## 3. Liquidity and LP burn
+## 3. Liquidity and locked pool
 
-1. Spend from the liquidity vault to a fresh launch wallet (one hybrid
-   spend).
-2. Create a Raydium CPMM (Token-2022 supported) pool with QC and SOL. The
-   pool's starting ratio sets the launch price. Pick a price you can defend
-   publicly.
-3. Burn 100% of the LP tokens (`spl-token burn`). Publish the burn
-   transaction.
-4. Any QC not used for the pool goes back into a fresh hybrid vault the
-   same day.
+Changed on 2026-10-02 from Raydium CPMM with burned LP tokens to Meteora
+DAMM v2 with a permanently locked position: Raydium's 0.15 SOL creation fee
+did not fit the launch budget. A locked position, like burned LP tokens,
+can never be withdrawn by anyone; the position's trading fees stay
+claimable by its holder (the deployer wallet).
+
+1. Spend 22,000,000,000 QC (0.1% of supply) from the liquidity vault to the
+   deployer wallet `GKPFmq8mKvgKrHRQX5nJToZhR2AsvzgcQsgCWv9aNnoN` (one
+   hybrid spend). The rest (4.378T QC) moves into a fresh liquidity vault in
+   the same spend.
+2. Create the customizable pool QC/SOL on Meteora DAMM v2 with 22B QC and
+   0.05 SOL, full price range, 0.25% trading fee, liquidity locked in the
+   same transaction (`client/launch-pool.ts`). Starting price:
+   0.05 SOL / 22B QC, which values all 22T QC at 50 SOL.
+3. The pool address is fixed by the two mints and published in advance:
+   `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB`.
+4. The pool is small. One small buy moves the price a lot. It opens before
+   the external audit (item 1).
 
 ## 5. Fair launch policy
 
@@ -73,13 +82,13 @@ authority. Put the explorer links on the dashboard.
 - Nobody, the founder included, buys before the pool is public.
 - The pool opens at an announced time with the pool address published in
   advance.
-- Team tokens: 20% in four 5% founder vaults (mainnet, 2026-09-29). The
-  earlier commitment (10%, locked until 2027-09-24) was replaced at genesis
-  and broken on 2026-10-02, when founder vault 1 (5%) was spent to the
-  founder's wallet without prior announcement. The founder is returning
-  it to founder vault 1r (`BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T`). See WHITEPAPER.md §4,
-  "Changes to this section". Founder vaults 1r and 2–4 (20%) stay locked until
-  **2027-09-24**; any later release is announced before the spend.
+- Team tokens: 20% (mainnet, 2026-09-29). The earlier commitment (10%,
+  locked until 2027-09-24) was replaced at genesis and broken on
+  2026-10-02, when founder vault 1 (5%) was spent to the founder's wallet
+  without prior announcement. That 5% stays in the founder wallet,
+  unlocked. Founder vaults 2–4 (15%) stay locked until **2027-09-24**;
+  any later release is announced before the spend. See WHITEPAPER.md §4,
+  "Changes to this section".
 
 ## 7. Airdrop policy
 
