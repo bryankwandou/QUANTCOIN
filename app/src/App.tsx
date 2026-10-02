@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { Keypair, PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js";
 import { PROGRAM_ID, QC_DECIMALS, QC_MINT, explorerAddr } from "./lib/config";
 import { VaultRecord, backupJson, createVault, getVault, importRecord, listVaults, openVault, parseBackup, putVault } from "./lib/store";
 import { FlowCtx, balanceOf, markSpent, sweepRent, withdraw } from "./lib/flow";
@@ -17,6 +17,17 @@ function downloadBackup(r: VaultRecord) {
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
   putVault({ ...getVault(r.id)!, backedUp: true });
+}
+
+// Polls instead of confirmTransaction: the RPC proxy carries HTTP only, no websocket.
+async function confirmByPolling(connection: Connection, sig: string, lastValidBlockHeight: number, label: string) {
+  for (;;) {
+    const st = (await connection.getSignatureStatuses([sig])).value[0];
+    if (st?.err) throw new Error(`${label} failed: ${JSON.stringify(st.err)}`);
+    if (st?.confirmationStatus === "confirmed" || st?.confirmationStatus === "finalized") return;
+    if ((await connection.getBlockHeight("confirmed")) > lastValidBlockHeight) throw new Error(`${label}: blockhash expired before confirmation`);
+    await new Promise((r) => setTimeout(r, 1500));
+  }
 }
 
 const fmt = (v: bigint | null | undefined) => (v == null ? "-" : formatAmount(v, QC_DECIMALS));
@@ -60,8 +71,7 @@ export default function App() {
     const tx = new Transaction({ feePayer: owner, blockhash, lastValidBlockHeight }).add(...ixs);
     const sig = await wallet.sendTransaction(tx, connection, { skipPreflight: false });
     say(`${label}: sent ${sig}`);
-    const res = await connection.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed");
-    if (res.value.err) throw new Error(`${label} failed: ${JSON.stringify(res.value.err)}`);
+    await confirmByPolling(connection, sig, lastValidBlockHeight, label);
     return sig;
   }
 
@@ -70,7 +80,7 @@ export default function App() {
     const tx = new Transaction({ feePayer: signer.publicKey, blockhash, lastValidBlockHeight }).add(...ixs);
     tx.sign(signer);
     const sig = await connection.sendRawTransaction(tx.serialize());
-    await connection.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed");
+    await confirmByPolling(connection, sig, lastValidBlockHeight, label);
     say(`${label}: ${sig}`);
     return sig;
   }
@@ -142,7 +152,7 @@ export default function App() {
         </ul>
       </section>
 
-      {!owner ? <section>Connect Phantom or Solflare (devnet) to start.</section> : <>
+      {!owner ? <section>Connect Phantom or Solflare (Solana mainnet) to start.</section> : <>
         <section>
           <h2>Wallet</h2>
           <div className="kv"><span className="muted">Owner</span><span className="mono">{owner.toBase58()}</span>

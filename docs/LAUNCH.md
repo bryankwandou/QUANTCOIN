@@ -57,24 +57,38 @@ authority. Put the explorer links on the dashboard.
 
 ## 3. Liquidity and locked pool
 
-Changed on 2026-10-02 from Raydium CPMM with burned LP tokens to Meteora
-DAMM v2 with a permanently locked position: Raydium's 0.15 SOL creation fee
-did not fit the launch budget. A locked position, like burned LP tokens,
-can never be withdrawn by anyone; the position's trading fees stay
-claimable by its holder (the deployer wallet).
+Changed on 2026-10-02 from Raydium CPMM with burned LP tokens to a
+single-sided Meteora DAMM v2 pool with a permanently locked position.
+Raydium's 0.15 SOL creation fee did not fit the launch budget, and a
+single-sided pool needs no SOL from the project. A locked position, like
+burned LP tokens, can never be withdrawn by anyone.
 
 1. Spend 22,000,000,000 QC (0.1% of supply) from the liquidity vault to the
    deployer wallet `GKPFmq8mKvgKrHRQX5nJToZhR2AsvzgcQsgCWv9aNnoN` (one
    hybrid spend). The rest (4.378T QC) moves into a fresh liquidity vault in
    the same spend.
-2. Create the customizable pool QC/SOL on Meteora DAMM v2 with 22B QC and
-   0.05 SOL, full price range, 0.25% trading fee, liquidity locked in the
-   same transaction (`client/launch-pool.ts`). Starting price:
-   0.05 SOL / 22B QC, which values all 22T QC at 50 SOL.
-3. The pool address is fixed by the two mints and published in advance:
-   `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB`.
-4. The pool is small. One small buy moves the price a lot. It opens before
-   the external audit (item 1).
+2. Create the customizable pool QC/SOL on Meteora DAMM v2 with the 22B QC
+   only (`client/launch-pool.ts`):
+   - Opening price: 500 SOL for the whole 22T supply (0.0000000000227 SOL
+     per QC). The founder chose this number; it is not a valuation.
+   - The price range starts at the opening price, so the price can never
+     trade below it: sellers can only take back SOL that buyers put in.
+   - Anti-sniper fee: 50% when trading opens, falling to 0.25% over the
+     first hour. A dynamic fee adds more when the price swings.
+   - Fees are collected in SOL. Meteora keeps 20% of them. The rest is
+     claimable by the position holder (the deployer wallet) and is moved,
+     publicly, to the Squads multisig vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`. The founder does not
+     keep trading fees.
+   - Liquidity is locked in the same transaction.
+3. The pool address is fixed by the two mints and was published in advance:
+   `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB`. Trading opens at **2026-10-02 15:30 UTC (22:30 WIB)**.
+4. The pool is small. A 0.01 SOL buy moves the price about 4%. It opens
+   before the external audit (item 1).
+
+Tested on a local mainnet fork before launch: buying before the opening
+time is refused, the first buy pays about 50% fee, after one hour a 0.01
+SOL buy moves the price 3.99%, and after every buyer sells, the price
+returns exactly to the opening price.
 
 ## 5. Fair launch policy
 

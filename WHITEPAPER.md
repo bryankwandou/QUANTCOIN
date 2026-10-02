@@ -106,7 +106,7 @@ Mainnet allocation, executed 2026-09-29 (`client/allocations-mainnet.json`):
 | Allocation | % | QC | Held in | Policy |
 |---|---|---|---|---|
 | Treasury / ecosystem | 35% | 7.7T | Hybrid vault | Grants, integrations, listings; every spend announced publicly |
-| Liquidity | 20% | 4.4T | Hybrid vault | 22B QC (0.1% of supply) paired with 0.05 SOL in a Meteora DAMM v2 pool, liquidity permanently locked; the rest stays in the vault |
+| Liquidity | 20% | 4.4T | Hybrid vault | 22B QC (0.1% of supply) in a single-sided Meteora DAMM v2 pool opening at 500 SOL for the whole supply, liquidity permanently locked; the rest stays in the vault |
 | Airdrop / community | 15% | 3.3T | Hybrid vault | 3–4 waves to real users, with sybil filtering |
 | Founder / team | 20% | 4.4T | 5% in the founder wallet, 15% in 3 hybrid vaults | See "Changes" below |
 | Reserve (audit, market making) | 10% | 2.2T | Hybrid vault | Audits, bug bounties, market maker |
@@ -191,7 +191,7 @@ No further dates are promised before the audit.
 | Founder vault 3 | `5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG` |
 | Founder vault 4 | `8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd` |
 | Liquidity vault | `9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx` |
-| QC/SOL pool (Meteora DAMM v2, address fixed in advance) | `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB` |
+| QC/SOL pool (Meteora DAMM v2, opens 2026-10-02 15:30 UTC (22:30 WIB)) | `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB` |
 | Airdrop vault | `9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T` |
 | Reserve vault | `3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93` |
 
