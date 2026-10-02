@@ -46,6 +46,7 @@ fn take(src: &[u8], at: usize) -> [u8; N] {
     out
 }
 
+#[cfg(not(target_os = "solana"))]
 #[inline(always)]
 fn put(dst: &mut [u8], at: usize, v: &[u8; N]) {
     debug_assert!(at + N <= dst.len());
@@ -121,14 +122,18 @@ pub fn recover_pk_hash(
     sig: &[u8; SIG_LEN],
 ) -> [u8; 32] {
     let d = digits(digest);
-    let mut ends = [0u8; SIG_LEN];
+    // Every byte is written by the loop below; skipping the zero fill keeps a
+    // 624-byte memset (and the memset routine) out of the binary.
+    let mut ends = core::mem::MaybeUninit::<[u8; SIG_LEN]>::uninit();
     let mut i = 0;
     while i < CHAINS {
         let end = chain(seed, i as u8, d[i], MAX_STEP, &take(sig, i * N));
-        put(&mut ends, i * N, &end);
+        // SAFETY: i * N + N <= SIG_LEN.
+        unsafe { core::ptr::copy_nonoverlapping(end.as_ptr(), (ends.as_mut_ptr() as *mut u8).add(i * N), N) };
         i += 1;
     }
-    hashv(&[DOMAIN_PK, seed, &ends])
+    // SAFETY: the loop wrote all CHAINS * N = SIG_LEN bytes.
+    hashv(&[DOMAIN_PK, seed, unsafe { ends.assume_init_ref() }])
 }
 
 /// Off-chain key material. Never used by the program.
