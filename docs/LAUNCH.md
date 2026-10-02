@@ -85,6 +85,12 @@ burned LP tokens, can never be withdrawn by anyone.
 4. The pool is small. A 0.01 SOL buy moves the price about 4%. It opens
    before the external audit (item 1).
 
+Done: the pool was created on 2026-10-02 (tx `2fBXJYGCmxuxZiqy8APLEsZK3X2wfvoDQwu1kBxnJ57VbZezzr5eDVH2seHxKMDG3xXk41uwXTGvosz2uihw5LU2`)
+and opened at 15:30 UTC. On 2026-10-03 the project position's fees,
+2.620269753 SOL, were claimed and moved in the same transaction to the Squads
+vault (tx `4iJGQsCYQ6Ga7wozXSbDhRYG92cMTmcZgq5NnwYyh22NLsVxH6XaEGiUoy2XekiJAwNG578x5Nci6gatdREoV8xx`).
+The script is `client/claim-fees.ts`; later claims follow the same route.
+
 Tested on a local mainnet fork before launch: buying before the opening
 time is refused, the first buy pays about 50% fee, after one hour a 0.01
 SOL buy moves the price 3.99%, and after every buyer sells, the price

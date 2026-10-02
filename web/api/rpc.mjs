@@ -21,8 +21,15 @@ function check(body) {
   return null;
 }
 
+// Browsers on other sites are refused, so the proxy is not a free public RPC for
+// them. Non-browser clients send no Origin and cannot be told apart this way.
+const ORIGIN_OK = /^(https:\/\/quantcoin-pi\.vercel\.app|https:\/\/quantcoin-[a-z0-9]+-vincentius-bryan-kwandou\.vercel\.app|http:\/\/localhost(:\d+)?)$/;
+
 async function handler(req, res) {
-  res.setHeader("access-control-allow-origin", "*");
+  const origin = req.headers?.origin;
+  if (origin && !ORIGIN_OK.test(origin)) return res.status(403).json({ error: "origin not allowed" });
+  if (origin) res.setHeader("access-control-allow-origin", origin);
+  res.setHeader("vary", "origin");
   res.setHeader("access-control-allow-headers", "content-type, solana-client");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
