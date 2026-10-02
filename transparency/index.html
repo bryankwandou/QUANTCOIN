@@ -78,28 +78,26 @@ button{background:transparent;color:var(--accent);border:1px solid var(--accent)
 <script>
 // ---- All addresses live here. Swap for mainnet. ----
 const CONFIG = {
-  cluster: "devnet",
-  defaultRpc: "https://api.devnet.solana.com",
-  mint: "BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8",
+  cluster: "mainnet-beta",
+  defaultRpc: "https://api.mainnet-beta.solana.com",
+  mint: "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2",
   program: "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
-  founderLockUntil: "2027-09-24T00:00:00Z", // genesis 2026-09-24 + 12 months
+  founderLockUntil: "2027-09-24T00:00:00Z", // original public commitment, kept for founder vaults 2-4 and 1r
   repo: "https://github.com/bryankwandou/QUANTCOIN",
   vaults: [
-    {key:"treasury",  label:"Treasury / ecosystem", pct:45, vault:"4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381", tokenAccount:"9WwJgAPzPmk5pwmyoQAtQRkNHKJbfoCC4fdUkufKK4ZP", color:"--c1"},
-    {key:"liquidity", label:"Liquidity",            pct:20, vault:"5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG", tokenAccount:"CaocTaAG3ihgerVjojN4oo8w5ZdBEer1L3RWgZDJ6XPG", color:"--c2"},
-    {key:"airdrop",   label:"Airdrop / community",  pct:15, vault:"BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw", tokenAccount:"HW3Y7uLnHeqFMRcE89CgN5c7i3QwPsck3PuEWcaPhtkd", color:"--c3"},
-    {key:"founder",   label:"Founder / team",       pct:10, vault:"7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6", tokenAccount:"3vYAe7m93Cd9F6SN4LyJsBQyXQSyftHqPoXJxSXZ3tBK", color:"--c4", founder:true},
-    {key:"reserve",   label:"Reserve (audit, MM)",  pct:10, vault:"3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ", tokenAccount:"8wpC6xsAEmxxqXwuNgcmC6U4T4dB6jC7q7ERbWh7iKGX", color:"--c5",
-      note:"Rotated vault (reserve-2). 1,000,000,000 QC moved to the bug bounty vault."}
+    {key:"treasury",  label:"Treasury / ecosystem", pct:35, vault:"Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h", tokenAccount:"35PXHZe8BbmmB7L1CaaFgr6QFQyq9ZDgbaJc1jj91Rb7", color:"--c1", note:"Rotated vault (treasury-9)."},
+    {key:"liquidity", label:"Liquidity",            pct:20, vault:"9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx", tokenAccount:"DhbZKC3hNbV1kkKNibmEjK1MyZ2ysicCa4ScWX7EqRBw", color:"--c2"},
+    {key:"airdrop",   label:"Airdrop / community",  pct:15, vault:"9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T", tokenAccount:"H56MMDjSNUQPy5hsTFSwFCbNadz1dj5Kozh6u6Z6WzR4", color:"--c3"},
+    {key:"founder1",  label:"Founder / team 1 (original)", pct:0, vault:"8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq", tokenAccount:"HfCsZNu2REFqZSa1syR4fGqH2g8FV9oH9wNdp1UKuj4H", color:"--c4", founder:true,
+      note:"Spent to the founder wallet ETcQ…caP2m on 2026-10-02, breaking the lock. The founder is returning it to founder vault 1r."},
+    {key:"founder1r", label:"Founder / team 1r (return pending)", pct:5, vault:"BV9UN38mVz1ndKsRunNMwi5nE3MGUVgBf2hm6jNQbV4T", tokenAccount:"HXNgy5Y4hay8hNYYyMXjfb8pbNCKkNQoB6GucvoKRW9z", color:"--c4", founder:true},
+    {key:"founder2",  label:"Founder / team 2",     pct:5, vault:"7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz", tokenAccount:"4Vngrm8fkui83ZYqTfmpveKv6i96Y4urT3gMYTqB24n6", color:"--c4", founder:true},
+    {key:"founder3",  label:"Founder / team 3",     pct:5, vault:"5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG", tokenAccount:"6fnMkMAKQAAwb2hYob2gRrXoSXjswBcu6Mj8zjitVAvu", color:"--c4", founder:true},
+    {key:"founder4",  label:"Founder / team 4",     pct:5, vault:"8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd", tokenAccount:"FssHsj2yjYp2nn8bnF6skxvawdcihCJMSeS8rd8YDAJ8", color:"--c4", founder:true},
+    {key:"reserve",   label:"Reserve (audit, MM)",  pct:10, vault:"3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93", tokenAccount:"GBJ3jbwm7kt1o7GLEkAVSa9FwvMFq7zpH5a4WxeeSXXW", color:"--c5"}
   ]
 };
-const BOUNTY = {
-  vault: "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE",
-  tokenAccount: "Td6fb9jUospBikdZy948bosHtcvsbRp9PPwftEFiDjs",
-  ownerPublicKey: "7Xu64rz6VvqzGK9TtwWh4C9DAsp3WZTec2MWNpuYosh2",
-  rule: "Drain it without both keys and keep it.",
-  report: "https://github.com/bryankwandou/QUANTCOIN/security/advisories/new"
-}; // set to null to show "coming soon"
+const BOUNTY = null; // no bug bounty vault on mainnet yet; devnet bounty: D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -175,7 +173,7 @@ async function loadFacts() {
     const pd = await rpc("getAccountInfo", [pdAddr, {encoding:"jsonParsed"}]);
     const a = pd.value.data.parsed.info.authority;
     upg = a ? `${addrLink(a)}` : `<span class="ok">None ✓ (immutable)</span>`;
-    upgNote = a ? `<span class="warn">Upgradeable (${esc(CONFIG.cluster)}); will be deployed <code>--final</code> on mainnet.</span>` : "";
+    upgNote = a ? `<span class="warn">Upgradeable. Held by a Squads 2-of-3 multisig until the external audit, then set <code>--final</code>.</span>` : `<span class="ok">Final: nobody can upgrade the program.</span>`;
   }
   $("facts").innerHTML = [
     fact("Supply", `${fmtRaw(info.supply)} QC`, `Mint ${addrLink(CONFIG.mint)} · Token-2022`),
@@ -214,7 +212,7 @@ async function loadVaults(supplyRaw) {
     const raw = a ? a.data.parsed.info.tokenAmount.amount : "0";
     const sigs = await rpc("getSignaturesForAddress", [v.tokenAccount, {limit:100}]);
     let status = a ? `<span class="ok">Live</span>` : `<span class="bad">Token account missing</span>`;
-    if (v.founder && a) {
+    if (v.founder) {
       const out = await outgoingBefore(v.tokenAccount, sigs, lockEnd);
       status = out.length
         ? `<span class="bad">Lock broken: ${out.length} outgoing spend(s) before ${lockDate}</span><br>` + out.map(o => `<a class="mono bad" href="${exp("tx",o.sig)}" target="_blank" rel="noopener">${short(o.sig)}</a> −${fmtRaw(o.amount)} QC`).join("<br>")
