@@ -53,16 +53,19 @@ move every vault's QC. The hybrid protection is complete only after
 `--final`. **Action:** say so wherever quantum resistance is claimed; make
 the program final after the external audit (prior finding F6).
 
-### Q-3: Squads time lock is 0. Medium. Open.
+### Q-3: Squads time lock was 0. Medium. Fixed 2026-10-03.
 An approved upgrade executes immediately. Holders get no window to see it
 and react. **Action:** set a time lock (24–72 hours) through a multisig
 config transaction. Trade-off: an emergency fix also waits that long.
+**Fixed:** time lock set to 86,400 s (24 h), tx `whoiuHmoWetoYcRQqgbTq9KfZkfdyVEEGjq9e2wLna7wHGazRi8ASTR2PeyLqRbJuQtxYitWLiD4hXMXEjH3vtw`.
 
-### Q-4: The site RPC proxy is an open relay. Low.
+### Q-4: The site RPC proxy was an open relay. Low. Mitigated 2026-10-03.
 `/api/rpc/` answers any origin and forwards `sendTransaction` without rate
 limits. Heavy outside use could get the upstream RPC to throttle the site,
 which would break the dashboard and Quantum Safe. Keys never pass through
 it. **Action:** limit by origin and rate, or use a keyed RPC upstream.
+**Mitigated:** browsers on other sites are now refused (origin allowlist).
+Non-browser clients can still call it; a keyed upstream remains the full fix.
 
 ### Q-5: Dependency advisories. Low.
 `web/`: astro 5.x has critical advisories (XSS in user-supplied
@@ -71,12 +74,14 @@ renders only its own content, so none is reachable today; upgrade anyway.
 `app/` and `client/`: `bigint-buffer` (via `@solana/spl-token`) can be
 crashed by malformed data; impact is a client-side error, not key loss.
 
-### Q-6: Pool fees are claimable by a hot wallet. Low.
+### Q-6: Pool fees are claimable by a hot wallet. Low. Handled 2026-10-03.
 The project position's fees (2.62 SOL unclaimed on 2026-10-03, mostly
 anti-sniper fees) are claimable by the deployer wallet, which is a normal
 key on the operator's machine. Locked liquidity itself cannot be taken.
 **Action:** claim and move fees to the Squads vault, as LAUNCH.md §3
 commits, and publish the transactions.
+**Done:** 2.620269753 SOL claimed and forwarded to the Squads vault in one
+transaction, tx `4iJGQsCYQ6Ga7wozXSbDhRYG92cMTmcZgq5NnwYyh22NLsVxH6XaEGiUoy2XekiJAwNG578x5Nci6gatdREoV8xx`.
 
 ### I-1: Non-canonical bumps are accepted. Informational.
 The program checks the vault address with the bump from instruction data.

@@ -158,6 +158,8 @@ No private sale. No presale. No inflation.
   multisig (vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`); the plan
   is to set it `--final` after the external audit. It was upgraded once,
   on 2026-10-02, to read the Rent sysvar instead of a hard-coded value.
+  Since 2026-10-03 the multisig has a 24-hour time lock: an approved
+  upgrade waits a day before it can run (tx `whoiuHmoWetoYcRQqgbTq9KfZkfdyVEEGjq9e2wLna7wHGazRi8ASTR2PeyLqRbJuQtxYitWLiD4hXMXEjH3vtw`).
 - Known limits: a spent vault's address must never receive funds again
   (AUDIT F3), and vault owners must only sign spends built by their own
   client (F4).
@@ -190,7 +192,8 @@ No further dates are promised before the audit.
 | Founder vault 2 | `7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz` |
 | Founder vault 3 | `5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG` |
 | Founder vault 4 | `8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd` |
-| Liquidity vault | `9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx` |
+| Liquidity vault (spent 2026-10-02: 22B QC to the pool) | `9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx` |
+| Liquidity vault 2 (holds the remaining 4.378T QC) | `3DquQtE2ikqGRy5bvZiTDTiPnuKr3jFVvogLC2TpxdRL` |
 | QC/SOL pool (Meteora DAMM v2, opens 2026-10-02 15:30 UTC (22:30 WIB)) | `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB` |
 | Airdrop vault | `9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T` |
 | Reserve vault | `3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93` |
