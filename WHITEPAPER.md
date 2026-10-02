@@ -53,7 +53,7 @@ Ed25519-only key ever held it.
 
 ### 3.2 Hybrid vault
 
-Program: Pinocchio (no_std), 6,872 bytes, stateless, one instruction (`Spend`).
+Program: Pinocchio (no_std), 7,456 bytes, stateless, one instruction (`Spend`).
 
 - Vault address = PDA of `["qcv", wots_public_key_hash, owner_ed25519]`. No
   account data is stored.
@@ -101,19 +101,36 @@ because it is a standard Token-2022 mint.
 
 ## 4. Tokenomics
 
+Mainnet allocation, executed 2026-09-29 (`client/allocations-mainnet.json`):
+
 | Allocation | % | QC | Held in | Policy |
 |---|---|---|---|---|
-| Treasury / ecosystem | 45% | 9.9T | Hybrid vault | Grants, integrations, listings; every spend announced publicly |
+| Treasury / ecosystem | 35% | 7.7T | Hybrid vault | Grants, integrations, listings; every spend announced publicly |
 | Liquidity | 20% | 4.4T | Hybrid vault | Paired on Raydium/Orca at launch; LP tokens burned |
 | Airdrop / community | 15% | 3.3T | Hybrid vault | 3–4 waves to real users, with sybil filtering |
-| Founder / team | 10% | 2.2T | Hybrid vault | Locked 12 months, then released monthly over 24 months (public commitment) |
+| Founder / team | 20% | 4.4T | 4 hybrid vaults × 5% | See "Changes" below |
 | Reserve (audit, market making) | 10% | 2.2T | Hybrid vault | Audits, bug bounties, market maker |
 
 All vault addresses are published (section 8). The program has no time-lock,
-so the founder lock is a **public commitment**: anyone can watch the vault
-address, and any spend before the date is visible on-chain.
+so any founder policy is a commitment, not code: every vault movement is
+visible on-chain.
 
 No private sale. No presale. No inflation.
+
+### Changes to this section
+
+- **2026-09-24 (first version):** founder/team 10% (2.2T) in one vault,
+  locked until 2027-09-24, then released monthly over 24 months; treasury 45%.
+- **2026-09-29, at mainnet genesis:** the founder share was raised to 20%,
+  split into four 5% vaults, and the treasury reduced to 35%. This document
+  was not updated at the time; it was corrected on 2026-10-02.
+- **2026-10-02:** founder vault 1 (1.1T QC, 5% of supply) was spent to the
+  founder's wallet `ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m`
+  (txs `28qiAZiGZ8p5MjypoYz35Y96NJfKejhNh9BnGzShESRPTSpxCmdksmwF8JQVMJenMFWG4KPWeudpyCF3C8WXN9wh`,
+  `5NvE815GDStsYGtGEoyyAxZLoWDKCaRJeo9yZc59ydT5L9dLjahEjcrGAJqhzpdkrD1dNEhCYs1DxEsEhk8VGf7W`).
+  This broke the 2027-09-24 lock published in the first version.
+- Founder vaults 2–4 (3.3T QC) have not moved. Their release policy:
+  [to be announced by the founder].
 
 ## 5. Utility
 
@@ -128,11 +145,14 @@ No private sale. No presale. No inflation.
 
 ## 6. Security
 
-- Internal audit and live devnet attack run: 12/12 local tests pass and
-  13/13 on-chain attacks were blocked ([audit/AUDIT.md](audit/AUDIT.md)).
-- **An external audit is required before mainnet.**
-- The mainnet program is deployed with `--final` (not upgradeable). No admin
-  key exists anywhere in the system.
+- Internal audit, live devnet and mainnet attack runs; 27 local tests and a
+  1,633-case mainnet-fork suite pass ([audit/AUDIT.md](audit/AUDIT.md)).
+- **No external audit yet.** Mainnet launched on 2026-09-29 before one,
+  which differs from the earlier plan of auditing first.
+- The program is upgradeable. The upgrade authority is a Squads 2-of-3
+  multisig (vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`); the plan
+  is to set it `--final` after the external audit. It was upgraded once,
+  on 2026-10-02, to read the Rent sysvar instead of a hard-coded value.
 - Known limits: a spent vault's address must never receive funds again
   (AUDIT F3), and vault owners must only sign spends built by their own
   client (F4).
@@ -143,34 +163,37 @@ No private sale. No presale. No inflation.
 |---|---|---|
 | 0 | Program, tests, devnet genesis, internal audit, Codama client | Done |
 | 1 | Allocation vaults on devnet, whitepaper, integration guide | Done |
-| 2 | External audit and fixes | Next |
-| 3 | Mainnet: program `--final`, genesis, allocations, liquidity | After audit |
+| 2 | Mainnet: program (upgradeable, Squads 2-of-3), genesis, allocations | Done 2026-09-29 |
+| 3 | External audit, then `--final`; liquidity | Next |
 | 4 | Quantum Safe web app, airdrop wave 1 | |
 | 5 | Wallet and explorer integrations, grants program | |
 | 6 | Generic hybrid vault for any Token-2022 mint | Research |
 
-No dates are promised before the audit.
+No further dates are promised before the audit.
 
-## 8. Addresses (devnet)
+## 8. Addresses (mainnet)
 
 | | Address |
 |---|---|
 | Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` |
-| QC mint | `BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8` |
-| Treasury vault | `4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381` |
-| Founder vault | `7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6` |
-| Liquidity vault | `5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG` |
-| Airdrop vault | `BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw` |
-| Reserve vault | `3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ` |
-| Bug bounty vault (1B QC) | `D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE` |
+| QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2` |
+| Treasury vault | `Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h` |
+| Founder vault 1 (spent 2026-10-02) | `8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq` |
+| Founder vault 2 | `7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz` |
+| Founder vault 3 | `5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG` |
+| Founder vault 4 | `8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd` |
+| Liquidity vault | `9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx` |
+| Airdrop vault | `9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T` |
+| Reserve vault | `3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93` |
+
+Devnet addresses (test deployment, 10% founder split) are in
+`audit/allocations-devnet.json`.
 
 Launch commitments and runbook: [docs/LAUNCH.md](docs/LAUNCH.md).
-
-Mainnet addresses will be different and published at launch.
 
 ## 9. Risks
 
 QC has no guaranteed value, and most new tokens lose most of their value.
-The program is unaudited until phase 2. Losing either key of a vault locks
+The program has no external audit yet. Losing either key of a vault locks
 those funds forever. Quantum timelines are uncertain. Nothing in this
 document is investment advice.
