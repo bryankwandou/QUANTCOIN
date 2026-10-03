@@ -47,7 +47,7 @@ const isHome = Astro.url.pathname === home(lang);
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
   <a class="brand" href={home(lang)}><img src="/logo.svg" alt="" width="28" height="28">QuantCoin</a>
-  <span class="badge">Devnet</span>
+  <span class="badge">Mainnet</span>
   <nav class="nav" aria-label="Main">{NAV.map(([h, x]) => <a href={h} aria-current={h === current ? "page" : undefined}>{x}</a>)}</nav>
   <div class="tools">
     <label class="lang"><span class="sr">{T("ui.lang")}</span>

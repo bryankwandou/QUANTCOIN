@@ -113,6 +113,17 @@ const shots = [
   <p class="eyebrow reveal">{T("apps.eye")}</p>
   <h2 class="reveal">{T("apps.h")}</h2>
   <p class="lead reveal">{T("apps.lead")}</p>
+  <div class="install reveal" id="install">
+    <h3>{T("inst.h")}</h3>
+    <div class="actions">
+      <a class="btn primary" href="/app/">{T("inst.web")}</a>
+      <a class="btn" href="https://github.com/bryankwandou/QUANTCOIN/releases/download/app-v0.1.0/QuantumSafe-android.apk" download>{T("inst.apk")}</a>
+      <a class="btn" href="https://github.com/bryankwandou/QUANTCOIN/releases/download/app-v0.1.0/QuantumSafe-extension.zip" download>{T("inst.ext")}</a>
+      <a class="btn ghost" href="https://github.com/bryankwandou/QUANTCOIN/releases/download/app-v0.1.0/SHA256SUMS.txt">{T("inst.sums")}</a>
+    </div>
+    <p style="color:var(--muted);margin-top:12px">{T("inst.extnote")}</p>
+    <p style="color:var(--muted)">{T("inst.na")}</p>
+  </div>
   <div class="shots">
     {shots.map(([src, w, h, k, cls]) => <figure class={`tilt reveal ${cls}`}><img src={src} alt={T(k)} width={w} height={h} loading="lazy"><figcaption>{T(k)}</figcaption></figure>)}
   </div>
