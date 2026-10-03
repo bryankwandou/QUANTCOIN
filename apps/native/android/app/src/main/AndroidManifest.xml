@@ -1,6 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Release builds get no INTERNET permission unless it is declared here. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- allowBackup off: keystore-encrypted keys cannot be restored on another
+         device, and a restored passcode hash would not match them. -->
     <application
-        android:label="quantum_safe"
+        android:label="Quantum Safe"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -50,7 +50,14 @@ class KeyStore {
 
   Future<Keys?> load() async {
     final v = await _s.read(key: _k);
-    return v == null ? null : Keys.fromJson(jsonDecode(v) as Map<String, dynamic>);
+    if (v == null) return null;
+    final k = Keys.fromJson(jsonDecode(v) as Map<String, dynamic>);
+    // Stopped before the one-time signature left the device: nothing to finish.
+    if (k.pending != null && k.vault.signed == null) {
+      k.pending = null;
+      await save(k);
+    }
+    return k;
   }
 
   Future<void> save(Keys k) => _s.write(key: _k, value: jsonEncode(k.toJson()));
@@ -66,7 +73,9 @@ class KeyStore {
   /// A vault file written by the QC CLI (client/keys/vault-*.json). A used key is refused.
   Future<Keys> importCli(String json, {EdKey? payer}) async {
     final v = VaultKeys.fromCli(json);
-    if (v.signed != null) throw StateError('This key already signed a transfer. Import the vault it rotated to.');
+    if (v.signed != null || (jsonDecode(json) as Map<String, dynamic>)['used'] == true) {
+      throw StateError('This key already signed a transfer. Import the vault it rotated to.');
+    }
     final k = Keys(payer ?? EdKey.fresh(), v);
     await save(k);
     return k;
@@ -74,28 +83,39 @@ class KeyStore {
 
   /// Sends [amount] to [recipient]. The remainder rotates to fresh keys, which
   /// become the vault. Everything is saved before anything is broadcast.
+  /// A send that fails before its one-time signature is broadcast is dropped,
+  /// so a typo can be corrected; after that it can only be finished.
   Future<String> send(Keys k, Chain chain, String recipient, BigInt amount, {void Function(SendStep)? onStep}) async {
     k.pending ??= Pending(recipient, amount, VaultKeys.fresh(k.vault.owner));
     final p = k.pending!;
     if (p.recipient != recipient || p.amount != amount) {
       throw StateError('Finish the unfinished transfer first.');
     }
-    final sig = await sendQc(
-      chain: chain, payer: k.payer, from: k.vault, next: p.next, recipient: recipient, amount: amount,
-      persist: () => save(k), onStep: onStep,
-    );
-    await _finish(k);
-    return sig;
+    try {
+      final sig = await sendQc(
+        chain: chain, payer: k.payer, from: k.vault, next: p.next, recipient: recipient, amount: amount,
+        persist: () => save(k), onStep: onStep,
+      );
+      await _finish(k);
+      return sig;
+    } catch (_) {
+      if (k.vault.signed == null) {
+        k.pending = null;
+        await save(k);
+      }
+      rethrow;
+    }
   }
 
-  /// After a crash: if the spend already landed, the next vault holds the funds.
+  /// After a crash or a confirm timeout: the spend landed iff the old vault is
+  /// now the program-owned spent marker. The next vault's balance is no proof:
+  /// sending the whole balance leaves it empty, and the app would then keep
+  /// showing the spent vault, whose address locks anything sent to it.
   Future<bool> settleIfLanded(Keys k, Chain chain) async {
-    final p = k.pending;
-    if (p == null) return false;
-    final ta = await p.next.vaultTokenAccount();
+    if (k.pending == null) return false;
     try {
-      if (await chain.balance([ta]) > BigInt.zero) { await _finish(k); return true; }
-    } on ChainError { /* account not created yet */ }
+      if (await chain.accountOwner((await k.vault.vault()).$1) == qcProgram) { await _finish(k); return true; }
+    } on ChainError { /* RPC unreachable; checked again on next load */ }
     return false;
   }
 

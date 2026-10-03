@@ -32,11 +32,19 @@ Future<void> main() async {
   runApp(QuantumSafe(prefs: prefs));
 }
 
-/// Fingerprint / face / device PIN before a send. Replaceable in tests,
-/// where no OS authenticator exists.
-Future<bool> Function(String reason) deviceAuth = (reason) async {
+/// mobile_scanner has no Windows/Linux implementation: there the scan button is
+/// hidden and the address is pasted or typed instead.
+bool get scanSupported => kIsWeb || const {
+      TargetPlatform.android, TargetPlatform.iOS, TargetPlatform.macOS,
+    }.contains(defaultTargetPlatform);
+
+/// Fingerprint / face / device PIN before a send. Null when there is no OS
+/// authenticator (web, or a device without a screen lock): the caller then asks
+/// for the app passcode again. Replaceable in tests.
+Future<bool?> Function(String reason) deviceAuth = (reason) async {
+  if (kIsWeb) return null;
   final auth = LocalAuthentication();
-  if (!await auth.isDeviceSupported()) return true; // passcode already gated the app
+  if (!await auth.isDeviceSupported()) return null;
   return auth.authenticate(localizedReason: reason);
 };
 
@@ -44,7 +52,8 @@ class AppState extends ChangeNotifier {
   AppState(this.prefs)
       : mode = ThemeMode.values[prefs.getInt('theme') ?? 0],
         lang = prefs.getString('lang') ?? 'en',
-        network = prefs.getString('network') ?? 'devnet',
+        // Release builds only ever talk to mainnet; devnet is for debug builds.
+        network = kReleaseMode ? 'mainnet' : prefs.getString('network') ?? 'mainnet',
         vault = prefs.getString('vault');
   final SharedPreferences prefs;
   ThemeMode mode;
@@ -66,7 +75,27 @@ class AppState extends ChangeNotifier {
   // Passcode is stored only as sha256(salt + code).
   bool get hasCode => prefs.getString('codeHash') != null;
   String _hash(String salt, String code) => sha256.convert(utf8.encode(salt + code)).toString();
-  bool checkCode(String code) => _hash(prefs.getString('codeSalt')!, code) == prefs.getString('codeHash');
+  // Five wrong codes in a row lock the keypad: 30 s, doubling per further miss, at most an hour.
+  // On a device without biometrics the passcode is the only gate before a send.
+  Duration get codeLock {
+    final ms = (prefs.getInt('codeLockUntil') ?? 0) - DateTime.now().millisecondsSinceEpoch;
+    return ms > 0 ? Duration(milliseconds: ms) : Duration.zero;
+  }
+
+  bool checkCode(String code) {
+    if (codeLock > Duration.zero) return false;
+    if (_hash(prefs.getString('codeSalt')!, code) == prefs.getString('codeHash')) {
+      prefs.remove('codeFails');
+      return true;
+    }
+    final fails = (prefs.getInt('codeFails') ?? 0) + 1;
+    prefs.setInt('codeFails', fails);
+    if (fails >= 5) {
+      final secs = min(30 << min(fails - 5, 7), 3600);
+      prefs.setInt('codeLockUntil', DateTime.now().millisecondsSinceEpoch + secs * 1000);
+    }
+    return false;
+  }
   void setCode(String code) {
     final r = Random.secure();
     final salt = base64Url.encode(List.generate(16, (_) => r.nextInt(256)));
@@ -290,7 +319,9 @@ class _UnlockScreenState extends State<UnlockScreen> with SingleTickerProviderSt
                 const Coin(size: 56),
                 const SizedBox(height: 16),
                 Text(wrong
-                        ? s.t(s.hasCode ? 'wrong' : 'mismatch')
+                        ? (s.codeLock > Duration.zero
+                            ? '${s.t('wrong')} · ${s.t('tryIn', n: s.codeLock.inSeconds + 1)}'
+                            : s.t(s.hasCode ? 'wrong' : 'mismatch'))
                         : s.t(s.hasCode ? 'unlock' : (first == null ? 'setCode' : 'confirmCode')),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: wrong ? t.danger : t.text)),
                 const SizedBox(height: 20),
@@ -632,7 +663,7 @@ class _SendPageState extends State<SendPage> {
               filled: true,
               fillColor: t.surface,
               hintText: 'Solana address',
-              suffixIcon: IconButton(icon: Icon(Icons.qr_code_scanner, color: t.accent), tooltip: s.t('scan'), onPressed: _scan),
+              suffixIcon: scanSupported ? IconButton(icon: Icon(Icons.qr_code_scanner, color: t.accent), tooltip: s.t('scan'), onPressed: _scan) : null,
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: err != null ? t.danger : t.line)),
               focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: err != null ? t.danger : t.accent, width: 2)),
             ),
@@ -723,10 +754,38 @@ class _SendPageState extends State<SendPage> {
     ));
     if (ok != true) return false;
     try {
-      return await deviceAuth(s.t('confirm'));
-    } catch (_) {
+      return await deviceAuth(s.t('confirm')) ?? await _askCode(s);
+    } catch (e) {
+      // Say why: a silent failure here looks like the Send button is broken.
+      if (mounted) setState(() => _msg = '$e');
       return false;
     }
+  }
+
+  /// The app passcode, asked again right before a send when there is no
+  /// fingerprint/face/device PIN to ask instead. Same lockout as the unlock screen.
+  Future<bool> _askCode(AppState s) async {
+    if (!s.hasCode) return true;
+    final c = TextEditingController();
+    final code = await showDialog<String>(context: context, builder: (d) => AlertDialog(
+      title: Text(s.t('unlock')),
+      content: TextField(
+        controller: c, autofocus: true, obscureText: true, maxLength: 6,
+        keyboardType: TextInputType.number, inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        onSubmitted: (v) => Navigator.pop(d, v),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(d), child: Text(s.t('cancel'))),
+        FilledButton(onPressed: () => Navigator.pop(d, c.text), child: Text(s.t('confirm'))),
+      ],
+    ));
+    if (code == null) return false;
+    if (s.checkCode(code)) return true;
+    final wait = s.codeLock;
+    if (mounted) {
+      setState(() => _msg = wait > Duration.zero ? s.t('tryIn').replaceAll('{n}', '${wait.inSeconds}') : s.t('wrong'));
+    }
+    return false;
   }
 
   Future<void> _send(AppState s) async {
@@ -745,6 +804,12 @@ class _SendPageState extends State<SendPage> {
       if (mounted) setState(() { _done = sig; addr.clear(); amt.clear(); check = AddrCheck.empty; });
     } catch (e) {
       if (mounted) setState(() => _msg = '$e');
+      // A confirm timeout, or a resume after the spend already landed (AlreadySpent),
+      // still means the funds moved: switch to the next vault right away.
+      if (await _store!.settleIfLanded(k, Chain(s.network, rpc: s.rpc))) {
+        await _adopt(s, k);
+        if (mounted) setState(() => _msg = null);
+      }
     }
     if (mounted) setState(() => _step = null);
   }
@@ -776,7 +841,7 @@ class _SendPageState extends State<SendPage> {
         future: k.payer.address(),
         builder: (c, a) => note('${s.t('feeKey')}: ${a.data ?? '…'}\n'
             '${_feeSol == null ? '…' : (_feeSol! / 1e9).toStringAsFixed(4)} SOL'
-            '${_feeSol == 0 ? '\n${s.t('needSol')}' : ''}'),
+            '${(_feeSol ?? 1 << 30) < 5000000 ? '\n${s.t('needSol')}' : ''}'),
       ),
       if (pending != null) note('${s.t('unfinished')}: ${fmtUnits(pending.amount)} QC → ${pending.recipient}', color: t.accent),
       if (amount != null && s.balance != null && amount > s.balance!) note(s.t('tooMuch'), color: t.danger),
@@ -926,7 +991,7 @@ class _VaultPageState extends State<VaultPage> {
               fillColor: t.surface,
               hintText: 'Solana address',
               errorText: bad ? s.t(check == AddrCheck.ethereum ? 'ethAddr' : 'badAddr') : null,
-              suffixIcon: IconButton(icon: Icon(Icons.qr_code_scanner, color: t.accent), tooltip: s.t('scan'), onPressed: _scan),
+              suffixIcon: scanSupported ? IconButton(icon: Icon(Icons.qr_code_scanner, color: t.accent), tooltip: s.t('scan'), onPressed: _scan) : null,
             ),
           ),
           const SizedBox(height: 16),
@@ -966,7 +1031,7 @@ class SettingsPage extends StatelessWidget {
           Text(s.t('network'), style: TextStyle(color: t.muted, fontSize: 12)),
           const SizedBox(height: 8),
           SegmentedButton<String>(
-            segments: [for (final n in Chain.networks.keys) ButtonSegment(value: n, label: Text(n))],
+            segments: [for (final n in Chain.networks.keys) if (!kReleaseMode || n == 'mainnet') ButtonSegment(value: n, label: Text(n))],
             selected: {s.network},
             onSelectionChanged: (v) => s.setNetwork(v.first),
           ),

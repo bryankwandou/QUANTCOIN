@@ -81,5 +81,15 @@ String findProgramAddress(List<List<int>> seeds, String programId) => findProgra
 const token2022 = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb';
 const ataProgram = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
 
+const tokenProgram = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
+
+/// An address as its 32 bytes. Anything else is refused: a truncated address
+/// is often still valid base58, and padding it would name an account nobody owns.
+Uint8List pubkey(String s) {
+  final b = b58decode(s);
+  if (b.length != 32) throw FormatException('not a 32-byte address: $s');
+  return b;
+}
+
 String associatedTokenAddress(String owner, String mint) =>
-    findProgramAddress([b58decode(owner), b58decode(token2022), b58decode(mint)], ataProgram);
+    findProgramAddress([pubkey(owner), pubkey(token2022), pubkey(mint)], ataProgram);
