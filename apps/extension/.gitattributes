@@ -1,0 +1,2 @@
+# LF everywhere so the packed extension is byte-identical on Windows, macOS and Linux
+* text=auto eol=lf
