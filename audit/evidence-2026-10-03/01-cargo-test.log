@@ -1,0 +1,67 @@
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:287:9
+    |
+287 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+warning: `qc-vault` (lib test) generated 1 warning (1 duplicate)
+    Finished `release` profile [optimized] target(s) in 8m 14s
+     Running unittests src\lib.rs (target\release\deps\qc_vault-71c95b290e140212.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\fuzz.rs (target\release\deps\fuzz-0fab6d9c103bbeb6.exe)
+
+running 14 tests
+test f9_decoy_vault_token_account_is_refused ... ok
+test m1_replay_on_second_token_account_is_refused ... ok
+test destination_owned_by_same_vault_is_accepted ... ok
+test differential_sign_verify ... ok
+test prop_max_steps_is_6375 ... ok
+test prop_checksum_no_domination ... ok
+test prop_seed_layout_injective ... ok
+test prefunded_vault_pda_still_spends ... ok
+test rejects_fake_system_program ... ok
+test transfer_fee_mint_blocks_spend_until_harvest ... ok
+test compute_worst_case_measured ... ok
+test fuzz_account_substitution ... ok
+test fuzz_parser_random_data has been running for over 60 seconds
+test fuzz_signature_mutations has been running for over 60 seconds
+test fuzz_signature_mutations ... ok
+test fuzz_parser_random_data ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 247.30s
+
+     Running tests\vault.rs (target\release\deps\vault-06c7824cb326aa20.exe)
+
+running 13 tests
+test rejects_duplicate_accounts ... ok
+test rejects_missing_owner_signature ... ok
+test rejects_replay_after_spend ... ok
+test spend_fits_one_packet ... ok
+test rejects_tampered_signature_and_seed ... ok
+test rejects_overspend ... ok
+test rejects_changed_amount ... ok
+test wots_roundtrip_and_tamper ... ok
+test rejects_redirected_destination ... ok
+test genesis_supply_spend_and_rotate ... ok
+test rejects_wrong_owner ... ok
+test rejects_wrong_token_program ... ok
+test spends_to_fresh_rent_receiver_at_any_rent ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.75s
+
+   Doc-tests qc_vault
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+EXIT=0 DUR=959s

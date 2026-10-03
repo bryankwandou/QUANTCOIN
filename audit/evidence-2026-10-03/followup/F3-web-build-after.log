@@ -1,0 +1,39 @@
+
+> build
+> astro build && node scripts/postbuild.mjs
+
+[2m00.09.43[22m [34m[vite][39m Re-optimizing dependencies because lockfile has changed
+[2m00.09.44[22m [34m[vite][39m [optimizer] bundling dependencies...
+[2m00.09.56[22m [34m[types][39m Generated [2m14.03s[22m
+[2m00.09.56[22m [34m[build][39m output: [34m"static"[39m
+[2m00.09.56[22m [34m[build][39m mode: [34m"static"[39m
+[2m00.09.56[22m [34m[build][39m directory: [34mE:\000VSCODE PROJECT MULAI DARI DESEMBER 2025\QUANTCOIN\web\dist\[39m
+[2m00.09.56[22m [34m[build][39m Collecting build info...
+[2m00.09.56[22m [34m[build][39m [32m✓ Completed in 33.10s.[39m
+[2m00.09.56[22m [34m[build][39m Building static entrypoints...
+[2m00.10.02[22m [34m[vite][39m [32m✓ built in 5.28s[39m
+[2m00.10.04[22m [34m[vite][39m [32m✓ built in 2.76s[39m
+[2m00.10.05[22m [34m[build][39m Rearranging server assets...
+
+[42m[30m generating static routes [39m[49m
+[2m00.10.05[22m   [34m├─[39m [2m/whitepaper/index.html[22m [2m(+374ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/launch/index.html[22m [2m(+44ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/docs/index.html[22m [2m(+242ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/audit/index.html[22m [2m(+214ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/id/index.html[22m [2m(+30ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/es/index.html[22m [2m(+23ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/pt/index.html[22m [2m(+78ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/fr/index.html[22m [2m(+204ms)[22m 
+[2m00.10.06[22m   [34m├─[39m [2m/de/index.html[22m [2m(+113ms)[22m 
+[2m00.10.07[22m   [34m├─[39m [2m/ja/index.html[22m [2m(+127ms)[22m 
+[2m00.10.07[22m   [34m├─[39m [2m/zh/index.html[22m [2m(+27ms)[22m 
+[2m00.10.07[22m   [34m├─[39m [2m/ko/index.html[22m [2m(+6ms)[22m 
+[2m00.10.07[22m   [34m├─[39m [2m/ru/index.html[22m [2m(+48ms)[22m 
+[2m00.10.07[22m   [34m├─[39m [2m/index.html[22m [2m(+128ms)[22m 
+[2m00.10.07[22m [32m✓ Completed in 2.10s.
+[39m
+[2m00.10.07[22m [34m[build][39m [32m✓ Completed in 11.06s.[39m
+[2m00.10.07[22m [34m[build][39m 14 page(s) built in [1m44.25s[22m
+[2m00.10.07[22m [34m[build][39m [1mComplete![22m
+[postbuild] copied app/, transparency/ and api/
+EXIT=0

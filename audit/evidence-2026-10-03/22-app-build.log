@@ -1,0 +1,24 @@
+[36mvite v8.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 495 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.47 kB │ gzip:   0.30 kB
+dist/assets/index-BaQgXJFH.css    6.78 kB │ gzip:   1.95 kB
+dist/assets/esm-BSJQjtC2.js      30.32 kB │ gzip:   6.57 kB
+dist/assets/index-J-1EkQ6I.js   691.35 kB │ gzip: 212.90 kB
+
+[32m✓ built in 45.24s[39m
+[33m[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[33m[33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 42.4s of this 45.1s build (94%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+  - plugin vite:css transform (89%, 40.3s, 2 calls)
+  - plugin vite:css-post renderChunk (4%, 1.7s, 2 calls)
+Additional callback time came from callbacks under 1s.
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+[39m
+EXIT=0 DUR=71s

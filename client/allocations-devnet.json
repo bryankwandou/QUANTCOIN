@@ -1,0 +1,32 @@
+{
+  "alloc-founder": {
+    "vault": "7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6",
+    "tokenAccount": "3vYAe7m93Cd9F6SN4LyJsBQyXQSyftHqPoXJxSXZ3tBK",
+    "balance": "2200000000000",
+    "tx": "3JDxZMeqpKEXNcvi1yqMenBmGsUgL7w1irodD4WzYh1BxoE5ghabTtpn33SDqUN4ne9ievxbb7UD7zekLHJyBos8"
+  },
+  "alloc-liquidity": {
+    "vault": "5XQwp25eTH3GoyewvrifzjfTzyKtYKBDzNyrpveX7wqG",
+    "tokenAccount": "CaocTaAG3ihgerVjojN4oo8w5ZdBEer1L3RWgZDJ6XPG",
+    "balance": "4400000000000",
+    "tx": "6DYy3mpgGKH1dqmADUFaU4934PAk8VC9ZvFjicTNuLfHA5gtg5kxXvoqwz1Ro4kxcHkyyYAPywrGqNdt1WVnbkW"
+  },
+  "alloc-airdrop": {
+    "vault": "BxnfUURSJxChjWUDSDE46Not5Bp8Z7ZJr3sykL8EWqTw",
+    "tokenAccount": "HW3Y7uLnHeqFMRcE89CgN5c7i3QwPsck3PuEWcaPhtkd",
+    "balance": "3300000000000",
+    "tx": "usoUwi4Epsb6awehoVsXMhPg7C7AbTsj35dDGr31smp6Y1JffCPmmSbgZDv1xGVZ5QoZ7ei4gdUij2ZVFbagf4X"
+  },
+  "alloc-reserve": {
+    "vault": "4wdqvoXevFCoAnSKPUJBKA33DDjszqFh383z7XpxiTSn",
+    "tokenAccount": "Au2Yrp9VxxoUiJNYsFPxgrt5zQuujX2kVBTGNUTiGEDj",
+    "balance": "2200000000000",
+    "tx": "42HLvStxTmLRDH5HbmYfzKJ8xYreM9CmRMZuuYWbMbqsqd4MkCWnomQo6FjCc42biErLWqAx42HhLfT8d17SPQTZ"
+  },
+  "treasury": {
+    "name": "treasury-8",
+    "vault": "4JKL7XW85FpAD8cu5jE2ZQHWQ5duhrv2LaCpQPxW3381",
+    "tokenAccount": "9WwJgAPzPmk5pwmyoQAtQRkNHKJbfoCC4fdUkufKK4ZP",
+    "balance": "9899997999000"
+  }
+}

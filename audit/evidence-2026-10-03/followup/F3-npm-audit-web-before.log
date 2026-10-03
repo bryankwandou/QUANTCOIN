@@ -1,0 +1,46 @@
+# npm audit report
+
+astro  *
+Severity: critical
+Astro: XSS in define:vars via incomplete </script> tag sanitization - https://github.com/advisories/GHSA-j687-52p2-xcff
+Astro: Server island encrypted parameters vulnerable to cross-component replay - https://github.com/advisories/GHSA-xr5h-phrj-8vxv
+Astro: XSS via Unescaped Attribute Names in Spread Props - https://github.com/advisories/GHSA-jrpj-wcv7-9fh9
+Astro: XSS via unescaped spread attribute names in renderHTMLElement (incomplete fix for CVE-2026-54298) - https://github.com/advisories/GHSA-f48w-9m4c-m7f5
+Astro: Cross-site scripting via unescaped transition:* directive values on hydrated islands - https://github.com/advisories/GHSA-7pw4-f3q4-r2p2
+Astro: Reflected XSS via unescaped View Transition animation properties - https://github.com/advisories/GHSA-4g3v-8h47-v7g6
+Astro: Host header SSRF in prerendered error page fetch - https://github.com/advisories/GHSA-2pvr-wf23-7pc7
+Astro: Reflected XSS via unescaped slot name - https://github.com/advisories/GHSA-8hv8-536x-4wqp
+Astro: Remote code execution through AVIF image optimization - https://github.com/advisories/GHSA-26w7-cxv4-gfx2
+Astro: Authorization bypass from missing path-segment boundary check when stripping the configured base - https://github.com/advisories/GHSA-376h-93r7-7g6f
+Depends on vulnerable versions of esbuild
+Depends on vulnerable versions of http-cache-semantics
+Depends on vulnerable versions of sharp
+fix available via `npm audit fix --force`
+Will install astro@7.3.5, which is a breaking change
+node_modules/astro
+
+esbuild  0.27.3 - 0.28.0
+esbuild allows arbitrary file read when running the development server on Windows - https://github.com/advisories/GHSA-g7r4-m6w7-qqqr
+fix available via `npm audit fix --force`
+Will install astro@7.3.5, which is a breaking change
+node_modules/esbuild
+
+http-cache-semantics  *
+Severity: high
+http-cache-semantics max-stale handling can disclose cross-user cached responses - https://github.com/advisories/GHSA-ch52-4w7c-c8xp
+fix available via `npm audit fix --force`
+Will install astro@7.3.5, which is a breaking change
+node_modules/http-cache-semantics
+
+sharp  <=0.35.4-rc.0
+Severity: high
+sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591 - https://github.com/advisories/GHSA-f88m-g3jw-g9cj
+sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545 - https://github.com/advisories/GHSA-rgj7-g3m4-5g8c
+fix available via `npm audit fix --force`
+Will install astro@7.3.5, which is a breaking change
+node_modules/sharp
+
+4 vulnerabilities (1 low, 2 high, 1 critical)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force

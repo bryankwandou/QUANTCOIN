@@ -1,0 +1,48 @@
+
+> build
+> astro build && node scripts/postbuild.mjs
+
+[2m14.42.22[22m [34m[content][39m Syncing content
+[2m14.42.23[22m [34m[content][39m Synced content
+[2m14.42.23[22m [34m[types][39m Generated [2m669ms[22m
+[2m14.42.23[22m [34m[build][39m output: [34m"static"[39m
+[2m14.42.23[22m [34m[build][39m mode: [34m"static"[39m
+[2m14.42.23[22m [34m[build][39m directory: [34mE:\000VSCODE PROJECT MULAI DARI DESEMBER 2025\QUANTCOIN\web\dist\[39m
+[2m14.42.23[22m [34m[build][39m Collecting build info...
+[2m14.42.23[22m [34m[build][39m [32m✓ Completed in 902ms.[39m
+[2m14.42.23[22m [34m[build][39m Building static entrypoints...
+[2m14.42.40[22m [34m[vite][39m [32m✓ built in 16.22s[39m
+[2m14.42.40[22m [34m[build][39m [32m✓ Completed in 16.77s.[39m
+
+[42m[30m building client (vite) [39m[49m
+[2m14.42.40[22m [34m[vite][39m transforming...
+[2m14.42.48[22m [34m[vite][39m [32m✓[39m 4 modules transformed.
+[2m14.42.50[22m [34m[vite][39m rendering chunks...
+[2m14.42.50[22m [34m[vite][39m computing gzip size...
+[2m14.42.50[22m [34m[vite][39m [2mdist/[22m[36m_astro/Landing.astro_astro_type_script_index_0_lang.CR6YUlNZ.js  [39m[1m[2m481.45 kB[22m[1m[22m[2m │ gzip: 122.46 kB[22m
+[2m14.42.50[22m [34m[vite][39m [32m✓ built in 10.09s[39m
+
+[42m[30m generating static routes [39m[49m
+[2m14.42.50[22m [32m▶[39m src/pages/[doc].astro
+[2m14.42.50[22m   [34m├─[39m [2m/whitepaper/index.html[22m [2m(+179ms)[22m 
+[2m14.42.50[22m   [34m├─[39m [2m/launch/index.html[22m [2m(+96ms)[22m 
+[2m14.42.50[22m   [34m├─[39m [2m/docs/index.html[22m [2m(+206ms)[22m 
+[2m14.42.51[22m   [34m└─[39m [2m/audit/index.html[22m [2m(+35ms)[22m 
+[2m14.42.51[22m [32m▶[39m src/pages/[lang]/index.astro
+[2m14.42.51[22m   [34m├─[39m [2m/id/index.html[22m [2m(+30ms)[22m 
+[2m14.42.51[22m   [34m├─[39m [2m/es/index.html[22m [2m(+98ms)[22m 
+[2m14.42.51[22m   [34m├─[39m [2m/pt/index.html[22m [2m(+183ms)[22m 
+[2m14.42.51[22m   [34m├─[39m [2m/fr/index.html[22m [2m(+104ms)[22m 
+[2m14.42.51[22m   [34m├─[39m [2m/de/index.html[22m [2m(+402ms)[22m 
+[2m14.42.52[22m   [34m├─[39m [2m/ja/index.html[22m [2m(+86ms)[22m 
+[2m14.42.52[22m   [34m├─[39m [2m/zh/index.html[22m [2m(+54ms)[22m 
+[2m14.42.52[22m   [34m├─[39m [2m/ko/index.html[22m [2m(+104ms)[22m 
+[2m14.42.52[22m   [34m└─[39m [2m/ru/index.html[22m [2m(+70ms)[22m 
+[2m14.42.52[22m [32m▶[39m src/pages/index.astro
+[2m14.42.52[22m   [34m└─[39m [2m/index.html[22m [2m(+216ms)[22m 
+[2m14.42.52[22m [32m✓ Completed in 2.38s.
+[39m
+[2m14.42.52[22m [34m[build][39m 14 page(s) built in [1m30.28s[22m
+[2m14.42.52[22m [34m[build][39m [1mComplete![22m
+[postbuild] copied app/, transparency/ and api/
+EXIT=0 DUR=346s

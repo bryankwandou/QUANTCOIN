@@ -1707,6 +1707,7 @@ dependencies = [
  "solana-instruction",
  "solana-keypair",
  "solana-message",
+ "solana-rent",
  "solana-signer",
  "solana-system-interface",
  "solana-transaction",

@@ -1,0 +1,4 @@
+keys/*.pem
+dist/
+node_modules/
+release/

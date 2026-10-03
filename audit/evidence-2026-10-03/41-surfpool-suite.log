@@ -1,0 +1,59 @@
+payer J2k9Dtz9rhrEddeArsyCieApm5ykxbek7S31eeVbUrqp SOL 1000
+[10:51:21] 100 tests, 0 failed, now G3 fuzz
+[10:52:03] 200 tests, 0 failed, now G3 fuzz
+[10:52:36] 300 tests, 0 failed, now G3 fuzz
+{
+  "total": 394,
+  "passed": 394,
+  "failed": 0,
+  "byGroup": {
+    "G0 fork": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G1 spend": {
+      "pass": 30,
+      "fail": 0
+    },
+    "G2 overspend": {
+      "pass": 4,
+      "fail": 0
+    },
+    "G3 fuzz": {
+      "pass": 256,
+      "fail": 0
+    },
+    "G4 replay": {
+      "pass": 16,
+      "fail": 0
+    },
+    "G5 transplant": {
+      "pass": 6,
+      "fail": 0
+    },
+    "G6 concurrency": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G7 compute": {
+      "pass": 1,
+      "fail": 0
+    },
+    "G8 mainnet data": {
+      "pass": 72,
+      "fail": 0
+    },
+    "G9 F9": {
+      "pass": 3,
+      "fail": 0
+    }
+  },
+  "compute": {
+    "spends": 39,
+    "min": 439701,
+    "median": 573786,
+    "max": 868881,
+    "cap": 1400000
+  }
+}
+EXIT=0 DUR=452s

@@ -1,0 +1,145 @@
+# npm audit report
+
+bigint-buffer  *
+Severity: high
+bigint-buffer Vulnerable to Buffer Overflow via toBigIntLE() Function - https://github.com/advisories/GHSA-3gc7-fjrx-p6mg
+fix available via `npm audit fix --force`
+Will install @solana/spl-token@0.1.8, which is a breaking change
+node_modules/bigint-buffer
+  @solana/buffer-layout-utils  *
+  Depends on vulnerable versions of @solana/web3.js
+  Depends on vulnerable versions of bigint-buffer
+  node_modules/@solana/buffer-layout-utils
+    @solana/spl-token  *
+    Depends on vulnerable versions of @solana/buffer-layout-utils
+    Depends on vulnerable versions of @solana/spl-token-group
+    Depends on vulnerable versions of @solana/spl-token-metadata
+    Depends on vulnerable versions of @solana/web3.js
+    node_modules/@solana/spl-token
+
+braces  *
+Severity: high
+braces vulnerable to stack-exhaustion denial of service through deeply nested patterns - https://github.com/advisories/GHSA-vfj7-8cjw-p6xm
+No fix available
+node_modules/braces
+  micromatch  >=0.2.0
+  Depends on vulnerable versions of braces
+  node_modules/micromatch
+    metro-file-map  *
+    Depends on vulnerable versions of micromatch
+    node_modules/metro-file-map
+      metro  >=0.71.0
+      Depends on vulnerable versions of metro-config
+      Depends on vulnerable versions of metro-file-map
+      Depends on vulnerable versions of metro-transform-worker
+      node_modules/metro
+        @react-native/community-cli-plugin  *
+        Depends on vulnerable versions of metro
+        node_modules/@react-native/community-cli-plugin
+          react-native  >=0.73.0-nightly-20230506-1af868c52
+          Depends on vulnerable versions of @react-native/community-cli-plugin
+          Depends on vulnerable versions of @react-native/virtualized-lists
+          node_modules/react-native
+            @react-native/virtualized-lists  >=0.85.0-nightly-20260108-1236b6be4
+            Depends on vulnerable versions of react-native
+            node_modules/@react-native/virtualized-lists
+            @solana-mobile/mobile-wallet-adapter-protocol  <=0.0.0-canary-20260910202749 || >=2.2.6
+            Depends on vulnerable versions of react-native
+            node_modules/@solana-mobile/mobile-wallet-adapter-protocol
+              @solana-mobile/mobile-wallet-adapter-protocol-web3js  *
+              Depends on vulnerable versions of @solana-mobile/mobile-wallet-adapter-protocol
+              Depends on vulnerable versions of @solana/web3.js
+              node_modules/@solana-mobile/mobile-wallet-adapter-protocol-web3js
+              @solana-mobile/wallet-standard-mobile  <=0.0.0-canary-20260910202749 || >=0.5.0-beta1
+              Depends on vulnerable versions of @solana-mobile/mobile-wallet-adapter-protocol
+              node_modules/@solana-mobile/wallet-standard-mobile
+                @solana-mobile/wallet-adapter-mobile  *
+                Depends on vulnerable versions of @solana-mobile/mobile-wallet-adapter-protocol
+                Depends on vulnerable versions of @solana-mobile/mobile-wallet-adapter-protocol-web3js
+                Depends on vulnerable versions of @solana-mobile/wallet-standard-mobile
+                Depends on vulnerable versions of @solana/wallet-adapter-base
+                Depends on vulnerable versions of @solana/web3.js
+                Depends on vulnerable versions of react-native
+                node_modules/@solana-mobile/wallet-adapter-mobile
+                  @solana/wallet-adapter-react  *
+                  Depends on vulnerable versions of @solana-mobile/wallet-adapter-mobile
+                  Depends on vulnerable versions of @solana/wallet-adapter-base
+                  Depends on vulnerable versions of @solana/wallet-standard-wallet-adapter-react
+                  Depends on vulnerable versions of @solana/web3.js
+                  node_modules/@solana/wallet-adapter-react
+        metro-config  >=0.71.0
+        Depends on vulnerable versions of metro
+        node_modules/metro-config
+        metro-transform-worker  >=0.71.0
+        Depends on vulnerable versions of metro
+        node_modules/metro-transform-worker
+
+stream-json  <=3.4.0
+Severity: moderate
+stream-json: pick/ignore/filter/replace filters are O(depth²) on nested input — small crafted JSON blocks the event loop for seconds→minutes (DoS) - https://github.com/advisories/GHSA-528h-pc64-c93x
+No fix available
+node_modules/stream-json
+  jayson  2.0.6 - 4.3.0
+  Depends on vulnerable versions of stream-json
+  Depends on vulnerable versions of uuid
+  node_modules/jayson
+    @solana/web3.js  <=0.0.0-pr-29130 || 0.0.4 - 1.99.0
+    Depends on vulnerable versions of jayson
+    node_modules/@solana/web3.js
+      @solana/spl-token-group  *
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/spl-token-group
+      @solana/spl-token-metadata  *
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/spl-token-metadata
+      @solana/wallet-adapter-base  *
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/wallet-adapter-base
+        @solana/wallet-standard-wallet-adapter-react  *
+        Depends on vulnerable versions of @solana/wallet-adapter-base
+        Depends on vulnerable versions of @solana/wallet-standard-wallet-adapter-base
+        node_modules/@solana/wallet-standard-wallet-adapter-react
+      @solana/wallet-adapter-base-ui  *
+      Depends on vulnerable versions of @solana/wallet-adapter-react
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/wallet-adapter-base-ui
+        @solana/wallet-adapter-react-ui  *
+        Depends on vulnerable versions of @solana/wallet-adapter-base
+        Depends on vulnerable versions of @solana/wallet-adapter-base-ui
+        Depends on vulnerable versions of @solana/wallet-adapter-react
+        Depends on vulnerable versions of @solana/web3.js
+        node_modules/@solana/wallet-adapter-react-ui
+      @solana/wallet-adapter-phantom  *
+      Depends on vulnerable versions of @solana/wallet-adapter-base
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/wallet-adapter-phantom
+      @solana/wallet-adapter-solflare  *
+      Depends on vulnerable versions of @solana/wallet-adapter-base
+      Depends on vulnerable versions of @solana/web3.js
+      Depends on vulnerable versions of @solflare-wallet/sdk
+      node_modules/@solana/wallet-adapter-solflare
+      @solana/wallet-standard-wallet-adapter-base  *
+      Depends on vulnerable versions of @solana/wallet-adapter-base
+      Depends on vulnerable versions of @solana/web3.js
+      node_modules/@solana/wallet-standard-wallet-adapter-base
+
+uuid  <11.1.1
+Severity: moderate
+uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+No fix available
+node_modules/jayson/node_modules/uuid
+node_modules/uuid
+  @solflare-wallet/sdk  *
+  Depends on vulnerable versions of uuid
+  node_modules/@solflare-wallet/sdk
+
+31 vulnerabilities (15 moderate, 16 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.

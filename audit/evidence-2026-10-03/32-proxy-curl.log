@@ -1,0 +1,3 @@
+origin chrome-extension://nbchhoognfblfokeiknmgbjghembmona -> 200 {"jsonrpc":"2.0","result":{"context":{"apiVersion":"4.3.0","slot":452972890},"value":{"amount":"437800000000000000","decimals":5,"uiAmount":4378000000000.0,"uiA
+origin https://quantcoin-pi.vercel.app -> 200 {"jsonrpc":"2.0","result":{"context":{"apiVersion":"4.3.0","slot":452972895},"value":{"amount":"437800000000000000","decimals":5,"uiAmount":4378000000000.0,"uiA
+origin https://evil.example -> 403 {"error":"origin not allowed"}

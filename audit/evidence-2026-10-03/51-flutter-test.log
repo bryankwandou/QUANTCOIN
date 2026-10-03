@@ -1,0 +1,61 @@
+00:00 +0: loading E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart
+00:00 +0: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart: reads a real QC token account from devnet
+00:00 +0 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart: reads a real QC token account from devnet
+00:00 +0 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/devnet_send_test.dart: treasury vault -> app vault -> fee wallet, all signed in Dart [E]
+  Null check operator used on a null value
+  test\devnet_send_test.dart 35:53  main.<fn>
+  
+00:03 +1 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart: reads a real QC token account from devnet
+00:03 +2 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart: reads a real QC token account from devnet
+00:04 +3 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/chain_live_test.dart: reads a real QC token account from devnet
+balance=2,200,000,000,000 QC txs=2 first=3JDxZMeqpKEXNcvi1yqMenBmGsUgL7w1irodD4WzYh1BxoE5ghabTtpn33SDqUN4ne9ievxbb7UD7zekLHJyBos8
+00:05 +4 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/network_test.dart: mainnet uses the mint from its genesis record
+00:05 +5 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/network_test.dart: networks do not share a mint
+00:12 +6 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/passcode_test.dart: five wrong passcodes lock the keypad, even for the right one
+00:13 +7 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/passcode_test.dart: five wrong passcodes lock the keypad, even for the right one
+00:13 +8 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/passcode_test.dart: five wrong passcodes lock the keypad, even for the right one
+00:14 +9 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/passcode_test.dart: five wrong passcodes lock the keypad, even for the right one
+00:16 +10 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/send_guard_test.dart: a truncated address is not a Solana address
+00:17 +11 -1: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/ui_send_e2e_test.dart: send through the UI lands on devnet
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+Null check operator used on a null value
+
+When the exception was thrown, this was the stack:
+#0      main.<anonymous closure> (file:///E:/000VSCODE%20PROJECT%20MULAI%20DARI%20DESEMBER%202025/QUANTCOIN/apps/native/test/ui_send_e2e_test.dart:46:30)
+#1      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  send through the UI lands on devnet
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:18 +11 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/send_guard_test.dart: more than the vault holds is refused before signing
+00:18 +11 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/ui_send_e2e_test.dart: send through the UI lands on devnet [E]
+  Test failed. See exception logs above.
+  The test description was: send through the UI lands on devnet
+  
+00:22 +12 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/send_guard_test.dart: more than the vault holds is refused before signing
+00:24 +13 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/send_guard_test.dart: more than the vault holds is refused before signing
+00:24 +14 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/xcheck_test.dart: keys and addresses match
+00:25 +15 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:26 +16 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:26 +17 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:26 +18 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +19 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +20 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +21 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +22 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +23 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:27 +24 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/widget_test.dart: first run asks for a passcode twice, then shows empty vault
+00:29 +25 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/xcheck_test.dart: both signatures verify over the message
+00:29 +26 -2: E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/xcheck_test.dart: one-time rule refuses a second, different message
+00:33 +27 -2: Some tests failed.
+
+Failing tests:
+  E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/devnet_send_test.dart: treasury vault -> app vault -> fee wallet, all signed in Dart
+  E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/native/test/ui_send_e2e_test.dart: send through the UI lands on devnet
+EXIT=1 DUR=112s

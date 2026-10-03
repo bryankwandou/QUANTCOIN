@@ -1,0 +1,23 @@
+{
+  "name": "quantum-safe-apps",
+  "private": true,
+  "workspaces": [
+    "extension"
+  ],
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "qrcode": "1.5.4",
+    "jsqr": "1.4.0",
+    "@fontsource/ibm-plex-sans": "5.1.1",
+    "@fontsource/ibm-plex-mono": "5.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@types/qrcode": "1.5.5",
+    "@types/node": "22.10.2",
+    "typescript": "5.6.3",
+    "playwright": "1.49.1"
+  }
+}
