@@ -23,7 +23,7 @@ function check(body) {
 
 // Browsers on other sites are refused, so the proxy is not a free public RPC for
 // them. Non-browser clients send no Origin and cannot be told apart this way.
-const ORIGIN_OK = /^(https:\/\/quantcoin-pi\.vercel\.app|https:\/\/quantcoin-[a-z0-9]+-vincentius-bryan-kwandou\.vercel\.app|http:\/\/localhost(:\d+)?)$/;
+const ORIGIN_OK = /^(https:\/\/quantcoin-pi\.vercel\.app|https:\/\/quantcoin-[a-z0-9]+-vincentius-bryan-kwandou\.vercel\.app|http:\/\/localhost(:\d+)?|chrome-extension:\/\/nbchhoognfblfokeiknmgbjghembmona)$/; // + Quantum Safe extension (id fixed by its manifest "key")
 
 async function handler(req, res) {
   const origin = req.headers?.origin;
