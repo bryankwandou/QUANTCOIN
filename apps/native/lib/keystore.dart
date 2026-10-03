@@ -45,7 +45,10 @@ class Keys {
 class KeyStore {
   KeyStore(this.network);
   final String network;
-  static const _s = FlutterSecureStorage();
+  // macOS: the file-based login keychain. The data-protection keychain needs the
+  // keychain-access-groups entitlement, which needs an Apple team ID; with it, an
+  // ad-hoc signed build is refused at launch ("Launchd job spawn failed").
+  static const _s = FlutterSecureStorage(mOptions: MacOsOptions(usesDataProtectionKeychain: false));
   String get _k => 'keys-$network';
 
   Future<Keys?> load() async {
