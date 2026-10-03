@@ -6,6 +6,10 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan a QR code to fill in the recipient's address.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Confirm each transfer with Face ID.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Quantum Safe</string>
 	<key>CFBundleExecutable</key>
@@ -15,7 +19,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>quantum_safe</string>
+	<string>Quantum Safe</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

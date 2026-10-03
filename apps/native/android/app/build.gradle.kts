@@ -43,3 +43,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+// AppCompat launch theme: local_auth crashes on Android 8 and below without it.
+dependencies {
+    implementation("androidx.appcompat:appcompat:1.7.0")
+}

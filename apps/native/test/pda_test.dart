@@ -10,13 +10,13 @@ void main() {
   });
 
   test('on-curve check', () {
-    expect(isOnCurve(b58decode(Chain.mint)), isTrue); // keypair address
+    expect(isOnCurve(b58decode(Chain.mints['devnet']!)), isTrue); // keypair address
     expect(isOnCurve(b58decode('7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6')), isFalse); // PDA
   });
 
   // Reference: client/allocations-devnet.json (alloc-founder), made by spl-token.
   test('associated token address matches spl-token', () {
-    expect(associatedTokenAddress('7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6', Chain.mint),
+    expect(associatedTokenAddress('7x8zcyKjwEsumvkkRQRtSNizuWUMCi1AsUSre4vjLLh6', Chain.mints['devnet']!),
         '3vYAe7m93Cd9F6SN4LyJsBQyXQSyftHqPoXJxSXZ3tBK');
   });
 }

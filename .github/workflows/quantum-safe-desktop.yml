@@ -1,0 +1,66 @@
+name: quantum-safe-desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['app-v*']
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: apps/native
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.1'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # local_auth_windows includes <experimental/coroutine>, which newer MSVC rejects by default.
+      - run: flutter build windows --release
+        env: { CL: /D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS }
+      - name: Zip
+        shell: pwsh
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath QuantumSafe-windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuantumSafe-windows-x64
+          path: apps/native/QuantumSafe-windows-x64.zip
+
+  apple:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.1'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build macos --release
+      - name: Zip macOS app
+        run: |
+          cd build/macos/Build/Products/Release
+          APP=$(ls -d *.app | head -1)
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$GITHUB_WORKSPACE/apps/native/QuantumSafe-macos.zip"
+      - run: flutter build ios --release --no-codesign
+      - name: Package unsigned ipa
+        run: |
+          rm -rf Payload && mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry QuantumSafe-ios-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuantumSafe-macos
+          path: apps/native/QuantumSafe-macos.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuantumSafe-ios-unsigned
+          path: apps/native/QuantumSafe-ios-unsigned.ipa

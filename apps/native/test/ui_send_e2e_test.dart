@@ -7,7 +7,6 @@ library;
 // Run: QC_RPC=<rpc> QC_FROM=<funded treasury vault name> flutter test test/ui_send_e2e_test.dart
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:convert/convert.dart' show hex;
 import 'package:flutter/material.dart';
@@ -151,7 +150,7 @@ void main() {
       final k = (await KeyStore('devnet').load())!;
       await saveCli('$uiName-next', k.vault);
       expect(await chain.accountOwner((await ui.vault()).$1), qcProgram);
-      expect(await chain.balance([await k.vault.vaultTokenAccount()]), BigInt.from(150000));
+      expect(await chain.balance([await k.vault.vaultTokenAccount(chain.mint)]), BigInt.from(150000));
       expect(prefs.getString('vault'), (await k.vault.vault()).$1); // app switched to the new vault
     });
     // ignore: avoid_print

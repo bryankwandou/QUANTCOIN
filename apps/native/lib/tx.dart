@@ -83,9 +83,9 @@ class Message {
       ..add([nSig, nRoSig, nRoUn])
       ..add(compactU16(keys.length));
     for (final k in keys) {
-      b.add(b58decode(k).toList().let32());
+      b.add(pubkey(k));
     }
-    b.add(b58decode(blockhash).toList().let32());
+    b.add(pubkey(blockhash));
     b.add(compactU16(ixs.length));
     for (final ix in ixs) {
       b.add([keys.indexOf(ix.program)]);
@@ -98,14 +98,6 @@ class Message {
   }
 
   List<String> get signers => keys.sublist(0, nSigners);
-}
-
-extension on List<int> {
-  List<int> let32() {
-    if (length == 32) return this;
-    if (length > 32) throw FormatException('key longer than 32 bytes');
-    return [...List.filled(32 - length, 0), ...this];
-  }
 }
 
 /// Wire format: compact(sig count) + 64-byte signatures in signer order + message.

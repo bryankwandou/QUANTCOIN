@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart' show hex;
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:quantum_safe/chain.dart';
 import 'package:quantum_safe/pda.dart';
 import 'package:quantum_safe/wallet.dart';
 
@@ -56,26 +57,27 @@ void main() {
   final payer = EdKey(fill(32, 9));
   const recipient = '7Xu64rz6VvqzGK9TtwWh4C9DAsp3WZTec2MWNpuYosh2';
   const bh = 'EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N';
+  final mint = Chain.mints['devnet']!; // the reference was built by client/xcheck-dart.ts on devnet
 
   test('keys and addresses match', () async {
     expect(hex.encode(from.pkHash), ref['pkHash']);
     expect(await from.owner.address(), ref['owner']);
     expect(await payer.address(), ref['payer']);
     expect((await from.vault()).$1, ref['vault']);
-    expect(await next.vaultTokenAccount(), ref['nextTa']);
+    expect(await next.vaultTokenAccount(mint), ref['nextTa']);
   });
 
   // web3.js sorts accounts alphabetically inside each group; this port keeps
   // first-seen order. Both are valid, so compare the decoded meaning.
   test('transactions mean the same as the TypeScript client', () async {
-    final p = await planSpend(payer, from, next, recipient, BigInt.from(123456789), bh);
+    final p = await planSpend(payer, from, next, recipient, BigInt.from(123456789), bh, mint: mint);
     expect(p.digestHex, ref['digest']);
     expect(decode(p.prep.bytes), decode(base64.decode(ref['prepMsg'] as String)));
     expect(decode(p.spend.bytes), decode(base64.decode(ref['spendMsg'] as String)));
   });
 
   test('both signatures verify over the message', () async {
-    final p = await planSpend(payer, from, next, recipient, BigInt.from(123456789), bh);
+    final p = await planSpend(payer, from, next, recipient, BigInt.from(123456789), bh, mint: mint);
     final wire = base64.decode(await signTx(p.spend, [payer, from.owner]));
     expect(wire[0], 2);
     final msg = wire.sublist(1 + 64 * 2);
@@ -91,6 +93,6 @@ void main() {
 
   test('one-time rule refuses a second, different message', () async {
     final used = VaultKeys(EdKey(fill(32, 1)), fill(32, 2), fill(16, 3), signed: 'ff' * 24);
-    expect(() => planSpend(payer, used, next, recipient, BigInt.one, bh), throwsStateError);
+    expect(() => planSpend(payer, used, next, recipient, BigInt.one, bh, mint: mint), throwsStateError);
   });
 }

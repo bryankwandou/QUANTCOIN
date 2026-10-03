@@ -8,7 +8,6 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart' show hex;
 import 'package:cryptography/cryptography.dart';
 
-import 'chain.dart';
 import 'pda.dart';
 import 'tx.dart';
 import 'wots.dart';
@@ -37,10 +36,8 @@ class VaultKeys {
   final Uint8List master, seed;
   /// Hex of the one digest this WOTS key signed. Saved BEFORE broadcasting.
   String? signed;
-  /// The vault's QC token account when it isn't the standard associated account.
-  String? tokenAccount;
 
-  VaultKeys(this.owner, this.master, this.seed, {this.signed, this.tokenAccount});
+  VaultKeys(this.owner, this.master, this.seed, {this.signed});
 
   factory VaultKeys.fresh(EdKey owner) => VaultKeys(owner, randomBytes(32), randomBytes(seedLen));
 
@@ -60,25 +57,23 @@ class VaultKeys {
         'master': hex.encode(master),
         'seed': hex.encode(seed),
         if (signed != null) 'signed': signed,
-        if (tokenAccount != null) 'tokenAccount': tokenAccount,
       };
 
   factory VaultKeys.fromJson(Map<String, dynamic> j) => VaultKeys(
         EdKey(Uint8List.fromList(hex.decode(j['ownerSeed'] as String))),
         Uint8List.fromList(hex.decode(j['master'] as String)),
         Uint8List.fromList(hex.decode(j['seed'] as String)),
-        signed: j['signed'] as String?,
-        tokenAccount: j['tokenAccount'] as String?);
+        signed: j['signed'] as String?);
 
   Uint8List? _pk;
   Uint8List get pkHash => _pk ??= publicKeyHash(master, seed);
 
   /// Vault PDA and bump: seeds ["qcv", pk_hash, owner].
   Future<(String, int)> vault() async =>
-      findProgramAddressWithBump([ascii.encode('qcv'), pkHash, b58decode(await owner.address())], qcProgram);
+      findProgramAddressWithBump([ascii.encode('qcv'), pkHash, pubkey(await owner.address())], qcProgram);
 
-  Future<String> vaultTokenAccount() async =>
-      tokenAccount ?? associatedTokenAddress((await vault()).$1, Chain.mint);
+  /// The only token account the program lets this vault spend from (finding F9).
+  Future<String> vaultTokenAccount(String mint) async => associatedTokenAddress((await vault()).$1, mint);
 }
 
 class SpendPlan {
@@ -91,16 +86,16 @@ class SpendPlan {
 /// vault's token accounts, (2) the hybrid-signed spend. Throws if the vault's
 /// one-time key already signed a different message.
 Future<SpendPlan> planSpend(EdKey payer, VaultKeys from, VaultKeys next, String recipient, BigInt amount,
-    String blockhash) async {
+    String blockhash, {required String mint}) async {
   final fee = await payer.address(), owner = await from.owner.address();
   final (vault, bump) = await from.vault();
-  final vaultTa = await from.vaultTokenAccount();
-  final dest = associatedTokenAddress(recipient, Chain.mint);
+  final vaultTa = await from.vaultTokenAccount(mint);
+  final dest = associatedTokenAddress(recipient, mint);
   final (nextVault, _) = await next.vault();
-  final nextTa = await next.vaultTokenAccount();
+  final nextTa = await next.vaultTokenAccount(mint);
 
-  final digest = spendDigest(b58decode(qcProgram), b58decode(vault), b58decode(Chain.mint), b58decode(dest),
-      b58decode(nextTa), b58decode(fee), amount);
+  final digest = spendDigest(pubkey(qcProgram), pubkey(vault), pubkey(mint), pubkey(dest),
+      pubkey(nextTa), pubkey(fee), amount);
   final dHex = hex.encode(digest);
   if (from.signed != null && from.signed != dHex) {
     throw StateError('This vault already signed a different transfer. Hash keys are one-time.');
@@ -108,15 +103,15 @@ Future<SpendPlan> planSpend(EdKey payer, VaultKeys from, VaultKeys next, String 
   final sig = wotsSign(from.master, from.seed, digest);
 
   final prep = Message.compile(fee, [
-    createAtaIdempotent(fee, dest, recipient, Chain.mint),
-    createAtaIdempotent(fee, nextTa, nextVault, Chain.mint),
+    createAtaIdempotent(fee, dest, recipient, mint),
+    createAtaIdempotent(fee, nextTa, nextVault, mint),
   ], blockhash);
   final spend = Message.compile(fee, [
     setComputeUnitLimit(1400000),
     Ix(qcProgram, [
       Meta(vault, writable: true),
       Meta(vaultTa, writable: true),
-      const Meta(Chain.mint),
+      Meta(mint),
       Meta(dest, writable: true),
       Meta(nextTa, writable: true),
       Meta(fee, writable: true),

@@ -4,9 +4,12 @@ import 'package:http/http.dart' as http;
 
 import 'pda.dart';
 
-/// Reads real state from a Solana RPC. Addresses come from client/genesis.json.
+/// Reads real state from a Solana RPC. Mints come from client/genesis-{network}.json.
 class Chain {
-  static const mint = 'BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8';
+  static const mints = {
+    'devnet': 'BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8',
+    'mainnet': 'AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2',
+  };
   static const decimals = 5;
   static const networks = {
     'devnet': 'https://api.devnet.solana.com',
@@ -17,6 +20,7 @@ class Chain {
   Chain(this.network, {this.rpc});
   final String network;
   final String? rpc;
+  String get mint => mints[network]!;
   String get _url => (rpc?.isNotEmpty ?? false) ? rpc! : networks[network]!;
   int _id = 0;
 
@@ -74,7 +78,24 @@ class Chain {
       (await _call('getAccountInfo', [address, {'encoding': 'base64', 'dataSlice': {'offset': 0, 'length': 0}}]))['value']
           ?['owner'] as String?;
 
+  /// Base units held by the Token-2022 account [address] for this network's
+  /// mint; zero if it doesn't exist or is anything else.
+  Future<BigInt> tokenAmount(String address) async {
+    final v = (await _call('getAccountInfo', [address, {'encoding': 'base64'}]))['value'];
+    if (v == null || v['owner'] != token2022) return BigInt.zero;
+    final d = base64.decode((v['data'] as List).first as String);
+    if (d.length < 72 || b58encode(d.sublist(0, 32)) != mint) return BigInt.zero;
+    var n = BigInt.zero;
+    for (var i = 71; i >= 64; i--) {
+      n = (n << 8) | BigInt.from(d[i]);
+    }
+    return n;
+  }
+
   Future<int> solBalance(String address) async => (await _call('getBalance', [address]))['value'] as int;
+
+  /// Lamports an account of [bytes] needs to be rent-exempt on this network.
+  Future<int> rentExempt(int bytes) async => await _call('getMinimumBalanceForRentExemption', [bytes]) as int;
 
   Future<String> send(String base64Tx) async => await _call('sendTransaction', [
         base64Tx,
