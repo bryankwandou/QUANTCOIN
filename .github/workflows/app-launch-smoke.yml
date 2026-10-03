@@ -98,9 +98,14 @@ jobs:
         run: |
           gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p QuantumSafe-macos.zip -p SHA256SUMS.txt
           grep ' QuantumSafe-macos.zip$' SHA256SUMS.txt | shasum -a 256 -c - | tee verify.txt
-      - name: Launch and screenshot
+      - name: Signature diagnostics (release file as downloaded)
         run: |
           ditto -x -k QuantumSafe-macos.zip app
+          APP=$(ls -d app/*.app | head -1)
+          { uname -m; file "$APP/Contents/MacOS/"*; codesign -dvvv "$APP" 2>&1; codesign --verify --deep --strict "$APP" 2>&1 && echo "verify OK" || echo "verify FAILED"; spctl -a -vv "$APP" 2>&1 || true; } | tee diag.txt
+          ( "$APP/Contents/MacOS/quantum_safe" > direct.txt 2>&1 & ); sleep 8; cat direct.txt | head -20 | tee -a diag.txt; pkill -f "Contents/MacOS/quantum_safe" || true
+      - name: Launch and screenshot
+        run: |
           APP=$(ls -d app/*.app | head -1)
           xattr -cr "$APP"
           open "$APP"
@@ -114,6 +119,7 @@ jobs:
           name: smoke-macos
           path: |
             verify.txt
+            diag.txt
             pid.txt
             macos.png
 
