@@ -62,6 +62,9 @@ button{background:transparent;color:var(--accent);border:1px solid var(--accent)
 <thead><tr><th>Allocation</th><th class="num">Target</th><th class="num">Live balance (QC)</th><th class="num">% of supply</th><th>Last activity</th><th>Status</th></tr></thead>
 <tbody id="vaults"><tr><td colspan="6" class="note">Loading…</td></tr></tbody></table></div>
 
+<h2>Governance &amp; pool</h2>
+<div class="card" id="gov"></div>
+
 <h2>Security</h2>
 <div class="card">
 <div class="grid">
@@ -144,6 +147,13 @@ const fmtTime = t => t ? new Date(t*1000).toISOString().replace("T"," ").slice(0
 const none = v => v ? addrLink(v) : `<span class="ok">None ✓</span>`;
 const fact = (k, v, note) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${note ? `<div class="note">${note}</div>` : ""}</div>`;
 
+const GOV = {
+  multisig: "A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P",
+  squadsVault: "45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez",
+  pool: "AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB",
+  position: "7Bqgd7AyjAQw6LS9m7QHLTGiF851Net93fJdk8XSDWAt",
+};
+
 function staticParts() {
   $("cluster").textContent = CONFIG.cluster;
   try { $("rpcurl").textContent = new URL(RPC).host; } catch { $("rpcurl").textContent = RPC; }
@@ -151,6 +161,14 @@ function staticParts() {
   $("wplink").href = CONFIG.repo + "/blob/main/WHITEPAPER.md";
   $("bar").innerHTML = CONFIG.vaults.map(v => `<div style="width:${v.pct}%;background:var(${v.color})" title="${esc(v.label)} ${v.pct}%"></div>`).join("");
   $("legend").innerHTML = CONFIG.vaults.map(v => `<span><span class="sw" style="background:var(${v.color})"></span>${esc(v.label)} ${v.pct}%</span>`).join("");
+  $("gov").innerHTML = `<div class="grid">
+      ${fact("Upgrade authority (Squads v4 multisig)", addrLink(GOV.multisig), "2-of-3 signers. Any program upgrade needs two of the three keys.")}
+      ${fact("Squads vault", addrLink(GOV.squadsVault), "Holds the upgrade authority and receives the pool fees.")}
+      ${fact("Time lock", "24 hours (86,400 s)", "An approved upgrade waits 24 hours before it can run, so holders can see it coming.")}
+      ${fact("Meteora DAMM v2 pool (QC/SOL)", addrLink(GOV.pool), "Opened 2026-10-02 15:30 UTC.")}
+      ${fact("Project liquidity position", addrLink(GOV.position), "Permanently locked: 100% locked, 0 unlocked. An outside LP holds a separate, unlocked position.")}
+     </div>
+     <p class="note" style="margin:12px 0 0">These five are checked against mainnet by <a href="${CONFIG.repo}/blob/main/client/verify-mainnet.ts" target="_blank" rel="noopener">client/verify-mainnet.ts</a>.</p>`;
   $("bounty").innerHTML = BOUNTY
     ? `<div class="grid">
         ${fact("Bounty vault", addrLink(BOUNTY.vault), `token account ${addrLink(BOUNTY.tokenAccount)}`)}
@@ -175,7 +193,7 @@ async function loadFacts() {
     const pd = await rpc("getAccountInfo", [pdAddr, {encoding:"jsonParsed"}]);
     const a = pd.value.data.parsed.info.authority;
     upg = a ? `${addrLink(a)}` : `<span class="ok">None ✓ (immutable)</span>`;
-    upgNote = a ? `<span class="warn">Upgradeable. Held by a Squads 2-of-3 multisig until the external audit, then set <code>--final</code>.</span>` : `<span class="ok">Final: nobody can upgrade the program.</span>`;
+    upgNote = a ? `<span class="warn">Upgradeable. Held by a Squads 2-of-3 multisig with a 24-hour time lock until the external audit, then set <code>--final</code>.</span>` : `<span class="ok">Final: nobody can upgrade the program.</span>`;
   }
   $("facts").innerHTML = [
     fact("Supply", `${fmtRaw(info.supply)} QC`, `Mint ${addrLink(CONFIG.mint)} · Token-2022`),
