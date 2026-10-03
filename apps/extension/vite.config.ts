@@ -1,7 +1,7 @@
-// Built with app/'s toolchain (vite 8) so app/src/lib is reused byte-for-byte via the @app alias.
+// Same vite/vitest versions as app/ (pinned in apps/package.json) so app/src/lib is reused byte-for-byte via the @app alias.
 import { defineConfig } from "vite";
 import { fileURLToPath } from "node:url";
-import react from "../../app/node_modules/@vitejs/plugin-react/dist/index.js";
+import react from "@vitejs/plugin-react";
 
 const appLib = fileURLToPath(new URL("../../app/src/lib", import.meta.url));
 const appNm = fileURLToPath(new URL("../../app/node_modules/", import.meta.url));
