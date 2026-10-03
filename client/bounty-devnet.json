@@ -1,0 +1,14 @@
+{
+  "bountyVault": "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE",
+  "bountyTokenAccount": "Td6fb9jUospBikdZy948bosHtcvsbRp9PPwftEFiDjs",
+  "ownerPublicKey": "7Xu64rz6VvqzGK9TtwWh4C9DAsp3WZTec2MWNpuYosh2",
+  "wotsSeed": "5c637a7e867a0996c0965563a67fc6aa",
+  "balance": "1000000000",
+  "reserveNow": {
+    "name": "alloc-reserve-2",
+    "vault": "3e3wLYhVwoeEd6CyUr1ZxHRWmqqotEQYaqu99zHE6aZJ",
+    "tokenAccount": "8wpC6xsAEmxxqXwuNgcmC6U4T4dB6jC7q7ERbWh7iKGX",
+    "balance": "2199000000000"
+  },
+  "tx": "2QHHSKQd7hnhTDLE1eSCprhRUX7LdaWTDpcepWXF1zSbjvZxj7Nz84j95EvETDDg4XYxg9LB2JVA526hTNGXiwxQ"
+}

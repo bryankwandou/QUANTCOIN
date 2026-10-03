@@ -1,0 +1,412 @@
+Oct 03 18:46:57.062 [32mINFO[0m Datasource connection successful. Epoch 1048 / Slot index 174660 / Slot 452910660.
+Oct 03 18:46:57.067 [32mINFO[0m Account C3otspAauyPNbAx9NA4wkH7P8hxhxhb1dyfqzhSmzaj9 updated.
+Oct 03 18:46:57.067 [32mINFO[0m Genesis airdrop successful C3otspAauyPNbAx9NA4wkH7P8hxhxhb1dyfqzhSmzaj9: 10000000000000
+Oct 03 18:46:57.067 [33mWARN[0m Automatic protocol deployment failed: unable to select programs to deploy: IO error: not a terminal
+Oct 03 18:47:27.013 [32mINFO[0m Account J2k9Dtz9rhrEddeArsyCieApm5ykxbek7S31eeVbUrqp updated.
+Oct 03 18:48:48.511 [32mINFO[0m Account 3NuzFkuETGLZWBGXTRrGwjDJGumbXuCAdmp8jrfdKXgS updated.
+Oct 03 18:48:48.512 [32mINFO[0m Account CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms updated.
+Oct 03 18:48:48.680 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:48:48.880 [32mINFO[0m Account 45rfFq4pJDaKvQosZZCfzwE6bCkk5PmLT339qrBR3JYC updated.
+Oct 03 18:48:49.300 [32mINFO[0m Account CH4wo938VfPrC9ZtGW7VRwPsS1MJ1YyDxHDG88EaV471 updated.
+Oct 03 18:48:49.466 [32mINFO[0m Account 8gS3s4Y2iH8b1RHLxSpESHkJ2EfcND13T93LYDZ9cxxn updated.
+Oct 03 18:48:49.645 [32mINFO[0m Account 8vLZhN311z4mbzYmWiPpw2eneDKcjYX2TPEPSn1ivv47 updated.
+Oct 03 18:48:51.219 [32mINFO[0m Account 9ZwBNcuWqBsHuUY2TtV6FqB17LocmAh6aStP9dxbvRNq updated.
+Oct 03 18:48:51.643 [32mINFO[0m Account 3FqPz1tbVXbmBb5KBSnFktyKGR8JAvdAUZqBmcXmZo4e updated.
+Oct 03 18:48:51.840 [32mINFO[0m Account HDWq1BjHXgBBbTzqRchdsu4ESsGb1HvEcLo31mKh82ik updated.
+Oct 03 18:48:52.534 [32mINFO[0m Account B1RB1vUN9Pc1tXsvDgh25PXbbj6dfbWLDCFV8RA7neRL updated.
+Oct 03 18:48:52.698 [32mINFO[0m Account 3ZVcoVhHZ7cDHpuU4hBMmiHByE43shpXrNoDRx1FrKF6 updated.
+Oct 03 18:48:52.865 [32mINFO[0m Account 59diqCPPMEuJcKxMaSfQn1fAPAUYf9v6fjVjvc8JjNcE updated.
+Oct 03 18:48:53.488 [32mINFO[0m Account FwHEWRg3Xsr32JvxCRwD3ETLfMAVfwAgrzmxQSkkLWPx updated.
+Oct 03 18:48:53.678 [32mINFO[0m Account 3iQbvTpyCstQjkoaSZP9sAknn6KzaUGeowvQ6197RteQ updated.
+Oct 03 18:48:53.851 [32mINFO[0m Account 7PRsqG5wQURyqqxL6gXtFKdxriBjEcCaP1yBoiU5BnVq updated.
+Oct 03 18:48:54.600 [32mINFO[0m Account 6nekNTy9x4xT4k3kDu9FqpnWAHmKYJu1nyN35rSrNpyj updated.
+Oct 03 18:48:55.042 [32mINFO[0m Account Cr9tgwS5v9kvAMiyyNuQVVu7ZbnJwmP6sMPMxrK58CXP updated.
+Oct 03 18:48:55.191 [32mINFO[0m Account C1X9iGQJVhQpJK3h1Kibb1BRyjxxwoWQGeejcZQfo1qE updated.
+Oct 03 18:48:55.885 [32mINFO[0m Account 4B8gGBdk9aLbuXVCJ8YrWCJUYV9ejjfkuyqmiF6fBsoL updated.
+Oct 03 18:48:56.042 [32mINFO[0m Account 2iGbFdwn1kdrHwZXVWZJEh1xbvLdzaEMhFpCaLXsu8pp updated.
+Oct 03 18:48:56.198 [32mINFO[0m Account 8jC8niUHVxFMpxZtjmBgPXLguwwdNAVPSums22Mbmbnx updated.
+Oct 03 18:48:56.709 [32mINFO[0m Account 94thB2zGd9MNfqcN7wP1aL4RCQZv1Jh26TRwkH2a9N7V updated.
+Oct 03 18:48:56.888 [32mINFO[0m Account BMNcnw6vaEcQ2bFwfFTNkbrq5eEvwZ7Lug1d75p6X5rs updated.
+Oct 03 18:48:57.454 [32mINFO[0m Account 47Dc17CyKcFoPbBSHqJZEj6cFbXhzaZhP8NrzUtcEvjL updated.
+Oct 03 18:48:57.979 [32mINFO[0m Account 5KM3NfDC66MsKUfB9aZcc5QDnYG89jcMrsSbbKnt51Nu updated.
+Oct 03 18:48:58.201 [32mINFO[0m Account FZ8xqLMoEm5vGgr4mZHpQFuq2xLXrjDGwKHnjAzsWSwG updated.
+Oct 03 18:48:58.386 [32mINFO[0m Account AS3qi5g4U1pkiqk37bLSbazjqw5o821Bos8gecpmrxqr updated.
+Oct 03 18:49:29.436 [32mINFO[0m Account 7urkq8aS6vxdPcJU9jA12XEUYaazWoZFsNbuXhbX41C4 updated.
+Oct 03 18:49:29.610 [32mINFO[0m Account GGDZvYA9xBCPS7ghYveu7DFpnw4rJje3NvLvoBqLS8uZ updated.
+Oct 03 18:49:29.794 [32mINFO[0m Account 8T8GfvBUEfk1KLxv1HL9bc8hRtwbXYhoQnHXdaWgaN6Z updated.
+Oct 03 18:49:30.676 [32mINFO[0m Account 8c5M5iq8tqa4e6BBWMjcDckPNdGrgEerphJjigqsVGXc updated.
+Oct 03 18:49:30.879 [32mINFO[0m Account JAuN19iBSeY7Fp1ji6Q91W37e3uTDru5yQKpuByUy5V9 updated.
+Oct 03 18:49:31.143 [32mINFO[0m Account 76bUxqJjueBEcQe7y8yxutMshdTBGj8MDUagroEda2vv updated.
+Oct 03 18:49:31.844 [32mINFO[0m Account p7NQL4Jq2y8Ph11qs4A47aPMWvYdaZc6WSzs9JanhJp updated.
+Oct 03 18:49:32.005 [32mINFO[0m Account CbibZrjD4kCEiemkNm4KSzp9wsnD5HayCukLNQ2buGRP updated.
+Oct 03 18:49:32.191 [32mINFO[0m Account 2BwcyFuSz27PXwji27YEhyTGymdunedE4Sxu9yLu6Hw6 updated.
+Oct 03 18:49:33.037 [32mINFO[0m Account Awa2ZAL1q3FeiAy1sMk3hfhgpttgisdNy6PSVEu2pUq7 updated.
+Oct 03 18:49:33.239 [32mINFO[0m Account J7m9F8Z9R65QnWo5bdL4nmHWwjzcow9VRTBPpDBwfCzG updated.
+Oct 03 18:49:33.429 [32mINFO[0m Account DDVU5STMhYtCDoXtaKEJTYebUhi1w8bty8ziho1Up2MV updated.
+Oct 03 18:49:35.238 [32mINFO[0m Account 6ekdNQgC8ArckjYJhAWHkuEnbiYnxKrYhPhgwJBfic1e updated.
+Oct 03 18:49:35.399 [32mINFO[0m Account CofnqQE8jKUUgBhE3PPrxjovoFfoKB6Bqxe9tuz8coQi updated.
+Oct 03 18:49:35.561 [32mINFO[0m Account BFiB1dTccJ6tSy8W2jh1aU6gDk8aS5axeWYugiwsc9Wc updated.
+Oct 03 18:49:36.127 [32mINFO[0m Account 98Vdq3fLW91oTV89xR1ZpJ9YDbuTqw1MkabTu6K4Uk9a updated.
+Oct 03 18:49:36.302 [32mINFO[0m Account 8RX52aZfNqaGXSgeduWHZksHEDUfuKJHbD6jeq1SQMVQ updated.
+Oct 03 18:49:36.471 [32mINFO[0m Account 86fjG35amjhuZ1ZEGPkpPvzgjyt4NrUeehRZ83YHDy2T updated.
+Oct 03 18:49:36.946 [32mINFO[0m Account 59CRn46auVymcAFuFUdvki8yZidh3QTuBBiQJTUFH9RU updated.
+Oct 03 18:49:37.138 [32mINFO[0m Account 4m6kMgyAxVxxoiBwKNP4wuRjZWpqA2YT3CY6aLzR9S2m updated.
+Oct 03 18:49:37.306 [32mINFO[0m Account 41FzUauua4T5bB9PQKS9iwEupVpbX1iQP7hMCvWnJ41g updated.
+Oct 03 18:49:37.694 [32mINFO[0m Account 6oGJkbmFk7tFms2UEkv5Jvv5E9XSrFsWDt4F5UmbCGDf updated.
+Oct 03 18:49:37.856 [32mINFO[0m Account a9mVuomUtr3cMY1cGz431quAMGacNVNXQjwRBMz9efL updated.
+Oct 03 18:49:38.030 [32mINFO[0m Account CcR8yNzXyAmvsqQqEbaR2C8hJK8XhSgHWvEwh1JyQZdG updated.
+Oct 03 18:49:38.506 [32mINFO[0m Account 6JTXifA7Gx9q4LddSn3JZLxK3RHeRKBN4JoadDyDu2Ec updated.
+Oct 03 18:49:38.674 [32mINFO[0m Account 6UeWAFJYzTQnRKmL9zfahaC5odAqASP2WkQDaeuJfvjp updated.
+Oct 03 18:49:38.846 [32mINFO[0m Account FHEUQe59iwez1MsFWPNFCqa2Mkkc6oWXYwp2o8viftWc updated.
+Oct 03 18:49:39.492 [32mINFO[0m Account 5y3rvWvHTQ49GJPkEMSo1Jjzr9WrBL56RvStudA83KKn updated.
+Oct 03 18:49:39.648 [32mINFO[0m Account GwsBmeT5arMnczmoejzBWrmUbxjZ29zjmri35tY8mzjq updated.
+Oct 03 18:49:40.163 [32mINFO[0m Account 8LJxEMLitZNwhV6DKnMEy3aDhKfDBjBDoX7TzNcTuN49 updated.
+Oct 03 18:49:40.681 [32mINFO[0m Account FCmmicX6H6h3hNbygCQmbb9xkT4rsj8uvgpbiU7FR3hu updated.
+Oct 03 18:49:40.841 [32mINFO[0m Account 5GbG8YXPTNRcbYvReTTSUZhcpNSRRAKJPF3pKVMi3TU4 updated.
+Oct 03 18:49:41.011 [32mINFO[0m Account Ehqg9tPfKMGnoB2GAiA2zxnh54UVSHnEmxCF1o91DgT updated.
+Oct 03 18:49:41.711 [32mINFO[0m Account 4V8MX3cctkbf78ffUYh8uasn7ibhueyGAH4EHa3eEabz updated.
+Oct 03 18:49:41.853 [32mINFO[0m Account EkfR1oUVxM3izAa7conUXsLqZ7muPVj4uzUtZT73wCeF updated.
+Oct 03 18:49:42.022 [32mINFO[0m Account 2Kip5RTmVNvVuWCihPafPNzMvYMn3zt2AvYMTbDBfLQT updated.
+Oct 03 18:49:42.649 [32mINFO[0m Account GZL33D1xsfRaCTZrMPgJWM6C9pmDxEJqwrEUgLMXKoWX updated.
+Oct 03 18:49:42.824 [32mINFO[0m Account 8hdeEa6FDC7xRxmZEGiymSH1SfDhoam1zH9ntg8sB8Wj updated.
+Oct 03 18:49:43.059 [32mINFO[0m Account HzFqdZzYuvWWUM8BYZ2oh6hstk8CF2kCvZE8vJr7nXte updated.
+Oct 03 18:49:43.782 [32mINFO[0m Account 5b3F3gWR1GDCgJj2f2ddgcW85RE4E1DjDPLiMc6hdJvM updated.
+Oct 03 18:49:44.221 [32mINFO[0m Account BQE44hPhLj2vDCmsTDLqkegKgHziEaU7LMSE2YEJFwxd updated.
+Oct 03 18:49:44.375 [32mINFO[0m Account 8PJLo6AETZnZD5e3i1Z1BRmiSptxB8NhSX8y7AU7RMMT updated.
+Oct 03 18:50:15.006 [32mINFO[0m Account D2CjuJk6SkBMuKceKtc2M1cg8mw2Qjo89dsoFdwde56i updated.
+Oct 03 18:50:15.161 [32mINFO[0m Account 7CJ8qRRndYqiMkcWNsjPiTQSJNtcwvNQEZQYkZRubxZY updated.
+Oct 03 18:50:15.371 [32mINFO[0m Account 85rhWtVgtgRz7zvXLvm5Cwku4zhKfFVvyMJKrSofQWXJ updated.
+Oct 03 18:50:17.411 [32mINFO[0m Account E4HpKFM9PQjZ1BdaNfnHg6RqTxREWUVjCdtbXc8PpMAM updated.
+Oct 03 18:50:17.695 [32mINFO[0m Account HA4nAFhXA7s2HFP7DtnV38dTWginVkh8gtfDX1C65ad6 updated.
+Oct 03 18:50:17.892 [32mINFO[0m Account CKffV88vL8xfSgtHZh7EgQ4gRoPhsMpnFaSbjxrY2yEQ updated.
+Oct 03 18:50:18.497 [32mINFO[0m Account HudvhY4bXTf8ChJM5jjRca2QFtvzyVtjHCPVzw12QuAP updated.
+Oct 03 18:50:18.695 [32mINFO[0m Account HtgsMhv1t4WYcKnCuLM1vUo3hTk81r8hncSi9srSKBVt updated.
+Oct 03 18:50:18.865 [32mINFO[0m Account FrpNrCHMie4KosKCcnkseiHda17aiYHno1xAdGZRHBZg updated.
+Oct 03 18:50:19.576 [32mINFO[0m Account HvJRE3d8geB8aUWgipMywipmurkpMNiZhEgQSnF6zVed updated.
+Oct 03 18:50:19.755 [32mINFO[0m Account 3xGgKreojaJJcnY6kKCm9rjPaQCbhqKHHQ6EbLGwxbHm updated.
+Oct 03 18:50:19.949 [32mINFO[0m Account E1P3WZUAGt5gARZv34oomsCYppS3vf4ttnVqMtHbxV2i updated.
+Oct 03 18:50:20.598 [32mINFO[0m Account 9GMrqB7e4ybNPdWmBcgHrK7vqmCFMAntKs5coHdWCf5b updated.
+Oct 03 18:50:20.754 [32mINFO[0m Account 56jf66yFiPJ1h2rVMfEQKPqqHXvbjdry4Rm7RoRFw6vT updated.
+Oct 03 18:50:20.939 [32mINFO[0m Account 3dmNc9hy2Wnf44X1sWCM6WyTF5MMAYgYehYaNpUPuN9w updated.
+Oct 03 18:50:21.397 [32mINFO[0m Account 6stEwexR85zhah73eTcuigMN9ttzd6Jb4ZfTr2oMnDeT updated.
+Oct 03 18:50:21.592 [32mINFO[0m Account 6TKS73Cpp7f2VFbr23NdXmaiGCzFiGk1DtM3wkKUj6Bv updated.
+Oct 03 18:50:21.733 [32mINFO[0m Account EqvigniWQ5PG89puV2kdufeDUvh5TV7peApmS72SLzeQ updated.
+Oct 03 18:50:22.523 [32mINFO[0m Account GmTucyNdDWP8Be5LkyFK19cH7uo2gUBhHwx13hasRxZA updated.
+Oct 03 18:50:22.677 [32mINFO[0m Account 8qFzxRn3UiDDtTQrRdu5jMYqDreovZw5KJqAiWH3oZK7 updated.
+Oct 03 18:50:22.838 [32mINFO[0m Account 92X3sXxG4AhLHfkaVeWF8Jh5U9ny6QeLyErWDjHnbgnS updated.
+Oct 03 18:50:23.381 [32mINFO[0m Account Dj28CAugpSnropMsQSdTevnn3ZV8CaEuk2ibyk2KEBrc updated.
+Oct 03 18:50:23.529 [32mINFO[0m Account B9ythg81v46222ReMUjoSrQFeXScpCwBfMwVKgZ7x5j5 updated.
+Oct 03 18:50:23.709 [32mINFO[0m Account 74uvCUAeVwCHjCBZ7v1mCKv4ehLtmAxnZWvkHcGQHnZE updated.
+Oct 03 18:50:24.129 [32mINFO[0m Account AWChrBRGE599cai61hDGvTRdmiBzuv7fAipeZfr18uAE updated.
+Oct 03 18:50:24.289 [32mINFO[0m Account J5Gfwce2EQu5kJWXZzC8uez4yNFfVmKfVqnk2YG8h6JS updated.
+Oct 03 18:50:24.438 [32mINFO[0m Account GieruPkjxpRFse4g42bX5U3dKL467ngEQA3GCPwmGtRS updated.
+Oct 03 18:50:24.693 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x3
+Oct 03 18:50:25.097 [32mINFO[0m Account 2PzVDw8S6HBRm9Jh1agRd7bk7emzSursnjGrUgKKF3Pk updated.
+Oct 03 18:50:25.257 [32mINFO[0m Account 94yPma8GRLQKUoBqjYSPi24y6EkEc7ECxCxZDbfqRS9U updated.
+Oct 03 18:50:25.445 [32mINFO[0m Account MYECwoEZNVFwWo4QyP6MsVb4TgPZvLtoPCLJ1FgpGuv updated.
+Oct 03 18:50:25.675 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x3
+Oct 03 18:50:27.107 [32mINFO[0m Account CAjPfVKsQMrNUUAPLXgJYRJUcKXEJCzGF1MtmcKx5WCE updated.
+Oct 03 18:50:27.262 [32mINFO[0m Account 74fnkdjqQAFSgTtVnibBd8A8sYsDZ8R7Vvo268EmLnPc updated.
+Oct 03 18:50:27.426 [32mINFO[0m Account 4aaELknjyNZ3NrnQhLujCitLadkBF6Cr4umJXwNCpUwm updated.
+Oct 03 18:50:27.674 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x3
+Oct 03 18:50:28.128 [32mINFO[0m Account 3QyCR2yuD16BN68sxXwqVvtzucp5w8h9VteeFtEBXG9W updated.
+Oct 03 18:50:28.356 [32mINFO[0m Account 8wTtwnx82eFQXWdHUPUVwvR4eJmhiipY61us8mxLMPBk updated.
+Oct 03 18:50:28.509 [32mINFO[0m Account pNvBeFonWvhRMHHZBjDpEuGdifPpR5vDtf4vDX9BCM1 updated.
+Oct 03 18:50:28.671 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x3
+Oct 03 18:50:28.927 [32mINFO[0m Account BATeYgUFRtbsADmY7gFZvLFx8mqxZ6Ls3ErzSZDBPVhZ updated.
+Oct 03 18:50:29.238 [32mINFO[0m Account s2t5JkM3G39hd7HSBKQ8qzZ68V5uajsNxSGMvm1sgc6 updated.
+Oct 03 18:50:29.445 [32mINFO[0m Account DWciMZpdcXLJM8fJUTuAkwV6rh7UCYj61j257fYr6ZzR updated.
+Oct 03 18:50:29.627 [32mINFO[0m Account FJEwDR2dMVNDfnNZHR95cuJzFRnJ2cumDDWhVSAGSHgk updated.
+Oct 03 18:50:29.873 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:00.198 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:00.385 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:00.660 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:01.055 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:01.511 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:01.871 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:02.262 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:02.696 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:03.065 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:03.482 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:03.908 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:04.288 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:04.712 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:05.091 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:05.491 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x7
+Oct 03 18:51:05.889 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:06.306 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:06.693 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:07.072 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x6
+Oct 03 18:51:07.499 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x4
+Oct 03 18:51:09.925 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:10.204 [32mINFO[0m Account s2t5JkM3G39hd7HSBKQ8qzZ68V5uajsNxSGMvm1sgc6 updated.
+Oct 03 18:51:10.325 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:10.913 [32mINFO[0m Account 3VHjUsEzUJ2hBhujo93HUj8M1fmmqJPayhDsjGwPfz8T updated.
+Oct 03 18:51:11.060 [32mINFO[0m Account FN4MHpMhComZWk1uHXqZsjx5izhfQZsGcydGeqBe5rny updated.
+Oct 03 18:51:11.290 [32mINFO[0m Account C5ywYdQfDngkzm1M36CnMpgUCP2wuztAFGK24bNj5Sti updated.
+Oct 03 18:51:11.454 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:11.641 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:11.960 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:12.324 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:12.790 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:13.140 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:13.554 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x7
+Oct 03 18:51:13.974 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:14.348 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:14.748 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:15.175 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x6
+Oct 03 18:51:15.558 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x4
+Oct 03 18:51:16.076 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:16.413 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:16.754 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:17.207 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:17.607 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:17.961 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:18.387 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:18.807 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:19.205 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:21.615 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:21.940 [32mINFO[0m Account 3VHjUsEzUJ2hBhujo93HUj8M1fmmqJPayhDsjGwPfz8T updated.
+Oct 03 18:51:22.093 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:22.489 [32mINFO[0m Account Fh8kUmjxirPjdBWsgU2UNwLRLPDBApeFrkfzii36RFiA updated.
+Oct 03 18:51:22.725 [32mINFO[0m Account 3f7NHRcjGVVUQynEBpGV66PaHzJ3iw5wNruSH75oJfyY updated.
+Oct 03 18:51:22.789 [32mINFO[0m Account Go5YwVUg8SeMfuFoSURVoko9xz2EuqoV1XKJAqqhYT3n updated.
+Oct 03 18:51:23.222 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:23.641 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x6
+Oct 03 18:51:24.107 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x4
+Oct 03 18:51:24.457 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:24.840 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:25.346 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:25.708 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:26.083 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:26.476 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:26.890 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:27.321 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:27.724 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:28.156 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:28.483 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:28.911 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:29.306 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:29.682 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x5
+Oct 03 18:51:30.141 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x2
+Oct 03 18:51:30.509 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x7
+Oct 03 18:51:30.883 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:31.306 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x1
+Oct 03 18:51:33.747 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:34.004 [32mINFO[0m Account Fh8kUmjxirPjdBWsgU2UNwLRLPDBApeFrkfzii36RFiA updated.
+Oct 03 18:51:34.204 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:34.671 [32mINFO[0m Account G8h43SRE8tKwPHvRvKnhVwzFQjaQ5HSQDJwU6pGVx2CE updated.
+Oct 03 18:51:34.826 [32mINFO[0m Account 899Z97eXvef9QUfZrfF2FHyoqhT9nNVpNtQFV6DM3SSF updated.
+Oct 03 18:51:35.009 [32mINFO[0m Account 7Grjk5Na6t2GvFAJ1qRNQCk9RBFEBK3sfhdCPgCdp18v updated.
+Oct 03 18:51:52.290 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:52.313 [32mINFO[0m Account G8h43SRE8tKwPHvRvKnhVwzFQjaQ5HSQDJwU6pGVx2CE updated.
+Oct 03 18:51:52.451 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:51:53.283 [32mINFO[0m Account DxDFctvUSAhTQdj7AYhzUShiaDDeLiKxXHHhnZjqXXRG updated.
+Oct 03 18:51:53.413 [32mINFO[0m Account BCuV1vMiATp7fiq2pZ5Q4VQQ7tfHNtJ2kVC3vZ7FaqMy updated.
+Oct 03 18:51:53.564 [32mINFO[0m Account 4ZxLif4cxeEavKhr6mgcmaoEQUVW2t961uSaQ2iLaZ2L updated.
+Oct 03 18:52:05.431 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:05.478 [32mINFO[0m Account DxDFctvUSAhTQdj7AYhzUShiaDDeLiKxXHHhnZjqXXRG updated.
+Oct 03 18:52:05.686 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:06.407 [32mINFO[0m Account HtPKGgvSpMsr4TPJT6kc752F3s4Q2PNJDWb5rcnEdaVE updated.
+Oct 03 18:52:06.551 [32mINFO[0m Account 4nSXJ5ycayASfRnPVSU2EpAKWeDCLpEVBZDzCDWuRQmp updated.
+Oct 03 18:52:07.022 [32mINFO[0m Account 8gSQcNMv6qw46uoekUf2rJi4VqasRU5AorqpJKG861UF updated.
+Oct 03 18:52:17.143 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:17.493 [32mINFO[0m Account HtPKGgvSpMsr4TPJT6kc752F3s4Q2PNJDWb5rcnEdaVE updated.
+Oct 03 18:52:17.678 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:18.926 [32mINFO[0m Account CbKfK4vBXahENgo79zpzb6tFfnkXQKEMiTZ4m2NtKwTm updated.
+Oct 03 18:52:19.078 [32mINFO[0m Account 3PznGHfvodaBo1uHd3gFxSb8CnSotkeNn2vcGTP6LAx5 updated.
+Oct 03 18:52:19.472 [32mINFO[0m Account jXvXPwRZcZcDnpELdt8ZCCtrB6i76dykKgdZSkTDG4Q updated.
+Oct 03 18:52:28.417 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:28.531 [32mINFO[0m Account CbKfK4vBXahENgo79zpzb6tFfnkXQKEMiTZ4m2NtKwTm updated.
+Oct 03 18:52:28.706 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:29.349 [32mINFO[0m Account 8NEPaNGk2gu9zp6xqS94p9uj6yKc6opBhdZdvwPRTLMn updated.
+Oct 03 18:52:29.518 [32mINFO[0m Account 2SiMzigKKFC8zwpg1yp4iiPRzAmn5zQRn9GvtnJBVv3A updated.
+Oct 03 18:52:29.675 [32mINFO[0m Account 7FJWxqfotsn8kEwcgyvVGKL2Uqe9e92wKpwWiJkZDKBy updated.
+Oct 03 18:52:38.941 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:38.992 [32mINFO[0m Account 8NEPaNGk2gu9zp6xqS94p9uj6yKc6opBhdZdvwPRTLMn updated.
+Oct 03 18:52:39.312 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x8
+Oct 03 18:52:39.664 [32mINFO[0m Account 7JVmjfN8dZaiM6aBkRpKfPMvCA7ozS67rQUEHC7gFeqv updated.
+Oct 03 18:52:39.806 [32mINFO[0m Account 2QTbgNVLmMkuKaPrE33GqWj2j7i62x5oQ7cs5QQ8z94z updated.
+Oct 03 18:52:40.376 [32mINFO[0m Account Anme7qdshC72gubexGCnEHTavnrcjWZE8GwodnHhtDH9 updated.
+Oct 03 18:52:41.110 [32mINFO[0m Account 8q9VNkEkVDPQjPJvpjUdJTByK6p3RgSBb3qqyXvzXYiq updated.
+Oct 03 18:52:41.266 [32mINFO[0m Account 5VR4qj9MNxBMPMXxSbZP3emJENHmiijBCcy257oZjWU8 updated.
+Oct 03 18:52:41.421 [32mINFO[0m Account HLB93xcnaZ2ZQsKwjnn1YnwSRtzfXeE7mt9an6N2Fz5M updated.
+Oct 03 18:52:42.687 [32mINFO[0m Account 5rhXHFYnUnHoJMa837V81UeQUNTXiFB9PpwLEeYBzJ7w updated.
+Oct 03 18:52:43.022 [32mINFO[0m Account 8N1qmT298vtRCVoxDza5aN4PapatbseCwMxmRUsyCgTi updated.
+Oct 03 18:52:43.346 [32mINFO[0m Account FTGbZTNS4UYKhSgra3EG3BVUre3UnnJR8rDSqhcC2JCH updated.
+Oct 03 18:52:43.877 [32mINFO[0m Account D96fPGmi3MnY9QkbfTUGQ2VyuDj9TtZd6Dt6Qptmf8Cv updated.
+Oct 03 18:52:44.032 [32mINFO[0m Account GjpvHDb1RF5MnELDENGTr3i1jyRj5dDkmP7CGKxG94sP updated.
+Oct 03 18:52:44.200 [32mINFO[0m Account Gztd5yk4KGKz4uKDS2t4eVL3ZMi92S4vGw3VYmrNwoBR updated.
+Oct 03 18:52:45.444 [32mINFO[0m Account 7RGndZaHmB6iBHJsjpwpcEALu6n8uWR8eTLVknXyCXA4 updated.
+Oct 03 18:52:45.806 [32mINFO[0m Account CDjWQFyoor66NkrhFo75YSSrqiL7bHCLLJjBUHkLzWNQ updated.
+Oct 03 18:52:45.981 [32mINFO[0m Account DJQesX9xaUTCgD1hiEkFooQMs1UHnbMJZEsKFNuko67R updated.
+Oct 03 18:52:46.253 [32mINFO[0m Account 85froycCLSg67jWfYehs61SJHqfq93c2mJCVUksD6q9d updated.
+Oct 03 18:52:46.406 [32mINFO[0m Account 2Jkk5SgpGWvNq4YbjMbWKmaHngJY4wgi54brexzbNg9X updated.
+Oct 03 18:52:46.576 [32mINFO[0m Account 2APXiZoeJ5oW82BGHMsyCQK8vrcsZtEQewk6mVhCdn3A updated.
+Oct 03 18:52:47.114 [32mINFO[0m Account HoSd4jYx3kStNFjo8XYbcu1bb3bhEpRfF4gLLXbVRzrW updated.
+Oct 03 18:52:47.400 [32mINFO[0m Account 48JGkrBhZCRGMA2Fi15cVLQdsPi5zAWTWUfjxYAVkfej updated.
+Oct 03 18:52:47.657 [32mINFO[0m Account 6QqVBu3buKQGLrnhEEbkjjMP4FxSaYaoToEsxfMU1mfA updated.
+Oct 03 18:52:48.230 [32mINFO[0m Account 4zeBzfP4vHB1BbLDzNACfAxnR9F5RJm2TFCjiepyrGRP updated.
+Oct 03 18:52:48.365 [32mINFO[0m Account C1WGBeH4GBWf7SbabFrfc43AvQy7serh8kynQsftf6tJ updated.
+Oct 03 18:52:48.734 [32mINFO[0m Account CaBoSzC3enXR1qpc88KWb4rPEebA4Qokb8gmj9qPxbxs updated.
+Oct 03 18:52:51.059 [32mINFO[0m Account CNzKboREehootnmHGdxGgm2TWvGdVJWz7ve3xxibJMHH updated.
+Oct 03 18:52:51.278 [32mINFO[0m Account 9597BSQeA9ozu5kwowqZWoyYrpNVyosoFeRNet7hLvXT updated.
+Oct 03 18:52:51.624 [32mINFO[0m Account YLGWvsf91SAWtGxizviFfm2iY5Vd6a4xR6Tr3uG5DJT updated.
+Oct 03 18:52:52.223 [32mINFO[0m Account 3LiBZzdmRLiJDvHRJy12w7LkkiRbU9NedMQDGTsX4QPC updated.
+Oct 03 18:52:52.380 [32mINFO[0m Account HyDdLXJYnQkVdVKiWo5gR66uiVazn2N6ekustFUdVrq6 updated.
+Oct 03 18:52:52.534 [32mINFO[0m Account BEj3nqcaMY3kUjaN285atWEWp4g2itCzoDRgcRWXfvES updated.
+Oct 03 18:52:53.389 [32mINFO[0m Account DXYxVPBEtwoEc6rJCr5KG9m74LdRryFWd2fZ5D8SEMAq updated.
+Oct 03 18:52:53.718 [32mINFO[0m Account 369uvQg4yfhLNDKnVJo5BSnWxf76TwrMfuo78G9gsz92 updated.
+Oct 03 18:52:53.854 [32mINFO[0m Account MPsJHvUssjJiWqht5WGZXrKZw7cMvbfMJrJxsyTQV9e updated.
+Oct 03 18:52:54.489 [32mINFO[0m Account EVUSmAR3gg1fW4xMmAuKAzMjRpRWtoKJw39g1JDMPwDx updated.
+Oct 03 18:52:54.824 [32mINFO[0m Account CWcLHKtyQK2qHKMYELG73T2Ejw1gSEMwGDTdu5GSoHmM updated.
+Oct 03 18:52:55.645 [32mINFO[0m Account 4kTguYaAAMqCKjfZKDvF1Ty7HPFVkWNjn61txHgQiPcs updated.
+Oct 03 18:53:01.654 [32mINFO[0m Account 22MYfMaR7Dk9EqFjWWFQytYstUVEKyUsV6QfdUPgs8GM updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account EDRiptwjAzYAkjod1W8ee6PZALnQhsDJuANzPEj55kcy updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account 96ChonSCSAJSobWZAw3QJwHwppX4knzxicMTu71GDzh4 updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account 8xSzMAiTRum7aFLp5GtQY3sU8WSEscGYXgem69F8mgKZ updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account E7WUp4hcp91K93jqptSgEqzWMiBNKDhmWf7vQvEwBSCR updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account 8CMKPCSxMfyWuf188si8m2cTivjTLwG6xRhrfqkbYjgs updated.
+Oct 03 18:53:01.830 [32mINFO[0m Account 41MHKdDkzAs34RzSD8QxHie4zdsS9LgirP6o4uZrXr4U updated.
+Oct 03 18:53:02.250 [32mINFO[0m Account 8h7T1zjAPjZyXaQBdagL6eCP9LEdcFQcDBRHgoMWgoN updated.
+Oct 03 18:53:02.251 [32mINFO[0m Account Cx2gbGEEfEV3CWbMKk84J6izauMA29rSrfNobUHAo6W8 updated.
+Oct 03 18:53:02.252 [32mINFO[0m Account 2e2t3WyPd2V3MXKzqPtHASezRHWrXZm3pZoyK6yjace2 updated.
+Oct 03 18:53:02.537 [32mINFO[0m Account C2qvNy9c7hB7Jj4w9fcEcAuPkMDqwDVJFwumWsC3vcvi updated.
+Oct 03 18:53:02.538 [32mINFO[0m Account CLVjjscWG7xRwLNXoj3JNRVrXhzzkdNnoAzJBVDavB2z updated.
+Oct 03 18:53:02.538 [32mINFO[0m Account 2YAXeej7S1KyhTgHRnCLAsEaBuaw7JvmffedqxSubAxP updated.
+Oct 03 18:53:02.538 [32mINFO[0m Account DYrL2u9kqsxHCVUuBFmzMZ619srNhEFuuNyFopKrMRv5 updated.
+Oct 03 18:53:02.538 [32mINFO[0m Account AhQtrQn9yJBhvrBdygauDsJShkLGwnaySzpzwqTdQLXW updated.
+Oct 03 18:53:02.538 [32mINFO[0m Account 84C8mqJnA74Logoq1u56nVre64kbYezphVZi9H6XA5bU updated.
+Oct 03 18:53:02.539 [32mINFO[0m Account EdjY662NyZLSVDgwWPXcef28wYMLmcz6Sgp8icdFPrGT updated.
+Oct 03 18:53:02.864 [32mINFO[0m Account 3Fw8t8iBou9bT9HFM8Y1AcmZ9y4rAC8o8TYBotRMTLRc updated.
+Oct 03 18:53:03.039 [32mINFO[0m Account FjxxNy6fP7XjzKVSurwYeN4Y12izqs7d9zzSDga3aFtA updated.
+Oct 03 18:53:03.049 [32mINFO[0m Account EcztoRiBD2sJgXioCuLZ39rEmGh1wKdroP2rrwNbsV6N updated.
+Oct 03 18:53:03.081 [32mINFO[0m Account Hpo5hwNBUQJtnzAsGofNV5QzaUPxRxjan9wxcDztsQ69 updated.
+Oct 03 18:53:03.096 [32mINFO[0m Account EdNcn5WgWe9kQZCk6zQYkWiRrncY5LguR46GtgdWi3uU updated.
+Oct 03 18:53:03.096 [32mINFO[0m Account 4G1A5tBLdzJ86briu8Vz2LjXe3EeJpnoQFmocJJ8Cy2U updated.
+Oct 03 18:53:03.096 [32mINFO[0m Account 2fY8xzKTzVYsU5ovhFVD76xwmZSEKnKudJicankfwsBG updated.
+Oct 03 18:53:03.112 [32mINFO[0m Account 2KUKrnnvDVizBJnzMaR1s2ZK39PF8ZGFrQFKQVVZC4R1 updated.
+Oct 03 18:53:03.126 [32mINFO[0m Account 57kjJFCepXkbRYEwCRBBmFTf87zmAHA7tcE1cE9zFReb updated.
+Oct 03 18:53:03.126 [32mINFO[0m Account Bb1EV6fwVtrF4x7Bj6A8hGLGeHGVM1gxFgvERyuC6QWz updated.
+Oct 03 18:53:03.156 [32mINFO[0m Account HiDuxtn1EzVQJ1iKYTWsBfmahENZeT9H8janQgBFGK4o updated.
+Oct 03 18:53:03.221 [32mINFO[0m Account 5ecdMLiiHndzhYUgEHyHBnXAYw5mjw7HuCVuNQzUDZgk updated.
+Oct 03 18:53:03.730 [32mINFO[0m Account DS8shv53fwAwmcxj7fnQ98rjTXk11JmEa3Q9iq4BU4hK updated.
+Oct 03 18:53:09.114 [32mINFO[0m Account BaTnDKykyvP2zW3gwQQNvk6ziSAxbJ2dDmSATp4GkMLd updated.
+Oct 03 18:53:09.156 [32mINFO[0m Account BMUYHEezJHnBccJMxUob9wG2MramatdiRpP4KSMGsK9h updated.
+Oct 03 18:53:09.156 [32mINFO[0m Account 8rbESRhxMEiij4oMKt9bB8PXZMo9gF9pocAjBEW45HRD updated.
+Oct 03 18:53:09.157 [32mINFO[0m Account H4EFApDYoauXML1Dkrf3AuBVXUvPvFAE5AAudZLKB21s updated.
+Oct 03 18:53:09.271 [32mINFO[0m Account o8GAD36EmG2akUKaeRjuJKypRWujp44xH6m1Bnzic5R updated.
+Oct 03 18:53:09.300 [32mINFO[0m Account Dut4PqfdkocbKyqfTACoeX8g6VyW4m6utXVbgsEToKC5 updated.
+Oct 03 18:53:09.306 [32mINFO[0m Account BB2KZv5xsYa7ZaBoKZTCY9kqE9mpvZCDZPmd2u3WuLBy updated.
+Oct 03 18:53:09.317 [32mINFO[0m Account 8A7aXwUyDsig7m7weF6Ec5GhBfwcGxkWWUsJqrNepUMk updated.
+Oct 03 18:53:09.323 [32mINFO[0m Account HvG1Y6SYsSxT1topf4WiddvjVTCKx8ex4DxqfLXzUgyy updated.
+Oct 03 18:53:09.324 [32mINFO[0m Account Acw1pDxTVHB2sk7ThYjZ4VrmA9gdGiGuFaLidko32Eqb updated.
+Oct 03 18:53:09.339 [32mINFO[0m Account CM21SXteRVKURBJRbA4PW9BtoJz3nj4irZnPLA1A7Mgr updated.
+Oct 03 18:53:09.469 [32mINFO[0m Account 8jVp1odANfqnobNtMCDxQER21W3AuGL62tiAnRhAJDWN updated.
+Oct 03 18:53:09.476 [32mINFO[0m Account 6CyFN78um9WkbYQ28WzWKsCeh3epXhfPctHbn8pU9sYh updated.
+Oct 03 18:53:09.613 [32mINFO[0m Account 7BT86nqPnBaGojbzyBrTcn5w7LjZhWX9nRTiHDfwfGTX updated.
+Oct 03 18:53:09.892 [32mINFO[0m Account 6N6vwF5c6EiufsGvk5GgbDAYrXs7hEU3NzjLzvAHttm3 updated.
+Oct 03 18:53:09.892 [32mINFO[0m Account DEC4oMHAW78wdbFEVCNJEevKK8iRajt42P9CgzQcYtTe updated.
+Oct 03 18:53:09.892 [32mINFO[0m Account 8hCqonX67tNWkPr9HtpSFHFTCuJp7JNVxab8TkLGw7Fp updated.
+Oct 03 18:53:09.893 [32mINFO[0m Account BTGQJJcsMB9K9sYXCz7u9RSnzEwwdVBt1YMxPBeyXRD updated.
+Oct 03 18:53:09.893 [32mINFO[0m Account BBDvVy2QkVjiuL777XhsiyYCWkMcPDbCMrswjkHZ6ePQ updated.
+Oct 03 18:53:09.893 [32mINFO[0m Account E8CkxPQoWnLGH4THXzZ7jTKq9ZMp5nA4atvkTthwjcfY updated.
+Oct 03 18:53:10.031 [32mINFO[0m Account 3e7j9eFHGCCxzheoedyLwiJSszDKmdVHznKw7PZDjXtc updated.
+Oct 03 18:53:10.035 [32mINFO[0m Account 6xRf1A1VZdFmJ47WaFqxYFyeVuQ2fS1CRhL73RguZQ37 updated.
+Oct 03 18:53:10.040 [32mINFO[0m Account HyiAT2cZuacNPbDXF35PD8KJ6B4d2Nz1bkPECxzsH7Aq updated.
+Oct 03 18:53:10.042 [32mINFO[0m Account C4MpQ7rbPwLJatAZCcLKjJRddy4JvpNM3F2FHfT3kZRP updated.
+Oct 03 18:53:10.045 [32mINFO[0m Account 6asRRvcGKMcUT9jQ163xvoLtUBfqnJwo5nyKjqMoqmoD updated.
+Oct 03 18:53:10.048 [32mINFO[0m Account GdGWidXvi8cHqjXYLPUmRSVTY5fS1yM28Z1qZKUxoPnp updated.
+Oct 03 18:53:10.054 [32mINFO[0m Account GFnrzY4PL5oUWpbGtyACSpbZ3vRFBruPe2TyaB4sfFLc updated.
+Oct 03 18:53:10.190 [32mINFO[0m Account EqZBAscBpSeLBDAJD9dFRc9MiXT16cGKx8wgVHaog1M6 updated.
+Oct 03 18:53:20.808 [32mINFO[0m Account 9bBd93U3jzQS8eW1pU49YaUxooQDMTeXFbzhWTHKb2Ss updated.
+Oct 03 18:53:20.853 [32mINFO[0m Account CxBPJ8fof9eNekf6XYmE9qAvdaBnxRiyNBkyJxApqyZB updated.
+Oct 03 18:53:26.797 [32mINFO[0m Account 32dKjUov1GRpDEgyEisSqNf8Cb5dfpjeWaEJuhWwGCXd updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 6UaRgjRGZMkBTFS3EQ2pwdnxHRC7nW7YNvSr2Ktwpmr5 updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account BLt8J5UCf3M9oDEp8qRSArudKrgaJbr2qQ1MihtnVdqW updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 6HnycpwFQTT9PVuM3arFyajfpuRy6Amp4kgg4AWptqGb updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 7U4PidBimwGtL3DbmJ9hFUg8KziRZQ43p5kyv4MJgdAF updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 9yDRZhsmSRW5XCNzFCEdkqQzerCeX9EupYLtyeSiCBpv updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account AWejQmdx9uHiXFAHMYy1kcrRDVtTwT3z6jX5CQAM6vLY updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 2uXNA4VRio8PijNDXUqTNUe6jPCo1ZVC5Z21Cix9Tuqa updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 7J29LXMW2LsVCUkP4PYgcSsjPP21N3jSpoMRGxo2yzMW updated.
+Oct 03 18:53:26.961 [32mINFO[0m Account 4XeK2bME9bd5aEh6LRWwpWe4SdKFxwbvHBn6jr1kMq9U updated.
+Oct 03 18:53:26.975 [32mINFO[0m Account DT6rJHAQvWMr6XpzjXnCRpKAikkTy863ywwAmCgCEYoy updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account 9NxvQK3nfbMU5qwhk5kySPevyPNLxcE6rNSWsUmvCzqa updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account 98zJnkfbmjKDhVMbLfMQJSGaWCom4U1ParCrBssCrUtA updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account FdSa4jacWQ3FTxJVfanYAVXwy5WDW36XkGc52YAseugY updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account BYAwDd7ezzse6C77xTwFMRDbegWMq6JowCLZxzxVNrb1 updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account oTfJXMBK5KcgtVguJCqiU48gXq8mpg5pwd1MWb8caNp updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account 6mQgcg6JKEMN2Wg3v69y3MVzoC8Y4bXaF25yDiNLHeMA updated.
+Oct 03 18:53:27.251 [32mINFO[0m Account 4oUE1RhHQKoLE2eo1Fw85PCzWamEFR6eKUsWyv88XoME updated.
+Oct 03 18:53:27.292 [32mINFO[0m Account GxKHtry2ShJ9ZWZ8tdxCYXys9Db95ufhhjDw8mvneqkX updated.
+Oct 03 18:53:27.318 [32mINFO[0m Account HcjKKTr2sBK1h15b3Lrj9aDw81JYyGJrN24zLpZomfzS updated.
+Oct 03 18:53:27.330 [32mINFO[0m Account E1XLyPEhKtzrgQVMCbjQY6yBStGMLMsYcPazRt4VPh8y updated.
+Oct 03 18:53:27.359 [32mINFO[0m Account EBXf89CyaQMHLBgE9qZGttXSintfxZh1ZUgBrTTiGX7L updated.
+Oct 03 18:53:27.363 [32mINFO[0m Account 5soBYHiJRbdKJY8yjHdNbNTeiLLC4MrD2FdFoPVqtMEY updated.
+Oct 03 18:53:27.363 [32mINFO[0m Account NXL9SSEASJYgBsYdjhCcaLqszH8TLZdemuCfo9yH1Lc updated.
+Oct 03 18:53:27.462 [32mINFO[0m Account Evf3LaZxRXbr5Nnquep8kBSAGv3Ev3gAM1mkvmbh73p4 updated.
+Oct 03 18:53:27.494 [32mINFO[0m Account 3kSA9U8PXk1E9jkEgPamSoCFJoVqknMk1GkvEYZE6rMH updated.
+Oct 03 18:53:27.536 [32mINFO[0m Account 96tN8UAXkmxt27jPAsTZVr1EdUj1mntQVSHzdU64DMxv updated.
+Oct 03 18:53:27.607 [32mINFO[0m Account EysP16DDivwhbvqapdoHtcqERywizPNJ3MczxrTGsAmN updated.
+Oct 03 18:53:27.630 [32mINFO[0m Account J2uNyzPdJ17UKZ995iyv29aXaUii3hVNUTVyWuPJUBQR updated.
+Oct 03 18:53:27.641 [32mINFO[0m Account C3JANnj6hWcTnRccov8DWo6LBg8vAQrNqSsf54skQpb1 updated.
+Oct 03 18:53:48.497 [31mERROR[0m Failed to process transaction: Internal error: "Transaction error: This transaction has already been processed"
+Oct 03 18:53:48.499 [31mERROR[0m Failed to process transaction: Internal error: "Transaction error: This transaction has already been processed"
+Oct 03 18:53:48.499 [31mERROR[0m Failed to process transaction: Internal error: "Transaction error: This transaction has already been processed"
+Oct 03 18:53:51.407 [32mINFO[0m Account 4kQtiANkxEJZpofQn1pVqU56Gw7ZjRGdcLnvZ1Y4LsEN updated.
+Oct 03 18:53:51.568 [32mINFO[0m Account 3sRXpwz61KPY2jy8it96pEDmVfv9HNqb7XLCbvaBwzEi updated.
+Oct 03 18:53:51.723 [32mINFO[0m Account 9v1DV9WPuR9CbKiRSH3j6mgbb2aWDoHrcgMqNUvEcvMB updated.
+Oct 03 18:54:17.618 [32mINFO[0m Account AXGekkWG8ZmbFWFpPzMrJGLbE1UibZDuiPNbVqHYV3VU updated.
+Oct 03 18:54:17.619 [32mINFO[0m Account GKPFmq8mKvgKrHRQX5nJToZhR2AsvzgcQsgCWv9aNnoN updated.
+Oct 03 18:54:18.111 [32mINFO[0m Account 8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq updated.
+Oct 03 18:54:18.485 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:18.485 [32mINFO[0m Account 4Vngrm8fkui83ZYqTfmpveKv6i96Y4urT3gMYTqB24n6 updated.
+Oct 03 18:54:18.664 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:18.664 [32mINFO[0m Account 6fnMkMAKQAAwb2hYob2gRrXoSXjswBcu6Mj8zjitVAvu updated.
+Oct 03 18:54:18.847 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:18.847 [32mINFO[0m Account FssHsj2yjYp2nn8bnF6skxvawdcihCJMSeS8rd8YDAJ8 updated.
+Oct 03 18:54:19.145 [32mINFO[0m Account 9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx updated.
+Oct 03 18:54:19.245 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:19.245 [32mINFO[0m Account H56MMDjSNUQPy5hsTFSwFCbNadz1dj5Kozh6u6Z6WzR4 updated.
+Oct 03 18:54:19.516 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:19.516 [32mINFO[0m Account GBJ3jbwm7kt1o7GLEkAVSa9FwvMFq7zpH5a4WxeeSXXW updated.
+Oct 03 18:54:19.832 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:19.832 [32mINFO[0m Account 35PXHZe8BbmmB7L1CaaFgr6QFQyq9ZDgbaJc1jj91Rb7 updated.
+Oct 03 18:54:22.209 [32mINFO[0m Account 25dSRpSxAT69quLhbhmcsHNH9eVCUjEStKYsGBqdC7QK updated.
+Oct 03 18:54:26.874 [32mINFO[0m Account 9YEn1UHpE7KHKk9LaT4Pqa3YroRrV2whCtXvHTsgKLRD updated.
+Oct 03 18:54:32.633 [32mINFO[0m Account 4DKKDVQuUyhMEvWeuD37pb388SLTXd79AU352bU3sHdv updated.
+Oct 03 18:54:37.307 [32mINFO[0m Account CRMthKyKQfSWhEMvemob6d9vJuM4RGHRLHTjh5gGxkuM updated.
+Oct 03 18:54:42.563 [32mINFO[0m Account EGavG41sxxGNfQXihZxszrSABvKo9LvJXwyY8rLyAiDB updated.
+Oct 03 18:54:46.629 [32mINFO[0m Account AGaH4UkWckFthcm4pQhjJmz8ZipPcytzLwMopY3Aa4cL updated.
+Oct 03 18:54:51.109 [32mINFO[0m Account 6r2rSr5medNVaySf5ufvECRo6SUdehtbWUnghWapuE5Q updated.
+Oct 03 18:54:51.109 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 18:54:51.109 [32mINFO[0m Account Aieqt3JbJh77T8Bm5dZWCKjYu2RpjecLcy4DUcTCY3Sv updated.
+Oct 03 18:54:51.109 [32mINFO[0m Account E89KqeLS2UXHioabSunDDrHEGcCRbh8Ct5wZMNFighxd updated.
+Oct 03 18:54:54.001 [32mINFO[0m Account ArSGhMjGzA2j2gCzPhoKgmUCU3aSrUj38XeimkGoFiMp updated.
+Oct 03 18:54:54.532 [32mINFO[0m Account 5uNCHSQSuCkSbpHLNTHhouyw3YEBsKwbFZkB5f1VaiiZ updated.
+Oct 03 18:54:54.828 [32mINFO[0m Account EqpmK6VpdqjnquJy6QYHVenvzAjjTzr4AovyzJsY6rjS updated.
+Oct 03 18:54:55.334 [31mERROR[0m Failed to get sink for subscription ID
+Oct 03 18:54:55.659 [32mINFO[0m Account 2dss9G62Jmw1S6UnjQkbNvbC41qKkqDcxVmcfs5HaBFQ updated.
+Oct 03 18:54:57.069 [31mERROR[0m Transaction execution failed: Error processing Instruction 1: custom program error: 0x4
+Oct 03 19:08:42.990 [32mINFO[0m Account 6MXTgCEU7dDdxvnHScVE8cRzrZUDi34JBjWHA2P2htuH updated.
+Oct 03 19:08:46.566 [32mINFO[0m Account AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB updated.
+Oct 03 19:08:51.755 [32mINFO[0m Account So11111111111111111111111111111111111111112 updated.
+Oct 03 19:08:51.757 [32mINFO[0m Account 3uFkFAm2dPPUgnyqMzu5cVfreH1DPQrfzMui7prNcJeV updated.
+Oct 03 19:08:51.760 [32mINFO[0m Account AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 updated.
+Oct 03 19:08:51.793 [32mINFO[0m Account GWsmHdWSb4cu1tsZXShcEiXZswGGVsMVYS8z5Pj2hmXM updated.
+Oct 03 19:08:51.804 [32mINFO[0m Account AUh8bm2XsMfex3KjYGcM3G4uBqUNSDw6HEhWaWMYnyPH updated.
+Oct 03 19:08:51.914 [32mINFO[0m Account cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG updated.
+Oct 03 19:08:51.915 [32mINFO[0m Account HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC updated.
+Oct 03 19:08:55.263 [32mINFO[0m Account 4Kjm36xfRmtqUgJ72LJBVDfVYs8ETK4UnwuADpFaXTfb updated.
+Oct 03 19:08:55.949 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:08:58.627 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:03.011 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:05.599 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:08.439 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:11.621 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:16.585 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:21.663 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:24.229 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:27.160 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f
+Oct 03 19:09:29.173 [31mERROR[0m Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f

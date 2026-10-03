@@ -1,0 +1,5 @@
+target/deploy/qc_vault.so len 7456 sha256 07e6b6dd45e6bb7f26ef4ce85f1e6168f8dd1b4bde2b0f4979a5fad6769194be
+  onchain[:len] sha256 07e6b6dd45e6bb7f26ef4ce85f1e6168f8dd1b4bde2b0f4979a5fad6769194be MATCH | tail all zero: True tail len 8
+target/deploy/qc_vault.mainnet-93abe8ef.so len 7464 sha256 93abe8efcc344cfb43f25dca968af2bc4991feb555e0743f7bd06de8b0839b2e
+  onchain[:len] sha256 e0039eb46842ca37b5b9fa0519f20df8d6baf33bf5ec3716f9249d2dc88de7f0 MISMATCH | tail all zero: True tail len 0
+onchain total len 7464

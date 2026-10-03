@@ -1,0 +1,99 @@
+# Cross-component address consistency
+## AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              1
+  apps/native/lib/chain.dart         1
+  transparency/index.html            1
+  WHITEPAPER.md                      1
+  brand/metadata.json                0
+missing
+  web/src (files)                    1
+## CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              1
+  apps/native/lib/chain.dart         0
+missing
+  transparency/index.html            1
+  WHITEPAPER.md                      1
+  brand/metadata.json                0
+missing
+  web/src (files)                    1
+## A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              0
+missing
+  apps/native/lib/chain.dart         0
+missing
+  transparency/index.html            0
+missing
+  WHITEPAPER.md                      0
+missing
+  brand/metadata.json                0
+missing
+  web/src (files)                    0
+## 45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              0
+missing
+  apps/native/lib/chain.dart         0
+missing
+  transparency/index.html            0
+missing
+  WHITEPAPER.md                      1
+  brand/metadata.json                0
+missing
+  web/src (files)                    0
+## AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              0
+missing
+  apps/native/lib/chain.dart         0
+missing
+  transparency/index.html            0
+missing
+  WHITEPAPER.md                      1
+  brand/metadata.json                0
+missing
+  web/src (files)                    0
+## 7Bqgd7AyjAQw6LS9m7QHLTGiF851Net93fJdk8XSDWAt
+  programs/qc-vault/src/lib.rs       0
+missing
+  app/src/lib/config.ts              0
+missing
+  apps/native/lib/chain.dart         0
+missing
+  transparency/index.html            0
+missing
+  WHITEPAPER.md                      0
+missing
+  brand/metadata.json                0
+missing
+  web/src (files)                    0
+## declare_id / program id in program:
+## metadata.json:
+{
+  "name": "QuantCoin",
+  "symbol": "QC",
+  "description": "QuantCoin (QC) is a Token-2022 token on Solana. QC kept in a QC hybrid vault needs two signatures to move: Ed25519 and a hash-based Winternitz signature that quantum computers are not known to break. Fixed supply of 22 trillion; mint and freeze authority revoked. Not externally audited yet.",
+  "image": "https://raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/logo-512.png",
+  "external_url": "https://quantcoin-pi.vercel.app",
+  "website": "https://quantcoin-pi.vercel.app",
+  "extensions": {
+    "website": "https://quantcoin-pi.vercel.app",
+    "github": "https://github.com/bryankwandou/QUANTCOIN",
+    "whitepaper": "https://quantcoin-pi.vercel.app/whitepaper/",
+    "transparency": "https://quantcoin-pi.vercel.app/transparency/",
+    "twitter": "https://x.com/QuantCoin_Sol"
+  },
+  "twitter": "https://x.com/QuantCoin_Sol"
+}
+## other base58 mint-like constants in config.ts/chain.dart:
+app/src/lib/config.ts:3:CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms
+app/src/lib/config.ts:4:AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2
+apps/native/lib/chain.dart:10:BUoNsFbNU5hxYK5rRoiHkFqonaoaNL836Wo5QgrukAK8
+apps/native/lib/chain.dart:11:AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2

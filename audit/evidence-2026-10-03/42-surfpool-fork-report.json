@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-03T10:54:58.423Z",
+  "rpc": "http://127.0.0.1:8899",
+  "forkOf": "mainnet-beta",
+  "program": "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
+  "mint": "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2",
+  "total": 394,
+  "passed": 394,
+  "failed": 0,
+  "byGroup": {
+    "G0 fork": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G1 spend": {
+      "pass": 30,
+      "fail": 0
+    },
+    "G2 overspend": {
+      "pass": 4,
+      "fail": 0
+    },
+    "G3 fuzz": {
+      "pass": 256,
+      "fail": 0
+    },
+    "G4 replay": {
+      "pass": 16,
+      "fail": 0
+    },
+    "G5 transplant": {
+      "pass": 6,
+      "fail": 0
+    },
+    "G6 concurrency": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G7 compute": {
+      "pass": 1,
+      "fail": 0
+    },
+    "G8 mainnet data": {
+      "pass": 72,
+      "fail": 0
+    },
+    "G9 F9": {
+      "pass": 3,
+      "fail": 0
+    }
+  },
+  "compute": {
+    "spends": 39,
+    "min": 439701,
+    "median": 573786,
+    "max": 868881,
+    "cap": 1400000
+  },
+  "fuzzErrorCodes": {
+    "flip WOTS sig bit -> 2": 12,
+    "flip seed bit -> 2": 12,
+    "other bump -> 2": 12,
+    "other amount -> 2": 12,
+    "other opcode -> 1": 12,
+    "truncate data -> 1": 12,
+    "extend data -> 1": 12,
+    "swap vault -> 2": 12,
+    "swap mint -> 2": 12,
+    "swap destination -> 2": 11,
+    "swap refund -> 2": 11,
+    "swap rent receiver -> 2": 11,
+    "legacy token program -> 5": 11,
+    "random token program -> 5": 11,
+    "thief owner -> 2": 11,
+    "owner not signing -> 7": 11,
+    "system program swapped -> 1": 11,
+    "drop last account -> 1": 11,
+    "extra account -> 1": 11,
+    "duplicate account -> 6": 11,
+    "vault_ta not a token account -> 4": 11
+  },
+  "failures": [],
+  "g9": [
+    {
+      "group": "G9 F9",
+      "name": "decoy vault token account refused with NotATokenAccount (4)",
+      "ok": true,
+      "detail": {
+        "InstructionError": [
+          1,
+          {
+            "Custom": 4
+          }
+        ]
+      }
+    },
+    {
+      "group": "G9 F9",
+      "name": "vault not marked spent, real ATA untouched",
+      "ok": true,
+      "detail": {
+        "spent": false,
+        "realLeft": "1000000"
+      }
+    },
+    {
+      "group": "G9 F9",
+      "name": "same vault still spends normally from its ATA",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}

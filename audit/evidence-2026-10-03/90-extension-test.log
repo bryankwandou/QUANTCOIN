@@ -1,0 +1,14 @@
+
+> quantum-safe-extension@0.1.0 test
+> node ../../app/node_modules/vitest/vitest.mjs run
+
+
+ RUN  v5.0.1 E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/apps/extension
+
+
+ Test Files  4 passed (4)
+      Tests  14 passed (14)
+   Start at  19:14:24
+   Duration  143.92s (import 66%, tests 25%, transform 9%)
+
+EXIT=0 DUR=307s

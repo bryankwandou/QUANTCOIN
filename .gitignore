@@ -27,3 +27,7 @@ Thumbs.db
 /client/keys/
 /client/keys-*/
 /client/node_modules/
+
+# upgrade buffer keypairs; dry-run state
+/client/upgrade-buffer-*.json
+/client/upgrade-surfpool.json

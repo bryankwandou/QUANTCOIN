@@ -1,0 +1,25 @@
+PASS / HTTP 200 200
+PASS / no console errors []
+PASS /id/ HTTP 200 200
+PASS /id/ no console errors []
+PASS /whitepaper/ HTTP 200 200
+PASS /whitepaper/ no console errors []
+PASS /launch/ HTTP 200 200
+PASS /launch/ no console errors []
+PASS /audit/ HTTP 200 200
+PASS /audit/ no console errors []
+PASS /transparency/ HTTP 200 200
+PASS /transparency/ no console errors []
+PASS /transparency/ shows real balances (7,699,999,999,999 treasury / 4,378,000,000,000 liquidity) ["22,000,000,000,000","7,699,999,999,999","4,378,000,000,000","3,300,000,000,000","1,100,000,000,000","1,100,000,000,000","1,100,000,000,000","1,100,000,000,000","1,100,000,000,000","2,200,000,000,000"]
+PASS /transparency/ reached /api/rpc with 200 [200,200,200,200,200,200,200,200,200,200]
+PASS /app/ HTTP 200 200
+PASS /app/ no console errors []
+FAIL /app/ reached mainnet via /api/rpc/ (all 200) {"calls":0,"statuses":[]}
+PASS proxy: allowed origin -> 200 200
+PASS proxy: foreign origin -> 403 403
+PASS proxy: disallowed method rejected (400) [400,"{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32601,\"message\":\"method not allowed: getProgramAccounts\"}}"]
+PASS proxy: oversize body rejected (413) 413
+PASS proxy: batch >20 rejected (400) 400
+PASS proxy: GET rejected (405) 405
+TOTAL 22 pass / 1 fail
+EXIT=1 DUR=435s

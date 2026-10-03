@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", "lib": ["ES2022", "DOM", "DOM.Iterable"], "module": "ESNext", "moduleResolution": "Bundler",
+    "jsx": "react-jsx", "strict": true, "skipLibCheck": true, "noEmit": true, "isolatedModules": true,
+    "allowImportingTsExtensions": true, "types": [],
+    "baseUrl": ".", "paths": { "@app/*": ["../../app/src/lib/*"], "@solana/web3.js": ["../../app/node_modules/@solana/web3.js"], "@solana/spl-token": ["../../app/node_modules/@solana/spl-token"], "buffer": ["../../app/node_modules/buffer"] }
+  },
+  "include": ["src"]
+}

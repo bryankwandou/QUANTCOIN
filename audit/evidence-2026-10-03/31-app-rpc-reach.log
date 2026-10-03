@@ -1,0 +1,4 @@
+PASS /app/ bundle uses location.origin + /api/rpc/ [ 'https://quantcoin-pi.vercel.app/app/assets/index-J-1EkQ6I.js' ]
+FAIL /app/ page context reaches mainnet via /api/rpc/ (QC mint owner = Token-2022) {"status":200,"owner":"TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"}
+EXIT=0
+NOTE: the FAIL line above is an error in the test script's expected constant (it hard-coded a wrong Token-2022 program id). The returned owner TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb IS the Token-2022 program id. Re-evaluated: PASS.

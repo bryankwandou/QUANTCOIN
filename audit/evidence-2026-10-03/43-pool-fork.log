@@ -1,0 +1,8 @@
+opening floor (sqrtMinPrice) price SOL/QC: 2.2727272729999996565e-11 current: 4.9836595162624048006e-11
+PASS current price >= opening floor at fork start 
+PASS buy 1 SOL -> receives QC, price rises {"qc":"1044914933349328","price":"1.8285418940332189713e-10"}
+PASS sell all bought QC -> price falls, stays >= floor {"price":"4.9836595162624055658e-11"}
+PASS dump 5T QC: price never below opening floor {"price":"4.9836595162624055658e-11","refused":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 3: custom program error: 0x177f: 32 log messages:\nProgram Comput"}
+PASS 20 random trades: price never below opening floor 
+TOTAL 5 pass / 0 fail
+EXIT=0 DUR=391s

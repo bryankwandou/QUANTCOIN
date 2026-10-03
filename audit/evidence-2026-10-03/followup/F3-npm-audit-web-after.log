@@ -1,0 +1,16 @@
+# npm audit report
+
+http-cache-semantics  *
+Severity: high
+http-cache-semantics max-stale handling can disclose cross-user cached responses - https://github.com/advisories/GHSA-ch52-4w7c-c8xp
+fix available via `npm audit fix --force`
+Will install astro@2.10.9, which is a breaking change
+node_modules/http-cache-semantics
+  astro  <=0.0.0-head-body-content-20240329190922 || >=2.10.10
+  Depends on vulnerable versions of http-cache-semantics
+  node_modules/astro
+
+2 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force

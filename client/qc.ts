@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import {
   ComputeBudgetProgram, Connection, Keypair, PublicKey, SystemProgram, TransactionInstruction,
 } from "@solana/web3.js";
-import { TOKEN_2022_PROGRAM_ID, getAssociatedTokenAddressSync } from "@solana/spl-token";
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddressSync } from "@solana/spl-token";
 
 export const N = 24, MSG_DIGITS = 24, CHAINS = 26, SEED_LEN = 16;
 const enc = (s: string) => Buffer.from(s, "ascii");
@@ -95,6 +95,35 @@ export function loadVault(name: string): VaultKeys {
 }
 
 export const vaultExists = (name: string) => existsSync(new URL(`vault-${name}.json`, KEYDIR));
+
+/** Refuses a spend the program is certain to reject, BEFORE the one-time key
+ *  signs it. A broadcast signature can never be followed by a different one,
+ *  so a doomed transfer (too much, own vault, token account as recipient)
+ *  would lock the vault for good. A retry of the recorded digest skips this. */
+export async function checkSpend(conn: Connection, program: PublicKey, mint: PublicKey, v: VaultKeys,
+  destOwner: PublicKey, amount: bigint) {
+  if (v.signed) return;
+  const [pda] = vaultAddress(program, v);
+  if (amount <= 0n) throw new Error("amount must be above zero");
+  if (destOwner.equals(pda)) throw new Error("recipient is this vault itself");
+  if ((await conn.getAccountInfo(pda))?.owner.equals(program)) throw new Error(`vault ${v.name} is already spent`);
+  const ta = await conn.getAccountInfo(vaultTokenAccount(program, mint, v));
+  const held = ta?.owner.equals(TOKEN_2022_PROGRAM_ID) && ta.data.length >= 72 ? ta.data.readBigUInt64LE(64) : 0n;
+  if (amount > held) throw new Error(`vault ${v.name} holds ${held} base units, asked to send ${amount}`);
+  const o = (await conn.getAccountInfo(destOwner))?.owner;
+  if (o && (o.equals(TOKEN_2022_PROGRAM_ID) || o.equals(TOKEN_PROGRAM_ID)))
+    throw new Error("recipient is a token account or mint; pass the wallet address");
+  if (o?.equals(program)) throw new Error("recipient is a spent vault; tokens sent there are locked forever");
+  if ((o && DEAD_OWNERS.has(o.toBase58())) || destOwner.toBase58() === "1nc1nerator11111111111111111111111111111111")
+    throw new Error("recipient is a program, sysvar or the incinerator; tokens sent there never move again");
+}
+
+/** Owners of accounts nobody can sign for. */
+const DEAD_OWNERS = new Set([
+  "BPFLoaderUpgradeab1e11111111111111111111111", "BPFLoader2111111111111111111111111111111111",
+  "BPFLoader1111111111111111111111111111111111", "NativeLoader1111111111111111111111111111111",
+  "LoaderV411111111111111111111111111111111111", "Sysvar1111111111111111111111111111111111111",
+]);
 
 export function spendIxs(program: PublicKey, mint: PublicKey, v: VaultKeys, dest: PublicKey,
   refund: PublicKey, rentTo: PublicKey, amount: bigint): TransactionInstruction[] {

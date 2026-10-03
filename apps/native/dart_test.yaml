@@ -1,3 +1,7 @@
 tags:
   network:
+  # Real sends on devnet: they spend devnet QC and SOL and need QC_RPC, QC_FROM
+  # and the devnet keys in client/keys. Skipped in a plain `flutter test`; run with
+  # QC_RPC=... QC_FROM=<unused funded treasury vault> flutter test --run-skipped -t devnet-send
   devnet-send:
+    skip: "spends devnet funds; run with --run-skipped -t devnet-send and QC_RPC/QC_FROM set"

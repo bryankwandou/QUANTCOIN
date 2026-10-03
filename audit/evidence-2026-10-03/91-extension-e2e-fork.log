@@ -1,0 +1,30 @@
+RPC: https://quantcoin-pi.vercel.app/api/rpc/
+PASS mainnet balance of CrZm5SGo... = 4,378,000,000,000
+PASS owner CTZZm6pbAqA2kUUMRBv5ZGUdZhGoBesnXnFD1RKHBrnd and vault H53FU82CvyBvxYe7CLYJQSFD9v72AKHfY25aXGj8tUWr created
+PASS vault stored sealed (PBKDF2 600k + AES-GCM)
+PASS owner key stored sealed
+download events seen: 0
+PASS vault unseals with the right password
+PASS vault refuses a wrong password
+PASS import with wrong password refused
+PASS vault backup re-imported
+PASS fork airdrop to owner ""
+PASS fork: vault token account Cb9jn9XGYWgDQ7rjaSiDuEfbcAeCwbr8p7nZWJA9GQBJ funded with 10,000 QC ""
+23.24.42  Creating the next vault (receives the remainder)...
+23.24.43  Backup of next vault 53Er22UaVSkcXE3VRUegg7EWw7kpk4DdzJ4ywmT8H2YK downloaded.
+23.24.44  Signed digest a6f216ef6aabd38405685f1d22ca4b5187d9a3dbc01e771b saved.
+23.24.44  Preparing destination and next-vault token accounts...
+23.24.44  prepare accounts: 4Nvqhxjo7zVQUXceCgnR4CKeaV1tdzgammPgosM5VSo6ob3mqsPUNQP1eECNcjXbvXS7d3tmLQXvWv1bsSfXXcj5
+23.24.44  Sending spend (WOTS + wallet signature)...
+23.24.45  spend: 2W9WyZYzXrK9wQZGuH1fSpuZ6NRbko1L6HWQ7m7rfj5ukRQcM4n9fy5BdAuwSSXtezpnRQop2qiZFQNgBYRZ1ZbQ
+23.24.45  Spend confirmed: 2W9WyZYzXrK9wQZGuH1fSpuZ6NRbko1L6HWQ7m7rfj5ukRQcM4n9fy5BdAuwSSXtezpnRQop2qiZFQNgBYRZ1ZbQ
+23.24.46  sweep rent: 3CocksypLppyMqfDfmxw4MxZQeT9tmAPXHZMhjjgTBJvsN77jaJ1oxkTifb2PdWFfAuXXAowGA9CXf8uUTLg2NRr
+23.24.46  Returned 1143400 lamports of closed-account rent to the wallet: 3CocksypLppyMqfDfmxw4MxZQeT9tmAPXHZMhjjgTBJvsN77jaJ1oxkTifb2PdWFfAuXXAowGA9CXf8uUTLg2NRr
+23.24.46  Done. Remainder is in new vault 53Er22UaVSkcXE3VRUegg7EWw7kpk4DdzJ4ywmT8H2YK.
+PASS withdraw completed on fork
+PASS old vault spent with its signed digest persisted
+PASS owner received 1,234.5 QC on the fork
+PASS remainder 8,765.5 QC in the next vault
+
+14 passed, 0 failed
+EXIT=0 DUR=153s

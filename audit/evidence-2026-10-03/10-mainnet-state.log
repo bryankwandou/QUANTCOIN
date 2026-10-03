@@ -1,0 +1,43 @@
+PASS program executable, upgradeable loader 
+PASS program upgrade authority = Squads vault 45nAv… "45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez"
+PASS multisig owned by Squads v4 
+PASS multisig threshold 2, 3 members {"threshold":2,"members":["4oz6HpcXuG7BeEGwQuBKcS9rUqSNPDhTPY8JFLggvvNd","DmP8jheo1NpFjNerM7GhVpzPA59F4EygJcJxPwPshKyE","ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m"]}
+PASS multisig time lock 86400 s 86400
+PASS multisig config authority = none "11111111111111111111111111111111"
+PASS vault PDA index 0 derives to 45nAv… 
+PASS supply = 22,000,000,000,000 QC (5 decimals) {"supply":"2200000000000000000","decimals":5}
+PASS mint authority = none 
+PASS freeze authority = none 
+PASS extensions are only MetadataPointer + TokenMetadata ["MetadataPointer","TokenMetadata"]
+PASS metadata pointer authority none, points at mint 
+PASS metadata update authority none 
+PASS metadata name QuantCoin / symbol QC {"name":"QuantCoin","symbol":"QC","uri":"https://raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/metadata.json"}
+PASS transparency lists vaults 9
+PASS treasury: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h"}
+  treasury       35PXHZe8BbmmB7L1CaaFgr6QFQyq9ZDgbaJc1jj91Rb7 7,699,999,999,999 QC (open)
+PASS liquidity: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"3DquQtE2ikqGRy5bvZiTDTiPnuKr3jFVvogLC2TpxdRL"}
+  liquidity      CrZm5SGo6G9HEQaqmHxB9KPH2W4vnxZMqYrfzGCb9x4G 4,378,000,000,000 QC (open)
+PASS airdrop: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T"}
+  airdrop        H56MMDjSNUQPy5hsTFSwFCbNadz1dj5Kozh6u6Z6WzR4 3,300,000,000,000 QC (open)
+  founder1       HfCsZNu2REFqZSa1syR4fGqH2g8FV9oH9wNdp1UKuj4H 0 QC (account closed)
+PASS founderwallet: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"ETcQvsQek2w9feLfsqoe4AypCWfnrSwQiv3djqocaP2m"}
+  founderwallet  HS2kPBakjj54bWCatPEjHNiURzHo3UnGZmVVn6n6a436 1,100,000,000,000 QC (open)
+PASS founder2: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz"}
+  founder2       4Vngrm8fkui83ZYqTfmpveKv6i96Y4urT3gMYTqB24n6 1,100,000,000,000 QC (open)
+PASS founder3: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG"}
+  founder3       6fnMkMAKQAAwb2hYob2gRrXoSXjswBcu6Mj8zjitVAvu 1,100,000,000,000 QC (open)
+PASS founder4: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd"}
+  founder4       FssHsj2yjYp2nn8bnF6skxvawdcihCJMSeS8rd8YDAJ8 1,100,000,000,000 QC (open)
+PASS reserve: token account mint=QC owner=listed vault, no delegate/close authority {"owner":"3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93"}
+  reserve        GBJ3jbwm7kt1o7GLEkAVSa9FwvMFq7zpH5a4WxeeSXXW 2,200,000,000,000 QC (open)
+listed vault sum QC: 21977999999999 raw 2197799999999900000
+  outside: Aieqt3JbJh77T8Bm5dZWCKjYu2RpjecLcy4DUcTCY3Sv owner GKPFmq8mKvgKrHRQX5nJToZhR2AsvzgcQsgCWv9aNnoN 1 QC
+  outside: GWsmHdWSb4cu1tsZXShcEiXZswGGVsMVYS8z5Pj2hmXM owner HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC 21,862,961,121.273 QC
+  outside: HGVMMgZnNSN6ouy2uNjZJn2YkXzxT8dDt4UGnRM1Axtd owner 24arZq9uZrZwveScgpZvk2fgQxDxXff1ShHhTxVjJjjz 137,038,878.727 QC
+PASS listed vaults + outside holdings = 22,000,000,000,000 QC exactly {"listed":"2197799999999900000","outside":"2200000000100000","outsideAccounts":3}
+PASS sum of every QC token account = supply {"accounts":18,"total":"2200000000000000000"}
+PASS position belongs to pool 
+PASS project position fully locked (permanent = total liquidity, unlocked 0, vested 0) {"permanent":"19347108405599856524008257940930","unlocked":"0","vested":"0","poolLiquidity":"28471010847137219395913932150594","poolPermanent":"19347108405599856524008257940930"}
+PASS pool token A or B = QC {"a":"AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2","b":"So11111111111111111111111111111111111111112"}
+TOTAL 28 pass / 0 fail
+EXIT=0 DUR=777s

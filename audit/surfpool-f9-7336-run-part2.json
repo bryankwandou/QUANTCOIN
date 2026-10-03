@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-01T15:35:44.826Z",
+  "rpc": "http://127.0.0.1:8899",
+  "forkOf": "mainnet-beta",
+  "program": "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms",
+  "mint": "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2",
+  "total": 73,
+  "passed": 73,
+  "failed": 0,
+  "byGroup": {
+    "G0 fork": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G6 concurrency": {
+      "pass": 3,
+      "fail": 0
+    },
+    "G7 compute": {
+      "pass": 1,
+      "fail": 0
+    },
+    "G8 mainnet data": {
+      "pass": 63,
+      "fail": 0
+    },
+    "G9 F9": {
+      "pass": 3,
+      "fail": 0
+    }
+  },
+  "compute": {
+    "spends": 1,
+    "min": 874760,
+    "median": 874760,
+    "max": 874760,
+    "cap": 1400000
+  },
+  "fuzzErrorCodes": {},
+  "failures": [],
+  "g9": [
+    {
+      "group": "G9 F9",
+      "name": "decoy vault token account refused with NotATokenAccount (4)",
+      "ok": true,
+      "detail": {
+        "InstructionError": [
+          1,
+          {
+            "Custom": 4
+          }
+        ]
+      }
+    },
+    {
+      "group": "G9 F9",
+      "name": "vault not marked spent, real ATA untouched",
+      "ok": true,
+      "detail": {
+        "spent": false,
+        "realLeft": "1000000"
+      }
+    },
+    {
+      "group": "G9 F9",
+      "name": "same vault still spends normally from its ATA",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}

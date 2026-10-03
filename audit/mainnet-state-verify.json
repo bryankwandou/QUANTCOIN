@@ -1,0 +1,207 @@
+{
+  "date": "2026-09-30T05:25:38.090Z",
+  "network": "mainnet",
+  "passed": 35,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "program is executable, owned by upgradeable loader",
+      "ok": true
+    },
+    {
+      "check": "upgrade authority = Squads vault",
+      "ok": true,
+      "detail": "45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez"
+    },
+    {
+      "check": "program bytes = audited build (sha256)",
+      "ok": true,
+      "detail": "7464 bytes"
+    },
+    {
+      "check": "multisig owned by Squads v4",
+      "ok": true
+    },
+    {
+      "check": "multisig threshold 2 of 3",
+      "ok": true,
+      "detail": {
+        "threshold": 2,
+        "members": 3
+      }
+    },
+    {
+      "check": "multisig members as recorded",
+      "ok": true
+    },
+    {
+      "check": "multisig has no config authority (changes need a vote)",
+      "ok": true
+    },
+    {
+      "check": "multisig has no time lock",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "check": "Squads vault PDA derives from multisig",
+      "ok": true
+    },
+    {
+      "check": "supply = 22,000,000,000,000 QC",
+      "ok": true,
+      "detail": "2200000000000000000"
+    },
+    {
+      "check": "decimals = 5",
+      "ok": true
+    },
+    {
+      "check": "mint authority revoked",
+      "ok": true
+    },
+    {
+      "check": "freeze authority revoked",
+      "ok": true
+    },
+    {
+      "check": "metadata pointer authority revoked, points at the mint",
+      "ok": true
+    },
+    {
+      "check": "metadata update authority revoked",
+      "ok": true
+    },
+    {
+      "check": "metadata name/symbol",
+      "ok": true
+    },
+    {
+      "check": "metadata URI reachable",
+      "ok": true,
+      "detail": "https://raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/metadata.json"
+    },
+    {
+      "check": "alloc-founder-1: open, owned by its PDA, holds 1100000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "8Hzt3hHCDup7pP8rZ1MzFesBjpWbSsaLxFrRSAD1hMjq",
+        "amount": "110000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-founder-2: open, owned by its PDA, holds 1100000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "7kCLSt2e16CDcJ5K8JYTcsPoFH2hEThYv31r4M9su9yz",
+        "amount": "110000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-founder-3: open, owned by its PDA, holds 1100000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "5fRw2g2B7tbX7pGyexT5rxDs8FAkrzurbhZGQHnY9EYG",
+        "amount": "110000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-founder-4: open, owned by its PDA, holds 1100000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "8Q89eH2bJNc8khbv3A6kqZXPukdPzeGzt2GpD1FSvDHd",
+        "amount": "110000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-liquidity: open, owned by its PDA, holds 4400000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "9RA4EPJ3zPwnPeUFJZEzTw7NDJZWUewmJykzWHFKnkyx",
+        "amount": "440000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-airdrop: open, owned by its PDA, holds 3300000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T",
+        "amount": "330000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "alloc-reserve: open, owned by its PDA, holds 2200000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93",
+        "amount": "220000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "treasury-8: open, owned by its PDA, holds 7700000000000 QC",
+      "ok": true,
+      "detail": {
+        "vault": "E89KqeLS2UXHioabSunDDrHEGcCRbh8Ct5wZMNFighxd",
+        "amount": "770000000000000000",
+        "delegate": null
+      }
+    },
+    {
+      "check": "open vaults hold the whole supply",
+      "ok": true,
+      "detail": "2200000000000000000"
+    },
+    {
+      "check": "genesis: spent marker set, token account closed",
+      "ok": true,
+      "detail": "AXGekkWG8ZmbFWFpPzMrJGLbE1UibZDuiPNbVqHYV3VU"
+    },
+    {
+      "check": "treasury-1: spent marker set, token account closed",
+      "ok": true,
+      "detail": "25dSRpSxAT69quLhbhmcsHNH9eVCUjEStKYsGBqdC7QK"
+    },
+    {
+      "check": "treasury-2: spent marker set, token account closed",
+      "ok": true,
+      "detail": "9YEn1UHpE7KHKk9LaT4Pqa3YroRrV2whCtXvHTsgKLRD"
+    },
+    {
+      "check": "treasury-3: spent marker set, token account closed",
+      "ok": true,
+      "detail": "4DKKDVQuUyhMEvWeuD37pb388SLTXd79AU352bU3sHdv"
+    },
+    {
+      "check": "treasury-4: spent marker set, token account closed",
+      "ok": true,
+      "detail": "CRMthKyKQfSWhEMvemob6d9vJuM4RGHRLHTjh5gGxkuM"
+    },
+    {
+      "check": "treasury-5: spent marker set, token account closed",
+      "ok": true,
+      "detail": "EGavG41sxxGNfQXihZxszrSABvKo9LvJXwyY8rLyAiDB"
+    },
+    {
+      "check": "treasury-6: spent marker set, token account closed",
+      "ok": true,
+      "detail": "AGaH4UkWckFthcm4pQhjJmz8ZipPcytzLwMopY3Aa4cL"
+    },
+    {
+      "check": "treasury-7: spent marker set, token account closed",
+      "ok": true,
+      "detail": "FiBHoGrXxEiuGetS8xgPjBwyixEoTsfrEyJKsMtcjJ8j"
+    },
+    {
+      "check": "no token account outside the vaults holds QC",
+      "ok": true,
+      "detail": "implied by supply == vault sum (RPC refused getTokenLargestAccounts)"
+    }
+  ]
+}

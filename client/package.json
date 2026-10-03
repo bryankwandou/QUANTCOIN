@@ -25,5 +25,10 @@
     "@codama/renderers-js": "^2.5.0",
     "@solana/kit": "^8.3.0",
     "codama": "^1.11.0"
+  },
+  "overrides": {
+    "uuid": "^11.1.1",
+    "stream-json": "^3.7.0",
+    "toml": "^4.2.0"
   }
 }
