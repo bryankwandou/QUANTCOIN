@@ -138,7 +138,7 @@ export default function App() {
   return (
     <main>
       <header>
-        <div className="brand"><img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" /><h1>Quantum Safe</h1><span className="tag">DEVNET</span></div>
+        <div className="brand"><img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" /><h1>Quantum Safe</h1><span className="tag">MAINNET</span></div>
         <WalletMultiButton />
       </header>
 
