@@ -1,0 +1,2 @@
+--------- beginning of main
+10-04 04:37:39.334  3417  3535 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
