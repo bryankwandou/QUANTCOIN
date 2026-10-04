@@ -65,7 +65,7 @@ Ke-27 uji mencakup antara lain: transfer butuh tanda tangan Ed25519 dan tanda ta
 | .app macOS | Mesin macOS 26 CI (Apple Silicon) | Berjalan (proses hidup setelah 25 detik), layar passcode. Tanda tangan ad-hoc valid |
 | iOS | Simulator iPhone (build simulator dari commit yang sama; .ipa tanpa tanda tangan adalah build perangkat fisik dan tidak bisa jalan di simulator) | Berjalan (proses hidup setelah 25 detik), layar passcode |
 
-Run uji pada rilis final: GitHub Actions 37164277322 (keempat job lulus; screenshot dan cek checksum di `ci-smoke-37164277322/`). Run sebelumnya, 37163022346 dan 37163296309, gagal hanya di macOS; kegagalan itu adalah F-10.
+Run uji pada rilis final: GitHub Actions 37177474011 (setelah APK ditandatangani ulang; keempatnya lulus) dan 37164277322 (keempat job lulus; screenshot dan cek checksum di `ci-smoke-37164277322/`). Run sebelumnya, 37163022346 dan 37163296309, gagal hanya di macOS; kegagalan itu adalah F-10.
 
 **Uji penyimpanan kunci di dalam aplikasi sungguhan** (`integration_test/keystore_device_test.dart`: tulis kunci vault ke keychain/keystore sistem, baca lagi, bandingkan, hapus): **lulus di emulator Android, simulator iPhone, macOS, dan Windows** (GitHub Actions 37163435149).
 
@@ -104,7 +104,7 @@ Setelah pembaruan, peringatan JavaScript yang tersisa ada di paket yang **belum 
 2. **Tidak ada bukti "nol bug".** Pengujian menunjukkan kasus yang diuji berjalan. Situasi yang tidak diuji tetap bisa gagal.
 3. **Q-1 Penyimpanan kunci (kritis, terbuka).** Dua dari tiga kunci multisig beserta seed phrase-nya masih tersimpan sebagai file biasa di laptop developer. Siapa pun yang menguasai laptop itu menguasai 2 dari 3 kunci dan bisa meng-upgrade contract, setelah time lock 24 jam. Perbaikannya: pindahkan kedua kunci ke dua tempat offline yang terpisah, lalu hapus file-nya. Hanya pemilik yang bisa melakukan ini.
 4. **Q-2 Contract masih bisa di-upgrade (tinggi, disengaja sampai audit eksternal).** Sampai dibuat final, perlindungan kuantumnya bergantung pada kunci multisig yang memakai Ed25519.
-5. **Aplikasi belum ditandatangani resmi.** Build Windows dan macOS belum code-signed (OS menampilkan peringatan); build iOS tanpa tanda tangan dan hanya bisa dipasang lewat sideload; APK Android ditandatangani dengan kunci debug. Distribusi lewat toko aplikasi (Play Store, App Store) belum dilakukan.
+5. **Aplikasi belum ditandatangani resmi.** Build Windows dan macOS belum code-signed (OS menampilkan peringatan); build iOS tanpa tanda tangan dan hanya bisa dipasang lewat sideload; APK Android ditandatangani dengan kunci rilis proyek (commit `c6c5fcb`, sertifikat SHA-256 `dbec38c5…9d74`, lihat `57-…`). Distribusi lewat toko aplikasi (Play Store, App Store) belum dilakukan.
 6. **iOS di iPhone fisik** belum diuji; baru di simulator.
 
 ## 8. Cara mengulang pengujian
