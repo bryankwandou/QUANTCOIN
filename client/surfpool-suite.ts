@@ -143,7 +143,11 @@ async function setup(bal: bigint) {
 const randAmount = () => BigInt("0x" + randomBytes(7).toString("hex")) + 1n; // up to 2^56
 
 // ============================================================================
-console.log("payer", payer.publicKey.toBase58(), "SOL", (await conn.getBalance(payer.publicKey)) / 1e9);
+const payerSol = (await conn.getBalance(payer.publicKey)) / 1e9;
+console.log("payer", payer.publicKey.toBase58(), "SOL", payerSol);
+// Without fee SOL every transaction fails before the program runs, which would show up
+// as hundreds of misleading FAILs. Stop instead.
+if (payerSol < 10) { console.error(`payer has ${payerSol} SOL on the fork; airdrop it first (solana airdrop 1000 ${payer.publicKey.toBase58()} -u ${RPC})`); process.exit(2); }
 
 // G0: the fork really is mainnet
 if (run("G0")) {
