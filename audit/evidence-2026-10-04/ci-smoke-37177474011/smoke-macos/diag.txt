@@ -1,0 +1,23 @@
+arm64
+app/quantum_safe.app/Contents/MacOS/quantum_safe: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64:Mach-O 64-bit executable arm64]
+app/quantum_safe.app/Contents/MacOS/quantum_safe (for architecture x86_64):	Mach-O 64-bit executable x86_64
+app/quantum_safe.app/Contents/MacOS/quantum_safe (for architecture arm64):	Mach-O 64-bit executable arm64
+Executable=/Users/runner/work/QUANTCOIN/QUANTCOIN/app/quantum_safe.app/Contents/MacOS/quantum_safe
+Identifier=app.quantumsafe.quantumSafe
+Format=app bundle with Mach-O universal (x86_64 arm64)
+CodeDirectory v=20400 size=1684 flags=0x2(adhoc) hashes=42+7 location=embedded
+Hash type=sha256 size=32
+CandidateCDHash sha256=05d619bf4c96f8bd25ce25c4a44f9bae26789ca2
+CandidateCDHashFull sha256=05d619bf4c96f8bd25ce25c4a44f9bae26789ca24fdbe384e7230db54159830d
+Hash choices=sha256
+CMSDigest=05d619bf4c96f8bd25ce25c4a44f9bae26789ca24fdbe384e7230db54159830d
+CMSDigestType=2
+CDHash=05d619bf4c96f8bd25ce25c4a44f9bae26789ca2
+Signature=adhoc
+Info.plist entries=25
+TeamIdentifier=not set
+Sealed Resources version=2 rules=13 files=14
+Internal requirements count=0 size=12
+verify OK
+app/quantum_safe.app: rejected
+2026-10-04 04:36:09.720 quantum_safe[1031:6545] Running with merged UI and platform thread. Experimental.
