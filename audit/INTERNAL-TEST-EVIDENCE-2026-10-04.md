@@ -65,7 +65,7 @@ The 27 tests cover, among others: spend needs both the Ed25519 signature and the
 | macOS .app | macOS 26 CI machine (Apple Silicon) | Launches (process alive after 25 s), passcode screen. Ad-hoc signature verifies |
 | iOS | iPhone simulator (simulator build of the same commit; the unsigned .ipa is a device build and cannot run in a simulator) | Launches (process alive after 25 s), passcode screen |
 
-Runs: smoke on the final release, GitHub Actions run 37164277322 (all 4 jobs passed; screenshots and checksum checks in `ci-smoke-37164277322/`). The earlier runs 37163022346 and 37163296309 failed on macOS only; that failure is F-10.
+Runs: smoke on the final release, GitHub Actions run 37177474011 (after the APK was re-signed; all 4 passed) and 37164277322 (all 4 jobs passed; screenshots and checksum checks in `ci-smoke-37164277322/`). The earlier runs 37163022346 and 37163296309 failed on macOS only; that failure is F-10.
 
 **Key-store test inside the real app** (`integration_test/keystore_device_test.dart`: write vault keys to the platform keychain/keystore, read them back, compare, delete): **passed on Android emulator, iPhone simulator, macOS and Windows** (GitHub Actions run 37163435149).
 
@@ -104,7 +104,7 @@ After upgrades and overrides, the remaining JavaScript advisories are in package
 2. **No proof of "zero bugs".** Tests show that the tested cases work. Untested situations can still fail.
 3. **Q-1 Key custody (critical, open).** Two of the three multisig keys and their seed phrases are still stored as plain files on the developer's laptop. Whoever controls that laptop controls 2 of 3 keys and could upgrade the contract, after the 24-hour time lock. Fix: move the two keys to two separate offline places, then delete the files. Only the owner can do this.
 4. **Q-2 The contract can still be upgraded (high, by design until the external audit).** Until it is made final, its quantum protection depends on the multisig keys, which use Ed25519.
-5. **Unsigned apps.** Windows and macOS builds are not code-signed (the OS shows a warning); the iOS build is unsigned and installs only by sideloading; the Android APK is signed with a debug key. Store distribution (Play Store, App Store) is not done.
+5. **Unsigned apps.** Windows and macOS builds are not code-signed (the OS shows a warning); the iOS build is unsigned and installs only by sideloading; the Android APK is signed with the project release key (commit `c6c5fcb`, certificate SHA-256 `dbec38c5…9d74`, see `57-…`). Store distribution (Play Store, App Store) is not done.
 6. **iOS on a real iPhone** was not tested; only the simulator.
 
 ## 8. Reproduce
