@@ -24,6 +24,6 @@ The extra test on the fix is `rejects_noncanonical_bump_wots_key_reuse`.
 
 The difference (about 1,460 CU) is within run-to-run variation: an earlier baseline run measured 871,524 / 1,084,437. The fix adds no measurable cost, and the worst case stays well under the 1,400,000 limit.
 
-The per-step constant moved from 3824 to 3830 (+6 CU), which matches the extra bump derivation being rare (usually zero or one extra call).
+The fixed overhead in the CU model moved from 3824 to 3830 (+6 CU); the per-step cost is unchanged at 167.00.
 
 Raw output: `fuzz-output.txt` (baseline first, then fix).
