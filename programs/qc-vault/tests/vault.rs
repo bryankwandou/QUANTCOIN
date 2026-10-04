@@ -393,3 +393,45 @@ fn rejects_tampered_signature_and_seed() {
     expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 1);
     assert_eq!(balance(&env.svm, &v.ta), Some(1000));
 }
+
+/// The spent marker is per vault address, so a non-canonical bump would give
+/// the same WOTS key a second vault and let it sign twice. Only the canonical
+/// bump is accepted.
+#[test]
+fn rejects_noncanonical_bump_wots_key_reuse() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000); // canonical bump
+    let pk = wots::keys::public_key_hash(&v.master, &v.seed);
+    // Find the next valid (non-canonical) bump below the canonical one.
+    let (alt_pda, alt_bump) = (0..v.bump).rev().find_map(|b| {
+        Address::create_program_address(&[VAULT_SEED, &pk, v.owner.pubkey().as_ref(), &[b]], &env.prog)
+            .ok().map(|a| (a, b))
+    }).expect("a non-canonical bump exists");
+    assert_ne!(alt_pda, v.pda);
+    let (alt_ta, _) = Address::find_program_address(&[alt_pda.as_ref(), T22.as_ref(), env.mint.as_ref()], &ATA);
+    // Fund the alternative vault's ATA (anyone can do this).
+    let payer = env.payer.insecure_clone();
+    let ix = Instruction::new_with_bytes(ATA, &[1], vec![
+        AccountMeta::new(payer.pubkey(), true), AccountMeta::new(alt_ta, false),
+        AccountMeta::new_readonly(alt_pda, false), AccountMeta::new_readonly(env.mint, false),
+        AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(T22, false)]);
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
+    let mut d = vec![14u8]; d.extend_from_slice(&500u64.to_le_bytes()); d.push(DECIMALS);
+    let ix = Instruction::new_with_bytes(T22, &d, vec![AccountMeta::new(env.mint, false),
+        AccountMeta::new(alt_ta, false), AccountMeta::new_readonly(payer.pubkey(), true)]);
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
+
+    // Signature #1 with the WOTS key: spend the canonical vault.
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 1000, 1000);
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+    assert!(env.svm.get_account(&v.pda).unwrap().owner == env.prog, "canonical vault marked spent");
+
+    // Signature #2 with the SAME WOTS key over a different message: accepted.
+    let alt = Vault { master: v.master, seed: v.seed, owner: v.owner.insecure_clone(), pda: alt_pda, bump: alt_bump, ta: alt_ta };
+    let dest2 = token_account(&mut env, &Address::new_unique());
+    let ix = spend_ix(&env, &alt, dest2, refund, payer.pubkey(), 500, 500);
+    expect_err(send(&mut env.svm, &payer, &[&alt.owner], &[cu_limit(), ix]), 2);
+    assert_eq!(balance(&env.svm, &alt_ta), Some(500));
+}

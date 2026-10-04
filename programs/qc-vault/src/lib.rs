@@ -189,6 +189,16 @@ pub fn process_instruction(
         Some(a) if &a == vault.address() => {}
         _ => return Err(VaultError::BadSignature),
     }
+    // Only the canonical bump is accepted: every higher bump must be on-curve.
+    // Otherwise one WOTS key guards several vault addresses and the per-address
+    // spent marker lets the same key sign a second message.
+    let mut b = bump[0];
+    while b < 255 {
+        b += 1;
+        if pda(&[VAULT_SEED, &pk_hash, owner.address().as_ref(), &[b]], program_id, false).is_some() {
+            return Err(VaultError::BadSignature);
+        }
+    }
 
     // 2. Read balance and decimals. The token program re-checks ownership,
     //    mint and authority during the CPIs; these reads only need to be
