@@ -117,7 +117,10 @@ async function sendOnce(ix: TransactionInstruction, signers: Keypair[]) {
   // Surfpool's confirm throws the instruction error itself when the tx fails; the
   // executed result is read back from the ledger either way.
   let thrown: unknown = null;
-  try { await conn.confirmTransaction(sig, "confirmed"); } catch (e) { thrown = e; }
+  // A confirmation that never resolves once froze a full run for an hour; cap it so a
+  // stuck transaction is recorded (it is then looked up below) instead of hanging.
+  const cap = new Promise((_, rej) => setTimeout(() => rej(new Error("confirm timeout 60s")), 60_000));
+  try { await Promise.race([conn.confirmTransaction(sig, "confirmed"), cap]); } catch (e) { thrown = e; }
   let t = null;
   for (let i = 0; i < 20 && !t; i++) {
     t = await conn.getTransaction(sig, { commitment: "confirmed", maxSupportedTransactionVersion: 0 });
