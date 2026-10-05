@@ -30,6 +30,11 @@
 //!   6. `[]`         Token-2022 program
 //!   7. `[signer]`   owner (Ed25519), bound into the vault address
 //!   8. `[]`         System program
+//!   9. `[]`         optional: SPL Memo v2 program. When present, a memo is
+//!                   emitted before each token transfer, so a recipient that
+//!                   turns on Token-2022 "require incoming memos" cannot make
+//!                   the signed spend fail (finding R-A, payee memo freeze).
+//!                   Older clients that pass nine accounts keep working.
 //!
 //! The signed message binds program, vault, mint, all three recipients and
 //! the amount, so whoever relays the transaction (and pays its fee) cannot
@@ -56,18 +61,19 @@ use pinocchio::{
 mod entry {
     use pinocchio::entrypoint::lazy::{InstructionContext, MaybeAccount};
 
-    /// Lazy entrypoint: reads exactly nine accounts straight from the input
+    /// Lazy entrypoint: reads nine or ten accounts straight from the input
     /// buffer instead of pinocchio's generic parser. Together with returning
     /// raw error codes this saves ~3 KB of bytecode (~0.02 SOL of rent).
     #[no_mangle]
     pub unsafe extern "C" fn entrypoint(input: *mut u8) -> u64 {
         let mut ctx = InstructionContext::new_unchecked(input);
-        if ctx.remaining() != 9 {
+        let n = ctx.remaining() as usize;
+        if n != 9 && n != 10 {
             return super::VaultError::BadInstruction as u64;
         }
-        let mut accounts: [core::mem::MaybeUninit<pinocchio::AccountView>; 9] =
-            [const { core::mem::MaybeUninit::uninit() }; 9];
-        for slot in accounts.iter_mut() {
+        let mut accounts: [core::mem::MaybeUninit<pinocchio::AccountView>; 10] =
+            [const { core::mem::MaybeUninit::uninit() }; 10];
+        for slot in accounts[..n].iter_mut() {
             match ctx.next_account_unchecked() {
                 MaybeAccount::Account(a) => {
                     slot.write(a);
@@ -76,10 +82,14 @@ mod entry {
                 MaybeAccount::Duplicated(_) => return super::VaultError::DuplicateAccount as u64,
             }
         }
+        // SAFETY: the first `n` slots were written above.
+        // AccountView is a pointer into the input buffer, so a copy is fine.
+        let memo = if n == 10 { Some(accounts[9].assume_init_read()) } else { None };
         let accounts = &mut *(&mut accounts as *mut _ as *mut [pinocchio::AccountView; 9]);
         match super::process_instruction(
             ctx.program_id_unchecked(),
             accounts,
+            memo.as_ref(),
             ctx.instruction_data_unchecked(),
         ) {
             Ok(()) => 0,
@@ -95,6 +105,7 @@ pub const VAULT_SEED: &[u8] = b"qcv";
 pub const TOKEN_2022: Address = Address::new_from_array([6, 221, 246, 225, 238, 117, 143, 222, 24, 66, 93, 188, 228, 108, 205, 218, 182, 26, 252, 77, 131, 185, 13, 39, 254, 189, 249, 40, 216, 161, 139, 252]); // TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
 pub const SYSTEM: Address = Address::new_from_array([0; 32]);
 pub const ATA_PROGRAM: Address = Address::new_from_array([140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216, 219, 233, 248, 89]); // ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL
+pub const MEMO_PROGRAM: Address = Address::new_from_array([5, 74, 83, 90, 153, 41, 33, 6, 77, 36, 232, 113, 96, 218, 56, 124, 124, 53, 181, 221, 188, 146, 187, 129, 228, 31, 168, 64, 65, 5, 68, 141]); // MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr
 pub const IX_SPEND: u8 = 0;
 pub const SPEND_DATA_LEN: usize = 26 + wots::SIG_LEN;
 
@@ -142,10 +153,16 @@ pub fn spend_digest(
 pub fn process_instruction(
     program_id: &Address,
     accounts: &mut [AccountView; 9],
+    memo: Option<&AccountView>,
     data: &[u8],
 ) -> Result<(), VaultError> {
     if data.len() != SPEND_DATA_LEN || data[0] != IX_SPEND {
         return Err(VaultError::BadInstruction);
+    }
+    if let Some(m) = memo {
+        if m.address() != &MEMO_PROGRAM {
+            return Err(VaultError::BadInstruction);
+        }
     }
     let [vault, vault_ta, mint, destination, refund, rent_to, token_program, owner, system] = accounts;
     if vault.owned_by(program_id) {
@@ -185,6 +202,10 @@ pub fn process_instruction(
         amount,
     );
     let pk_hash = wots::recover_pk_hash(seed, &digest, sig);
+    // Only the canonical address counts: with a caller-chosen bump one WOTS
+    // key would guard several vault addresses, and the per-address spent
+    // marker would let it sign a second message (finding R-1). The bump byte
+    // in the instruction must equal the canonical one.
     match pda(&[VAULT_SEED, &pk_hash, owner.address().as_ref()], program_id) {
         Some((a, b)) if &a == vault.address() && b == bump[0] => {}
         _ => return Err(VaultError::BadSignature),
@@ -231,11 +252,13 @@ pub fn process_instruction(
         Seed::from(&bump),
     ];
     let signer = [Signer::from(&seeds)];
+    // Token-2022 looks for a memo as the transfer's previous sibling
+    // instruction, so transfer_checked emits one right before each transfer.
     if amount > 0 {
-        transfer_checked(tp, vault_ta, mint, destination, vault, amount, decimals, &signer);
+        transfer_checked(tp, vault_ta, mint, destination, vault, amount, decimals, &signer, memo);
     }
     if rest > 0 {
-        transfer_checked(tp, vault_ta, mint, refund, vault, rest, decimals, &signer);
+        transfer_checked(tp, vault_ta, mint, refund, vault, rest, decimals, &signer, memo);
     }
     // Close into the vault PDA itself: its lamports fund the spent marker.
     let accs = [
@@ -284,6 +307,7 @@ pub fn process_instruction(
 fn marker_rent() -> u64 {
     // [u64; 3] covers the 17-byte sysvar; zeroed so a failed read gives an
     // unknown threshold (0) and therefore u64::MAX.
+    #[allow(unused_mut)]
     let mut r = [0u64; 3];
     #[cfg(target_os = "solana")]
     // SAFETY: the syscall writes the 17-byte Rent sysvar into `r` (24 bytes).
@@ -327,8 +351,9 @@ fn pda(seeds: &[&[u8]], program: &Address) -> Option<(Address, u8)> {
     }
 }
 
-/// SPL Token `TransferChecked` (discriminator 12). A failing CPI aborts the
-/// whole transaction, so there is no return value to propagate.
+/// SPL Token `TransferChecked` (discriminator 12), preceded by an SPL Memo v2
+/// "qc" if the memo program was passed (its address was checked on entry).
+/// A failing CPI aborts the whole transaction, so there is no return value.
 #[allow(clippy::too_many_arguments)]
 #[inline(never)]
 fn transfer_checked(
@@ -340,7 +365,13 @@ fn transfer_checked(
     amount: u64,
     decimals: u8,
     signer: &[Signer],
+    memo: Option<&AccountView>,
 ) {
+    if let Some(m) = memo {
+        let ix = InstructionView { program_id: m.address(), data: b"qc", accounts: &[] };
+        // SAFETY: no account data borrow is held across the CPI.
+        unsafe { invoke_signed_unchecked(&ix, &[], &[]) };
+    }
     let mut data = [0u8; 10];
     data[0] = 12;
     data[1..9].copy_from_slice(&amount.to_le_bytes());
