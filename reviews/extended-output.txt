@@ -1,0 +1,122 @@
+# cargo test --manifest-path programs/qc-vault/Cargo.toml --release --test extended -- --nocapture --test-threads=1
+# start 2026-10-05T14:18:12+08:00
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 17.12s
+     Running tests\extended.rs (target\release\deps\extended-01be9348859100a3.exe)
+
+running 11 tests
+test accounts_duplicates_and_wrong_count_rejected ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=106
+[accounts] 72 duplicate-account cases -> Custom(6); 12 wrong account counts -> Custom(1)
+ok
+test accounts_swaps_and_random_permutations_rejected ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=105
+[accounts] 36 pairwise swaps + 400 random permutations rejected; errors: {"Custom(1)": 367, "Custom(2)": 26, "Custom(5)": 1, "Custom(7)": 42}
+ok
+test amounts_edge_values ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=109
+[amounts] amount 0 (all to refund)           fund=1000000              amount=0                    -> OK (565936 CU)
+[amounts] amount 1                           fund=1000000              amount=1                    -> OK (571940 CU)
+[amounts] amount = full balance              fund=1000000              amount=1000000              -> OK (565935 CU)
+[amounts] empty vault, amount 0              fund=0                    amount=0                    -> OK (569021 CU)
+[amounts] amount = full + 1                  fund=1000000              amount=1000001              -> Custom(3)
+[amounts] amount = u64::MAX                  fund=1000000              amount=18446744073709551615 -> Custom(3)
+[amounts] amount = 2^63                      fund=1000000              amount=9223372036854775808  -> Custom(3)
+[amounts] empty vault, amount 1              fund=0                    amount=1                    -> Custom(3)
+[amounts] fund u64::MAX, amount u64::MAX     -> OK (565935 CU), dest=18446744073709551615 refund=0
+[amounts] fund u64::MAX, amount u64::MAX-1   -> OK (527885 CU), dest=18446744073709551614 refund=1
+[amounts] fund u64::MAX, amount 2^63         -> OK (616085 CU), dest=9223372036854775808 refund=9223372036854775807
+ok
+test bump_edge_cases_0_and_255 ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=102
+[bump-edge] canonical 255 accepted (698190 CU, 0 loop iterations); bump 254 refused
+[bump-edge] canonical 254 accepted (524880 CU, 1 loop iteration); bump byte 255 refused
+[bump-edge] bump 0 (off-curve, canonical 254) refused (562053 CU, loop stops at bump 3)
+[bump-edge] bump byte 0 (on-curve) refused; canonical 255 accepted
+ok
+test bump_every_valid_noncanonical_rejected_canonical_accepted ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=101
+[bump-sweep] pairs=16 valid bumps total=2070 (avg 129.4/pair) canonical histogram={248: 1, 253: 3, 254: 3, 255: 9}
+[bump-sweep] non-canonical funded vaults rejected (Custom(2)): 2054
+[bump-sweep] wrong bump bytes on canonical vault rejected (Custom(2)): 510
+[bump-sweep] canonical spends accepted: 16; siblings re-checked after spend: 48; 88.7s
+ok
+test cu_canonical_check_accept_and_reject ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=103
+[cu] ground 16384 program ids in 0.4s: canonical bumps found [241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255]
+[cu] accept path: canonical | iters | ata tries | CU(valid spend) | CU(baseline) | delta
+[cu]   255 |  0 | 3 |  657110 |  642623 |  14487
+[cu]   254 |  1 | 2 |  486800 |  472242 |  14558
+[cu]   253 |  2 | 1 |  657170 |  642582 |  14588
+[cu]   252 |  3 | 2 |  617615 |  600038 |  17577
+[cu]   251 |  4 | 1 |  575060 |  557453 |  17607
+[cu]   250 |  5 | 1 |  576590 |  557412 |  19178
+[cu]   249 |  6 | 1 |  578120 |  557412 |  20708
+[cu]   248 |  7 | 2 |  581150 |  557453 |  23697
+[cu]   247 |  8 | 1 |  581180 |  557453 |  23727
+[cu]   246 |  9 | 2 |  669380 |  642582 |  26798
+[cu]   245 | 10 | 6 |  591740 |  557453 |  34287
+[cu]   244 | 11 | 3 |  716525 |  685167 |  31358
+[cu]   243 | 12 | 2 |  673970 |  642623 |  31347
+[cu]   242 | 13 | 1 |  631415 |  599997 |  31418
+[cu]   241 | 14 | 1 |  632945 |  600038 |  32907
+[cu] accept path fit: post-match cost 11508.2 + 1529.71 CU x (255 - canonical); max residual 23.62 CU
+[cu] accept path: valid spends ranged 486800..716525 CU (WOTS work varies with the digest)
+[cu] reject path: 261 non-canonical bumps; extra CU vs PDA-mismatch baseline = 32.5 + 1528.86 x k (k = steps to next off-curve bump, 1..=11); max residual 31.05; max extra 16881 CU
+[cu] summary: each loop iteration costs ~1529 CU (one sol_create_program_address = 1,500 CU + loop overhead).
+[cu]   accept path: (255 - canonical) iterations; canonical 255 -> 0; expected ~1 iteration (~1529 CU) for a random vault; >10 iterations has probability 2^-10.
+[cu]   reject path: iterations = distance to the next off-curve bump (mean ~2); the refusal comes after the WOTS work, so the attacker pays for it.
+ok
+test fuzz_byte_flips_fail_valid_spends_succeed ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=104
+[fuzz] 2200 cases = 2000 mutations rejected + 200 valid spends accepted; 400 post-spend replays rejected (AlreadySpent); 49.6s
+[fuzz] per mutation kind: discriminator=182 bump=182 seed=182 amount=182 sig-1bit=182 sig-multi=182 anywhere=182 truncate=182 extend=182 chain-walk=181 chain-swap=181
+[fuzz] tokens moved by valid spends: 76611562937735
+ok
+test prefunded_ata_address_is_not_a_token_account ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=108
+[wrong] prefunded system account at the ATA address -> Custom(4); after CreateIdempotent the spend works
+ok
+test replay_after_spend_rejected ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=110
+[replay] identical, other amount, other destination, re-created ATA, topped-up marker -> Custom(8); second deployment -> Custom(2)
+[replay] same spend twice in one tx -> InstructionError(2, Custom(8)), rolled back; two vaults in one tx -> OK
+ok
+test wots_key_reuse_across_vaults_and_owners ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=111
+[reuse] signature transplant between same-key vaults of two owners -> Custom(2)
+[reuse] after 2 same-key spends: no forgeable digest for the last sibling in 400000 tries (best 25/26 chains), 0.9s
+[reuse] after 3 same-key spends by other owners: FORGED WOTS signature drained the last sibling vault (amount 51 + refund 999949 to attacker accounts; found after 51 tries, 0.0s, 497540 CU). Ed25519 of that owner assumed broken.
+ok
+test wrong_owners_and_programs_rejected ... [seed] QC_FUZZ_SEED=11400714819323198485 salt=107
+[wrong] token program = legacy SPL Token                               -> Custom(5)
+[wrong] token program = random address                                 -> Custom(5)
+[wrong] token program = ATA program                                    -> Custom(5)
+[wrong] token program = qc-vault itself                                -> Custom(5)
+[wrong] system program = Token-2022 (duplicate of slot 6)              -> Custom(6)
+[wrong] system program = legacy SPL Token                              -> Custom(1)
+[wrong] system program = random address                                -> Custom(1)
+[wrong] owner present but not signer                                   -> Custom(7)
+[wrong] owner = another signer                                         -> Custom(2)
+[wrong] owner = fee payer                                              -> Custom(2)
+[wrong] vault token account = legacy-program ATA address               -> Custom(4)
+[wrong] vault token account = vault's ATA of another mint              -> Custom(4)
+[wrong] mint = other mint (signature over env mint)                    -> Custom(2)
+[wrong] mint = other mint, signed, real ATA of env mint                -> Custom(4)
+[wrong] vault = payer (system account)                                 -> Custom(2)
+[wrong] vault = same WOTS key, other owner's vault                     -> Custom(2)
+[wrong] same accounts/data sent to a second deployment                 -> Custom(2)
+[wrong] destination = token account of another mint (signed)           -> Token-2022 CPI failed: Custom(3)
+[wrong] refund = token account of another mint (signed)                -> Token-2022 CPI failed: Custom(3)
+[wrong] destination = nonexistent account (signed)                     -> Token-2022 CPI failed: InstructionError(1, IncorrectProgramId)
+[wrong] destination = system-owned account (signed)                    -> Token-2022 CPI failed: InstructionError(1, IncorrectProgramId)
+[wrong] vault token account owned by legacy SPL Token (injected)       -> Token-2022 CPI failed: InstructionError(1, IncorrectProgramId)
+[wrong] vault passed read-only                                         -> InstructionError(1, PrivilegeEscalation)
+[wrong] vault token account passed read-only                           -> InstructionError(1, PrivilegeEscalation)
+[wrong] rent_to passed read-only                                       -> InstructionError(1, ReadonlyLamportChange)
+[wrong] 25 wrong-owner/wrong-program cases rejected; valid spend afterwards OK
+ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 161.21s
+
+# end 2026-10-05T14:21:12+08:00
