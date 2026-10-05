@@ -17,6 +17,8 @@ pinocchio = { version = "=0.11.2", default-features = false, features = ["cpi"] 
 
 [target.'cfg(not(target_os = "solana"))'.dependencies]
 sha2 = "0.10"
+# Off-chain PDA derivation (lib.rs `pda`) needs the on-curve check.
+solana-address = { version = "~2.6.1", features = ["curve25519"] }
 
 [dev-dependencies]
 litesvm = "=0.16.0"
