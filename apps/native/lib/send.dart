@@ -47,6 +47,10 @@ Future<void> checkSpend(Chain chain, VaultKeys from, VaultKeys next, String reci
   if (_deadOwners.contains(kind) || recipient == _incinerator) {
     throw StateError('That address is a program, not a wallet. Tokens sent there can never move again.');
   }
+  if (await chain.requiresMemo(associatedTokenAddress(recipient, chain.mint))) {
+    throw StateError('That wallet only accepts transfers with a memo. QuantCoin cannot send to it yet; '
+        'ask the recipient to turn off "require incoming memos" or use another address.');
+  }
   if (fee != null) {
     final need = await sendCost(chain, next, recipient), have = await chain.solBalance(fee);
     if (have < need) {

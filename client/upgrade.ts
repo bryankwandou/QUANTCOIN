@@ -4,6 +4,8 @@
 //      propose/approve/execute), BUFFER (buffer address, after the buffer step).
 // Steps (argv[2]):
 //   plan     read-only: sizes, rent, balances, exact SOL each wallet needs
+//   fund     propose a transfer of LAMPORTS from the Squads vault to the deployer
+//            (use its own TAG, e.g. TAG=mainnet-fund, then approve/execute with it)
 //   extend   deployer grows the program data account so SO fits (no authority needed)
 //   buffer   upload SO to a fresh buffer, then hand the buffer to the Squads vault
 //   propose  wrap the upgrade in a vault transaction + proposal; MEMBER approves
@@ -163,6 +165,33 @@ if (step === "plan") {
   const a = await checkBuffer(bufKp.publicKey);
   if (!a.equals(vault)) throw new Error(`buffer authority is ${a}`);
   console.log({ buffer: bufKp.publicKey.toBase58(), authority: a.toBase58(), sha256: sha(so), ok: true });
+} else if (step === "fund") {
+  const lamports = Number(process.env.LAMPORTS);
+  if (!Number.isSafeInteger(lamports) || lamports <= 0 || lamports > 100_000_000)
+    throw new Error("set LAMPORTS (1 .. 100,000,000 = 0.1 SOL)");
+  if (state().transactionIndex && !state().executeTx) throw new Error(`open proposal in ${stateFile.pathname}; use another TAG`);
+  const fee = payer(), m = member();
+  const ms = await multisig.accounts.Multisig.fromAccountAddress(conn, msPda);
+  if (!ms.members.some((x) => x.key.equals(m.publicKey))) throw new Error(`${m.publicKey} is not a member`);
+  const index = BigInt(ms.transactionIndex.toString()) + 1n;
+  const { blockhash } = await conn.getLatestBlockhash();
+  const message = new TransactionMessage({ payerKey: vault, recentBlockhash: blockhash,
+    instructions: [SystemProgram.transfer({ fromPubkey: vault, toPubkey: fee.publicKey, lamports })] });
+  const memo = `fund deployer ${sol(lamports)} SOL for qc-vault upgrade`;
+  const tx = new Transaction().add(
+    ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1000 }),
+    multisig.instructions.vaultTransactionCreate({
+      multisigPda: msPda, transactionIndex: index, creator: m.publicKey, rentPayer: fee.publicKey,
+      vaultIndex: 0, ephemeralSigners: 0, transactionMessage: message, memo,
+    }),
+    multisig.instructions.proposalCreate({
+      multisigPda: msPda, transactionIndex: index, creator: m.publicKey, rentPayer: fee.publicKey,
+    }),
+    multisig.instructions.proposalApprove({ multisigPda: msPda, transactionIndex: index, member: m.publicKey }),
+  );
+  const sig = await sendAndConfirmTransaction(conn, tx, [fee, m], { commitment: "confirmed" });
+  save({ kind: "fund", transactionIndex: index.toString(), lamports, proposeTx: sig });
+  console.log({ transactionIndex: index.toString(), approvedBy: m.publicKey.toBase58(), memo, tx: sig });
 } else if (step === "propose") {
   const buffer = new PublicKey(process.env.BUFFER ?? state().buffer);
   const a = await checkBuffer(buffer);
@@ -205,7 +234,7 @@ if (step === "plan") {
 } else if (step === "execute") {
   const { index, p, ms } = await current();
   if (p.approved.length < ms.threshold) throw new Error(`${p.approved.length} of ${ms.threshold} approvals`);
-  await checkBuffer(new PublicKey(state().buffer));
+  if (state().kind !== "fund") await checkBuffer(new PublicKey(state().buffer));
   const fee = payer();
   const sig = await multisig.rpc.vaultTransactionExecute({
     connection: conn, feePayer: fee, multisigPda: msPda, transactionIndex: index, member: member().publicKey,
@@ -222,6 +251,6 @@ if (step === "plan") {
   console.log({ deployedMatchesSo: ok, sha256: sha(so), authority: auth?.toBase58(), authorityIsSquadsVault: auth?.equals(vault) });
   if (!ok) process.exit(1);
 } else {
-  console.error("usage: tsx upgrade.ts plan|extend|buffer|propose|approve|execute|verify");
+  console.error("usage: tsx upgrade.ts plan|fund|extend|buffer|propose|approve|execute|verify");
   process.exit(2);
 }

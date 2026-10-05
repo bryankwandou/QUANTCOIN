@@ -5,8 +5,12 @@ vault**: a Pinocchio program that releases funds only when two signatures are
 present, one classical (Ed25519) and one hash-based (Winternitz one-time
 signature over SHA-256).
 
-Status: **live on mainnet since 2026-09-30. Internal audit only; no
-independent audit yet.** Earlier versions of this repo claimed a live mainnet,
+Status: **live on mainnet since 2026-09-30. Internally security reviewed by
+the maintainer; not independently audited.** Current security status, the
+exact deployed binary and every open finding:
+[audit/INTERNAL_SECURITY_AUDIT.md](audit/INTERNAL_SECURITY_AUDIT.md). Two
+findings (R-1 canonical bump, R-A payee memo freeze) are fixed or bounded in
+this repo but the R-1 fix is not yet deployed. Earlier versions of this repo claimed a live mainnet,
 1 trillion TPS and audit certificates before any of that existed. Those claims
 were removed (they remain in git history, commit "archive: …").
 
@@ -14,8 +18,8 @@ were removed (they remain in git history, commit "archive: …").
 
 | | Address |
 |---|---|
-| Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` (binary SHA-256 `93abe8ef…9b2e`, same as devnet and the audited source) |
-| Upgrade authority | Squads 2-of-3 multisig `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`. To be set final after the external audit. |
+| Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` (live binary SHA-256 `07e6b6dd…94be`, built from commit `344c2a5`, upgraded 2026-10-02; verified 2026-10-05) |
+| Upgrade authority | Squads 2-of-3 multisig `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`. 24-hour time lock. Kept upgradeable until an external audit; then set final. |
 | QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2`: supply 22T, mint/freeze/metadata authorities revoked |
 | Allocations | `client/allocations-mainnet.json`: founder 4 × 5%, liquidity 20%, airdrop 15%, reserve 10%, treasury 35%. Founder vault 1 was spent to the founder wallet on 2026-10-02 (WHITEPAPER.md §4) |
 | Live attack run | `audit/mainnet-attack-run.json`: 13 attacks on the real treasury vault, all rejected with the expected error code |
@@ -97,7 +101,8 @@ RPC_URL=… PAYER=… PROGRAM_ID=… MINT=… FROM=genesis NEXT=treasury-2 DEST_
 ```
 
 Vault secrets are written to `client/keys/` (git-ignored, plaintext). Move
-them to encrypted offline storage. A vault marked `used` must never sign
+them to encrypted offline storage (open finding F5).
+Security policy and private reporting: [SECURITY.md](SECURITY.md). A vault marked `used` must never sign
 again.
 
 ## Codama (IDL + generated client)
@@ -128,7 +133,7 @@ Whitepaper: [WHITEPAPER.md](WHITEPAPER.md). Integration guide: [docs/INTEGRATION
 
 ## Before mainnet
 
-1. ~~Internal audit + live devnet attack run~~ done: [audit/AUDIT.md](audit/AUDIT.md). External audit of `programs/qc-vault` still required.
+1. ~~Internal audit + live devnet attack run~~ done: [audit/AUDIT.md](audit/AUDIT.md) (history); current status in [audit/INTERNAL_SECURITY_AUDIT.md](audit/INTERNAL_SECURITY_AUDIT.md).
 2. ~~Devnet run of the full genesis~~ done (`client/genesis.ts`, `client/spend.ts`).
 3. Deploy, then `solana program set-upgrade-authority --final`. An upgrade
    authority is an Ed25519 key, and so a quantum backdoor.

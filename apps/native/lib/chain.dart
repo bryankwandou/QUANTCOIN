@@ -92,6 +92,23 @@ class Chain {
     return n;
   }
 
+  /// True if the Token-2022 account [address] has "require incoming memos"
+  /// switched on (MemoTransfer extension, type 8). The live vault program
+  /// cannot send to such an account (finding R-A).
+  Future<bool> requiresMemo(String address) async {
+    final v = (await _call('getAccountInfo', [address, {'encoding': 'base64'}]))['value'];
+    if (v == null || v['owner'] != token2022) return false;
+    final d = base64.decode((v['data'] as List).first as String);
+    // 165-byte base, account type byte, then TLV entries (u16 type, u16 length).
+    for (var i = 166; i + 4 <= d.length;) {
+      final type = d[i] | d[i + 1] << 8, len = d[i + 2] | d[i + 3] << 8;
+      if (type == 8) return len >= 1 && i + 4 < d.length && d[i + 4] == 1;
+      if (type == 0) break;
+      i += 4 + len;
+    }
+    return false;
+  }
+
   Future<int> solBalance(String address) async => (await _call('getBalance', [address]))['value'] as int;
 
   /// Lamports an account of [bytes] needs to be rent-exempt on this network.

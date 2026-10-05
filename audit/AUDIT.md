@@ -1,5 +1,8 @@
 # QuantCoin internal security audit (devnet)
 
+> Historical record of 2026-09-23. The current status, the live binary hash
+> and every finding's state are in [INTERNAL_SECURITY_AUDIT.md](INTERNAL_SECURITY_AUDIT.md).
+
 Date: 2026-09-23. Scope: `programs/qc-vault` (lib.rs, wots.rs), `client/qc.ts`,
 `client/genesis.ts`, `client/spend.ts`, the devnet mint and program.
 

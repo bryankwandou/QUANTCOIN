@@ -1,5 +1,8 @@
 # QuantCoin mainnet: internal automated review (2026-10-03)
 
+> Historical record. Current status: [INTERNAL_SECURITY_AUDIT.md](INTERNAL_SECURITY_AUDIT.md).
+> I-1 below was raised to R-1 on 2026-10-04.
+
 **This is not an external audit.** It was done by the project's own AI
 tooling. It does not replace a review by an independent firm, and QC must
 not be described as "audited" on the strength of it. The program stays
