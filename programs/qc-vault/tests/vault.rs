@@ -394,16 +394,26 @@ fn rejects_tampered_signature_and_seed() {
     assert_eq!(balance(&env.svm, &v.ta), Some(1000));
 }
 
-/// The token account owner turns Token-2022 "require incoming memos" on.
-/// Only the owner's signature is needed, so any payee can do this.
-fn require_memo(env: &mut Env, owner: &Keypair, ta: Address) {
+const MEMO: Address = Address::from_str_const("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+
+/// Appends the optional 10th account (SPL Memo v2).
+fn with_memo(mut ix: Instruction) -> Instruction {
+    ix.accounts.push(AccountMeta::new_readonly(MEMO, false));
+    ix
+}
+
+/// The token account owner turns Token-2022 "require incoming memos" on or off
+/// (Reallocate for the MemoTransfer extension, then Enable/Disable). Only the
+/// owner's signature is needed, so any payee can do this to its own account.
+fn require_memo(env: &mut Env, owner: &Keypair, ta: Address, enable: bool) {
     let payer = env.payer.insecure_clone();
     let realloc = Instruction::new_with_bytes(T22, &[29u8, 8, 0], vec![
         AccountMeta::new(ta, false), AccountMeta::new(payer.pubkey(), true),
         AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(owner.pubkey(), true)]);
-    let enable = Instruction::new_with_bytes(T22, &[30u8, 0], vec![
+    let toggle = Instruction::new_with_bytes(T22, &[30u8, if enable { 0 } else { 1 }], vec![
         AccountMeta::new(ta, false), AccountMeta::new_readonly(owner.pubkey(), true)]);
-    send(&mut env.svm, &payer, &[owner], &[realloc, enable]).unwrap();
+    let ixs = if enable { vec![realloc, toggle] } else { vec![toggle] };
+    send(&mut env.svm, &payer, &[owner], &ixs).unwrap();
 }
 
 /// The spent marker is per vault address, so a non-canonical bump would give
@@ -446,17 +456,20 @@ fn rejects_noncanonical_bump_wots_key_reuse() {
     assert_eq!(balance(&env.svm, &alt_ta), Some(500));
 }
 
-/// Finding R-A, open on this release: a payee that requires incoming memos
-/// makes the spend fail (Token-2022 NoMemo = Custom(36)) and nothing moves.
-/// Clients therefore refuse such recipients before the one-time key signs;
-/// this test also pins the account layout their check reads.
+/// Finding R-A: a payee that requires incoming memos blocks a nine-account
+/// spend (Token-2022 NoMemo = Custom(36)); with the memo program as the 10th
+/// account the identical signed message goes through.
 #[test]
-fn memo_required_payee_blocks_spend_known_limitation() {
+fn memo_required_payee_cannot_freeze_vault() {
     let mut env = setup();
     let v = new_vault(&mut env, 1_000_000);
     let payee = Keypair::new();
     let dest = token_account(&mut env, &payee.pubkey());
-    require_memo(&mut env, &payee, dest);
+    require_memo(&mut env, &payee, dest, true);
+    let refund = token_account(&mut env, &Address::new_unique());
+    let payer = env.payer.insecure_clone();
+    let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 10, 10);
+
     // Same TLV walk as requiresMemo() in client/qc.ts and chain.dart.
     let d = env.svm.get_account(&dest).unwrap().data;
     let (mut i, mut on) = (166, None);
@@ -466,12 +479,65 @@ fn memo_required_payee_blocks_spend_known_limitation() {
         i += 4 + l;
     }
     assert_eq!((d[165], on), (2, Some(true)), "client memo check layout");
-
-    let refund = token_account(&mut env, &Address::new_unique());
-    let payer = env.payer.insecure_clone();
-    let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 10, 10);
-    let e = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).expect_err("spend must fail");
+    let e = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix.clone()]).expect_err("old layout fails");
     assert!(e.contains("Custom(36)"), "expected NoMemo, got {e}");
     assert_eq!(balance(&env.svm, &v.ta), Some(1_000_000));
-    assert_ne!(env.svm.get_account(&v.pda).map(|a| a.owner), Some(env.prog), "vault not marked spent");
+
+    env.svm.expire_blockhash();
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), with_memo(ix)]).unwrap();
+    assert_eq!(balance(&env.svm, &dest), Some(10));
+    assert_eq!(balance(&env.svm, &refund), Some(999_990));
+    assert_eq!(env.svm.get_account(&v.pda).unwrap().owner, env.prog, "vault marked spent");
+}
+
+/// Both transfers need their own memo: refund may require memos too.
+#[test]
+fn memo_covers_destination_and_refund() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000);
+    let (a, b) = (Keypair::new(), Keypair::new());
+    let dest = token_account(&mut env, &a.pubkey());
+    let refund = token_account(&mut env, &b.pubkey());
+    require_memo(&mut env, &a, dest, true);
+    require_memo(&mut env, &b, refund, true);
+    let payer = env.payer.insecure_clone();
+    let ix = with_memo(spend_ix(&env, &v, dest, refund, payer.pubkey(), 400, 400));
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+    assert_eq!(balance(&env.svm, &dest), Some(400));
+    assert_eq!(balance(&env.svm, &refund), Some(600));
+}
+
+/// The 10th account must be the memo program and nothing else; 11 accounts
+/// are refused.
+#[test]
+fn rejects_wrong_memo_account_and_extra_accounts() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let payer = env.payer.insecure_clone();
+    let mut ix = with_memo(spend_ix(&env, &v, dest, refund, payer.pubkey(), 1000, 1000));
+    ix.accounts[9].pubkey = Address::from_str_const("Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo");
+    expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix.clone()]), 1);
+    ix.accounts[9].pubkey = MEMO;
+    ix.accounts.push(AccountMeta::new_readonly(Address::new_unique(), false));
+    expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 1);
+    assert_eq!(balance(&env.svm, &v.ta), Some(1000));
+}
+
+/// A spend with the memo account still fits one transaction packet.
+#[test]
+fn spend_with_memo_fits_one_packet() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let payer = env.payer.insecure_clone();
+    let ix = with_memo(spend_ix(&env, &v, dest, refund, payer.pubkey(), 1000, 1000));
+    let tx = Transaction::new(&[&payer, &v.owner], Message::new(&[cu_limit(), ix.clone()], Some(&payer.pubkey())), env.svm.latest_blockhash());
+    let size = 1 + 64 * tx.signatures.len() + tx.message.serialize().len();
+    println!("spend + memo tx size: {size} bytes");
+    assert!(size <= 1232);
+    let cu = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+    println!("spend + memo CU: {cu}");
 }
