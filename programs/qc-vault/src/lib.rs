@@ -294,6 +294,7 @@ pub fn process_instruction(
 fn marker_rent() -> u64 {
     // [u64; 3] covers the 17-byte sysvar; zeroed so a failed read gives an
     // unknown threshold (0) and therefore u64::MAX.
+    #[cfg_attr(not(target_os = "solana"), allow(unused_mut))]
     let mut r = [0u64; 3];
     #[cfg(target_os = "solana")]
     // SAFETY: the syscall writes the 17-byte Rent sysvar into `r` (24 bytes).
