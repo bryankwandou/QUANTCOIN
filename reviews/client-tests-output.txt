@@ -1,0 +1,109 @@
+START 2026-10-05T14:08:52+08:00
+ M apps/native/linux/flutter/generated_plugin_registrant.cc
+ M apps/native/linux/flutter/generated_plugin_registrant.h
+ M apps/native/linux/flutter/generated_plugins.cmake
+ M apps/native/macos/Flutter/GeneratedPluginRegistrant.swift
+ M apps/native/windows/flutter/generated_plugin_registrant.cc
+ M apps/native/windows/flutter/generated_plugin_registrant.h
+ M apps/native/windows/flutter/generated_plugins.cmake
+ M client/generated/errors/index.ts
+ M client/generated/errors/qcVault.ts
+ M client/generated/index.ts
+ M client/generated/instructions/index.ts
+ M client/generated/instructions/spend.ts
+ M client/generated/pdas/index.ts
+ M client/generated/pdas/vault.ts
+ M client/generated/programs/index.ts
+ M client/generated/programs/qcVault.ts
+(pre-run status above)
+=== [2026-10-05T14:08:54+08:00] app :: npx vitest run test/audit2.test.ts test/equivalence.test.ts test/store.test.ts
+
+ RUN  v5.0.1 E:/qc-pr1-D/app
+
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  14:09:44
+   Duration  50.28s (import 66%, tests 29%, transform 4%)
+
+--- exit 0
+=== [2026-10-05T14:10:38+08:00] app :: npx tsc --noEmit -p tsconfig.json
+--- exit 0
+=== [2026-10-05T14:12:17+08:00] client :: npx tsx codama-check.ts
+codama client matches qc.ts: 650-byte data, 9 accounts, PDA 5XDedQjVwJy5ScwmrBg7jSn6dXpKYC8f4y4qLwcZxkm3
+--- exit 0
+=== [2026-10-05T14:13:27+08:00] client :: npx tsc --noEmit --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --strict codama-check.ts codama.ts qc.ts
+codama-check.ts(8,29): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+codama.ts(4,42): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+codama.ts(12,31): error TS2307: Cannot find module 'node:url' or its corresponding type declarations.
+qc.ts(3,41): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+qc.ts(4,68): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+--- exit 2
+=== [2026-10-05T14:14:39+08:00] client :: npx tsx codama.ts
+wrote idl/qc_vault.json and client/generated
+--- exit 0
+=== [2026-10-05T14:14:57+08:00] . :: git status --short; git diff --exit-code; echo diffexit=$?; git diff --ignore-cr-at-eol --stat; git ls-files --eol client/generated | head -4; git config core.autocrlf; file client/generated/index.ts
+ M apps/native/linux/flutter/generated_plugin_registrant.cc
+ M apps/native/linux/flutter/generated_plugin_registrant.h
+ M apps/native/linux/flutter/generated_plugins.cmake
+ M apps/native/macos/Flutter/GeneratedPluginRegistrant.swift
+ M apps/native/windows/flutter/generated_plugin_registrant.cc
+ M apps/native/windows/flutter/generated_plugin_registrant.h
+ M apps/native/windows/flutter/generated_plugins.cmake
+ M client/generated/errors/index.ts
+ M client/generated/errors/qcVault.ts
+ M client/generated/index.ts
+ M client/generated/instructions/index.ts
+ M client/generated/instructions/spend.ts
+ M client/generated/pdas/index.ts
+ M client/generated/pdas/vault.ts
+ M client/generated/programs/index.ts
+ M client/generated/programs/qcVault.ts
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/macos/Flutter/GeneratedPluginRegistrant.swift', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/errors/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/errors/qcVault.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/instructions/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/instructions/spend.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/pdas/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/pdas/vault.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/programs/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/programs/qcVault.ts', LF will be replaced by CRLF the next time Git touches it
+diffexit=0
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/linux/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/macos/Flutter/GeneratedPluginRegistrant.swift', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/native/windows/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/errors/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/errors/qcVault.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/instructions/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/instructions/spend.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/pdas/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/pdas/vault.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/programs/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/generated/programs/qcVault.ts', LF will be replaced by CRLF the next time Git touches it
+i/lf    w/lf    attr/                 	client/generated/errors/index.ts
+i/lf    w/lf    attr/                 	client/generated/errors/qcVault.ts
+i/lf    w/lf    attr/                 	client/generated/index.ts
+i/lf    w/lf    attr/                 	client/generated/instructions/index.ts
+true
+client/generated/index.ts: JavaScript source, ASCII text
+--- exit 0
+=== [2026-10-05T14:15:02+08:00] . :: npm ls eslint 2>&1 | head -3; ls app/node_modules/.bin | grep -c eslint
+E:\qc-pr1-D
+`-- (empty)
+
+0
+--- exit 1
+END 2026-10-05T14:15:16+08:00
+RESTORE 2026-10-05T14:16:04+08:00: git checkout -- <16 files>; git status clean (0 lines)
