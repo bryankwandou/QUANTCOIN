@@ -1,0 +1,60 @@
+# wots_props.rs run — worktree E:/qc-pr1-C @ 883c0ec (detached), started 2026-10-04T19:08:02+08:00
+# rustc: rustc 1.98.1 (48a229cea 2026-09-01)
+# command: cargo test --offline -p qc-vault --test wots_props --config 'profile.{dev,test}.package.qc-vault.opt-level=3' --config 'profile.{dev,test}.package.sha2.opt-level=3' -- --nocapture --test-threads=6
+# QC_PROP_CASES unset (default 10000), QC_PROP_SEED unset (default 5890952811885109286)
+
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 04s
+     Running tests\wots_props.rs (target\debug\deps\wots_props-df017acf096a6be6.exe)
+
+running 6 tests
+[p03] QC_PROP_SEED=5890952811885109286 salt=3
+[p04] QC_PROP_SEED=5890952811885109286 salt=4
+[p04] per-domain preimage lengths chain/pk/msg/sk = [52, 647, 208, 40]
+[p03] exhaustive csum values=6121 random=100000 max_csum_seen=6120 elapsed=77.8ms
+[p01] QC_PROP_SEED=5890952811885109286 salt=1
+[p02] QC_PROP_SEED=5890952811885109286 salt=2
+test p03_digit_and_checksum_bounds ... ok
+[p05] QC_PROP_SEED=5890952811885109286 salt=5
+[p06] QC_PROP_SEED=5890952811885109286 salt=6
+[p02] exhaustive checksum pairs checked=18730260
+[p02] random/adversarial pairs=400000 boundary+exhaustive checks=18736125, elapsed=845.2ms
+test p02_checksum_non_domination ... ok
+[p04] hash-level cases=10000 tweak-uniqueness=4x6656 key-level cases=1000 elapsed=8.4s
+test p04_domain_separation_and_binding ... ok
+[p06] composition cases=10000 key-level cases=1000 forward-walk forgeries refused=919 elapsed=12.9s
+test p06_chain_composition ... ok
+[p05] tamper cases=11068 (full 624-byte sweeps=8) elapsed=15.2s
+test p05_single_byte_tamper_changes_pk ... ok
+[p01] cases=10006 elapsed=21.1s
+test p01_sign_recover_roundtrip ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.30s
+
+exit=0
+# finished 2026-10-04T19:09:47+08:00
+
+# ---------------------------------------------------------------------
+# Mutation sanity check (2026-10-05, QC_PROP_CASES=500, same command)
+# src/wots.rs was temporarily mutated, then restored byte-for-byte from a
+# backup (git diff --quiet src/wots.rs == clean afterwards).
+#   M1 digits():     d[24] = 0           (drop the high checksum digit)
+#   M2 chain_step(): tweak [chain, 0]    (drop the step index from the tweak)
+# Result: 2 passed; 4 failed
+#   p02 FAILED  "checksum encoding wrong for c=256"            (catches M1)
+#   p03 FAILED  digits([0;24])[24..] = [0,232], expected [23,232] (catches M1)
+#   p04 FAILED  chain_step != SHA256(DOMAIN_CHAIN||seed||[c,s]||x) (catches M2)
+#   p06 FAILED  "step index not bound in tweak"                (catches M2)
+#   p01 ok, p05 ok: sign and recover share digits()/chain(), so round-trip
+#   and tamper tests cannot see either mutant; p02/p03/p04/p06 are needed.
+# After restore: QC_PROP_CASES=500 run -> 6 passed; 0 failed.
