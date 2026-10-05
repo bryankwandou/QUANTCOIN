@@ -1,0 +1,544 @@
+# cd E:/qc-tests-t22/programs/qc-vault && cargo test --offline --test token2022_ext --test ix_fuzz -- --nocapture --test-threads=1
+# qc_vault.so copied from E:/qc-pr1-B/target/deploy (commit 883c0ec)
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:51:4
+   |
+51 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:65:4
+   |
+65 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:76:4
+   |
+76 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: method `below` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:32:8
+   |
+18 | impl Rng {
+   | -------- method in this implementation
+...
+32 |     fn below(&mut self, n: u64) -> u64 { self.u64() % n }
+   |        ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `cases` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:36:4
+   |
+36 | fn cases(default: usize) -> usize {
+   |    ^^^^^
+
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:52:4
+   |
+52 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:66:4
+   |
+66 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:77:4
+   |
+77 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: function `setup_with_mint` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:94:4
+   |
+94 | fn setup_with_mint(mint_space: u64, pre: Vec<u8>) -> Env {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `setup` is never used
+   --> programs\qc-vault\tests\token2022_ext.rs:113:4
+    |
+113 | fn setup() -> Env { setup_with_mint(82, vec![]) }
+    |    ^^^^^
+
+warning: `qc-vault` (test "ix_fuzz") generated 3 warnings
+warning: `qc-vault` (test "token2022_ext") generated 7 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests\ix_fuzz.rs (E:\qc-tests-t22\target\debug\deps\ix_fuzz-92ac105632731682.exe)
+
+running 6 tests
+test ixfuzz_00_baseline_valid_spend_works_on_fresh_fixture ... fuzz seed 11400714819323198485 (salt 4660)
+ok
+test ixfuzz_01_random_lengths_and_content ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 1)
+IXFUZZ random_lengths: cases=1500 outcomes={"Custom(1)": 1428, "Custom(2)": 72}
+ok
+test ixfuzz_02_truncated_and_extended_valid_payloads ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 2)
+IXFUZZ truncate_extend: cases=1600 outcomes={"Custom(1)": 1600}
+ok
+test ixfuzz_03_random_discriminator_bytes ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 3)
+IXFUZZ discriminator: cases=855 outcomes={"Custom(1)": 855}
+ok
+test ixfuzz_04_bit_flips_in_every_region ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 4)
+error: test failed, to rerun pass `--test ix_fuzz`
+
+Caused by:
+  process didn't exit successfully: `E:\qc-tests-t22\target\debug\deps\ix_fuzz-92ac105632731682.exe --nocapture --test-threads=1` (exit code: 1)
+# exit=1
+
+# --- run was interrupted during ixfuzz_04 (host CPU starvation); ixfuzz_04 case counts then reduced (cases(400)->120, cases(40)->20). Remaining tests re-run: ---
+# cd E:/qc-tests-t22/programs/qc-vault && cargo test --offline --test ix_fuzz --test token2022_ext -- ixfuzz_04 ixfuzz_05 ext_ vault_ta --nocapture --test-threads=1
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:51:4
+   |
+51 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:65:4
+   |
+65 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:76:4
+   |
+76 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: method `below` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:32:8
+   |
+18 | impl Rng {
+   | -------- method in this implementation
+...
+32 |     fn below(&mut self, n: u64) -> u64 { self.u64() % n }
+   |        ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `cases` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:36:4
+   |
+36 | fn cases(default: usize) -> usize {
+   |    ^^^^^
+
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:52:4
+   |
+52 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:66:4
+   |
+66 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:77:4
+   |
+77 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: function `setup_with_mint` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:94:4
+   |
+94 | fn setup_with_mint(mint_space: u64, pre: Vec<u8>) -> Env {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `setup` is never used
+   --> programs\qc-vault\tests\token2022_ext.rs:113:4
+    |
+113 | fn setup() -> Env { setup_with_mint(82, vec![]) }
+    |    ^^^^^
+
+warning: `qc-vault` (test "ix_fuzz") generated 3 warnings
+warning: `qc-vault` (test "token2022_ext") generated 7 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.02s
+     Running tests\ix_fuzz.rs (E:\qc-tests-t22\target\debug\deps\ix_fuzz-92ac105632731682.exe)
+
+running 2 tests
+test ixfuzz_04_bit_flips_in_every_region ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 4)
+IXFUZZ bit_flips: cases=902 outcomes={"Custom(1)": 144, "Custom(2)": 758}
+ok
+test ixfuzz_05_wrong_account_counts ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 5)
+
+thread 'ixfuzz_05_wrong_account_counts' (37256) panicked at <local-path>
+Transaction::sign failed with error NotEnoughSigners
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    ixfuzz_05_wrong_account_counts
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 123.97s
+
+error: test failed, to rerun pass `--test ix_fuzz`
+# exit=101
+
+# --- ixfuzz_05 fixed (harness bug: unsignable signer flag on duplicated metas); re-run 05 + token2022 tests: ---
+# cd E:/qc-tests-t22/programs/qc-vault && cargo test --offline --test ix_fuzz --test token2022_ext -- ixfuzz_05 ext_ vault_ta --nocapture --test-threads=1
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+warning: method `below` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:32:8
+   |
+18 | impl Rng {
+   | -------- method in this implementation
+...
+32 |     fn below(&mut self, n: u64) -> u64 { self.u64() % n }
+   |        ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `cases` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:36:4
+   |
+36 | fn cases(default: usize) -> usize {
+   |    ^^^^^
+
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:52:4
+   |
+52 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:66:4
+   |
+66 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:77:4
+   |
+77 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: function `setup_with_mint` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:94:4
+   |
+94 | fn setup_with_mint(mint_space: u64, pre: Vec<u8>) -> Env {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `setup` is never used
+   --> programs\qc-vault\tests\token2022_ext.rs:113:4
+    |
+113 | fn setup() -> Env { setup_with_mint(82, vec![]) }
+    |    ^^^^^
+
+   Compiling qc-vault v0.1.0 (E:\qc-tests-t22\programs\qc-vault)
+warning: `qc-vault` (test "token2022_ext") generated 7 warnings
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:51:4
+   |
+51 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:65:4
+   |
+65 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\ix_fuzz.rs:76:4
+   |
+76 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: `qc-vault` (test "ix_fuzz") generated 3 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 03s
+     Running tests\ix_fuzz.rs (E:\qc-tests-t22\target\debug\deps\ix_fuzz-92ac105632731682.exe)
+
+running 1 test
+test ixfuzz_05_wrong_account_counts ... fuzz seed 11400714819323198485 (salt 4660)
+fuzz seed 11400714819323198485 (salt 5)
+IXFUZZ account_counts: cases=1032 outcomes={"Custom(1)": 960, "Custom(6)": 72}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 24.90s
+
+     Running tests\token2022_ext.rs (E:\qc-tests-t22\target\debug\deps\token2022_ext-3b6291c9257078ac.exe)
+
+running 8 tests
+test ext_default_account_state_frozen ... fuzz seed 11400714819323198485 (salt 24)
+BEHAVIOUR default_frozen/mint_to_frozen_vault_ta: ERR InstructionError(0, Custom(17)) CU=1176
+
+thread 'ext_default_account_state_frozen' (1816) panicked at programs\qc-vault\tests\token2022_ext.rs:316:43:
+called `Result::unwrap()` on an `Err` value: "AlreadyProcessed CU=0\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test ext_non_transferable_mint ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR non_transferable: ERR InstructionError(1, Custom(37)) CU=563325 vault_bal=1000000 spent=false
+ok
+test ext_permanent_delegate ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR permanent_delegate/spend: ok dest=250000 refund=750000
+fuzz seed 11400714819323198485 (salt 23)
+BEHAVIOUR permanent_delegate/third-party drain of vault ATA without vault sig: ok (delegate_ta=500000)
+ok
+test ext_transfer_fee ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_fee: ok dest=396000 refund=594000 spent=true
+ok
+test ext_transfer_hook_existing_program ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_hook(existing program, no extra accounts): ERR InstructionError(1, MissingAccount) CU=610712 vault_bal=1000000 spent=false
+ok
+test ext_transfer_hook_undeployed_program ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_hook(undeployed program): ERR InstructionError(1, MissingAccount) CU=656327 vault_bal=1000000 spent=false
+ok
+test vault_ta_injected_close_authority_and_delegate ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR injected close_authority=third party: ERR InstructionError(1, Custom(4)) CU=652794 vault_bal=1000000 spent=false
+fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR injected delegate=third party: ok dest=400000 refund=600000 spent=true
+ok
+test vault_ta_third_party_authority_attempts_rejected_by_token_program ... fuzz seed 11400714819323198485 (salt 25)
+BEHAVIOUR vault_ta/third-party set close-authority: ERR InstructionError(0, Custom(4)) CU=1061; approve delegate: ERR InstructionError(0, Custom(4)) CU=1068
+ok
+
+failures:
+
+failures:
+    ext_default_account_state_frozen
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.27s
+
+error: test failed, to rerun pass `--test token2022_ext`
+error: 1 target failed:
+    `--test token2022_ext`
+# exit=101
+
+# --- fix replay-dedup in ext_default_account_state_frozen test; re-run it: ---
+# cd E:/qc-tests-t22/programs/qc-vault && cargo test --offline --test token2022_ext -- ext_default_account_state_frozen --nocapture
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+   Compiling qc-vault v0.1.0 (E:\qc-tests-t22\programs\qc-vault)
+warning: method `below` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:32:8
+   |
+18 | impl Rng {
+   | -------- method in this implementation
+...
+32 |     fn below(&mut self, n: u64) -> u64 { self.u64() % n }
+   |        ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `cases` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:36:4
+   |
+36 | fn cases(default: usize) -> usize {
+   |    ^^^^^
+
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:52:4
+   |
+52 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:66:4
+   |
+66 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:77:4
+   |
+77 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: function `setup_with_mint` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:94:4
+   |
+94 | fn setup_with_mint(mint_space: u64, pre: Vec<u8>) -> Env {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `setup` is never used
+   --> programs\qc-vault\tests\token2022_ext.rs:113:4
+    |
+113 | fn setup() -> Env { setup_with_mint(82, vec![]) }
+    |    ^^^^^
+
+warning: `qc-vault` (test "token2022_ext") generated 7 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 15s
+     Running tests\token2022_ext.rs (E:\qc-tests-t22\target\debug\deps\token2022_ext-3b6291c9257078ac.exe)
+
+running 1 test
+fuzz seed 11400714819323198485 (salt 24)
+BEHAVIOUR default_frozen/mint_to_frozen_vault_ta: ERR InstructionError(0, Custom(17)) CU=1176
+BEHAVIOUR default_frozen/spend_from_frozen_vault_ta: ERR InstructionError(1, Custom(17)) CU=605718 vault_bal=1000000 spent=false
+
+thread 'ext_default_account_state_frozen' (35132) panicked at programs\qc-vault\tests\token2022_ext.rs:315:62:
+called `Result::unwrap()` on an `Err` value: "AlreadyProcessed CU=0\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test ext_default_account_state_frozen ... FAILED
+
+failures:
+
+failures:
+    ext_default_account_state_frozen
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 3.82s
+
+error: test failed, to rerun pass `--test token2022_ext`
+# exit=101
+
+# --- final: expire_blockhash before each token ix (replay dedup); re-run full token2022_ext file: ---
+# cd E:/qc-tests-t22/programs/qc-vault && cargo test --offline --test token2022_ext -- --nocapture --test-threads=1
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+   Compiling qc-vault v0.1.0 (E:\qc-tests-t22\programs\qc-vault)
+warning: method `below` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:32:8
+   |
+18 | impl Rng {
+   | -------- method in this implementation
+...
+32 |     fn below(&mut self, n: u64) -> u64 { self.u64() % n }
+   |        ^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `cases` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:36:4
+   |
+36 | fn cases(default: usize) -> usize {
+   |    ^^^^^
+
+warning: function `send_cu` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:52:4
+   |
+52 | fn send_cu(svm: &mut LiteSVM, payer: &Keypair, extra: &[&Keypair], ixs: &[Instruction]) -> (bool, u64) {
+   |    ^^^^^^^
+
+warning: function `token_account_sized` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:66:4
+   |
+66 | fn token_account_sized(env: &mut Env, owner: &Address, space: u64) -> Address {
+   |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `token_account` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:77:4
+   |
+77 | fn token_account(env: &mut Env, owner: &Address) -> Address { token_account_sized(env, owner, 165) }
+   |    ^^^^^^^^^^^^^
+
+warning: function `setup_with_mint` is never used
+  --> programs\qc-vault\tests\token2022_ext.rs:94:4
+   |
+94 | fn setup_with_mint(mint_space: u64, pre: Vec<u8>) -> Env {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `setup` is never used
+   --> programs\qc-vault\tests\token2022_ext.rs:113:4
+    |
+113 | fn setup() -> Env { setup_with_mint(82, vec![]) }
+    |    ^^^^^
+
+warning: `qc-vault` (test "token2022_ext") generated 7 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 10s
+     Running tests\token2022_ext.rs (E:\qc-tests-t22\target\debug\deps\token2022_ext-3b6291c9257078ac.exe)
+
+running 8 tests
+test ext_default_account_state_frozen ... fuzz seed 11400714819323198485 (salt 24)
+BEHAVIOUR default_frozen/mint_to_frozen_vault_ta: ERR InstructionError(0, Custom(17)) CU=1176
+BEHAVIOUR default_frozen/spend_from_frozen_vault_ta: ERR InstructionError(1, Custom(17)) CU=605718 vault_bal=1000000 spent=false
+BEHAVIOUR default_frozen/spend_to_frozen_destination: ERR InstructionError(1, Custom(17)) CU=563978
+BEHAVIOUR default_frozen/spend_all_thawed: ok
+ok
+test ext_non_transferable_mint ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR non_transferable: ERR InstructionError(1, Custom(37)) CU=698730 vault_bal=1000000 spent=false
+ok
+test ext_permanent_delegate ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR permanent_delegate/spend: ok dest=250000 refund=750000
+fuzz seed 11400714819323198485 (salt 23)
+BEHAVIOUR permanent_delegate/third-party drain of vault ATA without vault sig: ok (delegate_ta=500000)
+ok
+test ext_transfer_fee ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_fee: ok dest=396000 refund=594000 spent=true
+ok
+test ext_transfer_hook_existing_program ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_hook(existing program, no extra accounts): ERR InstructionError(1, MissingAccount) CU=569627 vault_bal=1000000 spent=false
+ok
+test ext_transfer_hook_undeployed_program ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR transfer_hook(undeployed program): ERR InstructionError(1, MissingAccount) CU=572627 vault_bal=1000000 spent=false
+ok
+test vault_ta_injected_close_authority_and_delegate ... fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR injected close_authority=third party: ERR InstructionError(1, Custom(4)) CU=525039 vault_bal=1000000 spent=false
+fuzz seed 11400714819323198485 (salt 22)
+BEHAVIOUR injected delegate=third party: ok dest=400000 refund=600000 spent=true
+ok
+test vault_ta_third_party_authority_attempts_rejected_by_token_program ... fuzz seed 11400714819323198485 (salt 25)
+BEHAVIOUR vault_ta/third-party set close-authority: ERR InstructionError(0, Custom(4)) CU=1061; approve delegate: ERR InstructionError(0, Custom(4)) CU=1068
+ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.28s
+
+# exit=0
