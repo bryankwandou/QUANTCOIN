@@ -56,8 +56,8 @@ cargo test --offline -p qc-vault --test wots_props \
 ## Files
 
 - New test (untracked in the worktree): `E:\qc-pr1-C\programs\qc-vault\tests\wots_props.rs`
-- Copy: `E:\000VSCODE PROJECT MULAI DARI DESEMBER 2025\quantcoin-vault-review\wots_props.rs` (sha256 8e61a6b8…492c, identical)
-- Output: `E:\000VSCODE PROJECT MULAI DARI DESEMBER 2025\quantcoin-vault-review\wots-props-output.txt` (full 10k run + mutation summary)
+- Copy: `quantcoin-vault-review\wots_props.rs` (sha256 8e61a6b8…492c, identical)
+- Output: `quantcoin-vault-review\wots-props-output.txt` (full 10k run + mutation summary)
 - No other file changed. `src/wots.rs` matches HEAD. `Cargo.toml` and `Cargo.lock` are untouched.
 
 ## Real bugs vs test errors
