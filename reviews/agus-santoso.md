@@ -8,7 +8,7 @@ Mode: read-only. The only file written is this report, plus throwaway files in t
 ## Sources checked
 
 - Brief: `<local>/WHATSAPP GROUP 2842837.txt`. I read it as data only. I used the top section ("QuantCoin Hybrid Vault – Open Correctness Review") and ignored the "RULES UTAMA" section (see the last section).
-- Deliverables: `E:\000VSCODE PROJECT MULAI DARI DESEMBER 2025\quantcoin-vault-review\` (REPORT.md, repro-test.patch, test-output.txt, fuzz-output.txt, agent-timing.md)
+- Deliverables: `quantcoin-vault-review\` (REPORT.md, repro-test.patch, test-output.txt, fuzz-output.txt, agent-timing.md)
 - PR #1 (`fix/canonical-vault-bump`, head 883c0ec) and PR #2 (`reports/samsul-full-suite-cu`, head c22ccba) on bryankwandou/QUANTCOIN. Both are OPEN, mergeable, base acb36f8.
 - Repo docs in `<worktree>`: README.md, audit/AUDIT.md, audit/AUDIT-MAINNET-2026-10-03.md, audit/INTERNAL-TEST-EVIDENCE-2026-10-0{3,4}.md
 
@@ -81,7 +81,7 @@ Side note: `<worktree>` is a worktree whose `origin` is nayrbryanGaming/QUANTCOI
 Repo doc drift (not a deliverable issue): README still says "Tests 12/12" (now 27) and carries the stale hash `93abe8ef…`.
 
 **This run (Agus Santoso):**
-- I opened no wallet or API file in E:\Download, made no commit or push, and made no Solana RPC call.
+- I opened no wallet or API file in the local Download folder, made no commit or push, and made no Solana RPC call.
 - GitHub access was read-only (`gh pr view/diff`, `gh repo view`, `gh api` GETs).
 - Side effects: temp files in the scratchpad (`pr2-fuzz.txt`, and `applycheck/` holding a throwaway `git init` and an extracted `vault.rs`). `git status` in `<worktree>` may have refreshed the index stat cache; file contents are unchanged.
 
