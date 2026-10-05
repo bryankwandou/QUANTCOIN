@@ -56,7 +56,7 @@ use pinocchio::{
 mod entry {
     use pinocchio::entrypoint::lazy::{InstructionContext, MaybeAccount};
 
-    /// Lazy entrypoint: reads exactly eight accounts straight from the input
+    /// Lazy entrypoint: reads exactly nine accounts straight from the input
     /// buffer instead of pinocchio's generic parser. Together with returning
     /// raw error codes this saves ~3 KB of bytecode (~0.02 SOL of rent).
     #[no_mangle]
