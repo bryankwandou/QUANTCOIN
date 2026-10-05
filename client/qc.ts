@@ -116,6 +116,22 @@ export async function checkSpend(conn: Connection, program: PublicKey, mint: Pub
   if (o?.equals(program)) throw new Error("recipient is a spent vault; tokens sent there are locked forever");
   if ((o && DEAD_OWNERS.has(o.toBase58())) || destOwner.toBase58() === "1nc1nerator11111111111111111111111111111111")
     throw new Error("recipient is a program, sysvar or the incinerator; tokens sent there never move again");
+  const dest = await conn.getAccountInfo(getAssociatedTokenAddressSync(mint, destOwner, true, TOKEN_2022_PROGRAM_ID));
+  if (dest && requiresMemo(dest.data))
+    throw new Error("recipient's token account requires incoming memos; the current vault program cannot send to it "
+      + "and a signed spend would stay stuck until the recipient turns that off (finding R-A)");
+}
+
+/** True if a Token-2022 account has the MemoTransfer extension switched on.
+ *  Layout: 165-byte base, account type byte, then TLV (u16 type, u16 length). */
+export function requiresMemo(d: Buffer): boolean {
+  for (let i = 166; i + 4 <= d.length;) {
+    const type = d.readUInt16LE(i), len = d.readUInt16LE(i + 2);
+    if (type === 8) return len >= 1 && d[i + 4] === 1; // MemoTransfer { require_incoming_transfer_memos }
+    if (type === 0) break; // Uninitialized: end of extensions
+    i += 4 + len;
+  }
+  return false;
 }
 
 /** Owners of accounts nobody can sign for. */

@@ -56,7 +56,7 @@ use pinocchio::{
 mod entry {
     use pinocchio::entrypoint::lazy::{InstructionContext, MaybeAccount};
 
-    /// Lazy entrypoint: reads exactly eight accounts straight from the input
+    /// Lazy entrypoint: reads exactly nine accounts straight from the input
     /// buffer instead of pinocchio's generic parser. Together with returning
     /// raw error codes this saves ~3 KB of bytecode (~0.02 SOL of rent).
     #[no_mangle]
@@ -185,8 +185,8 @@ pub fn process_instruction(
         amount,
     );
     let pk_hash = wots::recover_pk_hash(seed, &digest, sig);
-    match pda(&[VAULT_SEED, &pk_hash, owner.address().as_ref(), &bump], program_id, false) {
-        Some(a) if &a == vault.address() => {}
+    match pda(&[VAULT_SEED, &pk_hash, owner.address().as_ref()], program_id) {
+        Some((a, b)) if &a == vault.address() && b == bump[0] => {}
         _ => return Err(VaultError::BadSignature),
     }
 
@@ -202,8 +202,8 @@ pub fn process_instruction(
     // owner signature (post-quantum) cannot aim a signed spend at a decoy token
     // account the PDA also owns: that would mark the vault spent and lock the
     // real balance for good (finding F9).
-    match pda(&[vault.address().as_ref(), TOKEN_2022.as_ref(), mint.address().as_ref()], &ATA_PROGRAM, true) {
-        Some(ata) if &ata == vault_ta.address() => {}
+    match pda(&[vault.address().as_ref(), TOKEN_2022.as_ref(), mint.address().as_ref()], &ATA_PROGRAM) {
+        Some((ata, _)) if &ata == vault_ta.address() => {}
         _ => return Err(VaultError::NotATokenAccount),
     }
     // No owner check on the two accounts read below: a fake account only
@@ -304,34 +304,26 @@ fn marker_rent() -> u64 {
     per_byte << shift
 }
 
-/// Program address for `seeds`: with `find`, the canonical bump is searched
-/// (seeds without bump); otherwise the last seed is the bump. Calls the
-/// syscalls directly: the SDK wrappers convert errors through a function that
-/// can panic, which links the panic handler and its strings (~550 bytes).
+/// Canonical program address and bump for `seeds` (without the bump). Calls
+/// the syscall directly: the SDK wrapper converts errors through a function
+/// that can panic, which links the panic handler and its strings (~550 bytes).
 #[inline(always)]
-fn pda(seeds: &[&[u8]], program: &Address, find: bool) -> Option<Address> {
+fn pda(seeds: &[&[u8]], program: &Address) -> Option<(Address, u8)> {
     #[cfg(target_os = "solana")]
     {
         let mut out = core::mem::MaybeUninit::<Address>::uninit();
         let mut bump = 0u8;
-        let (s, n, p, o) = (seeds.as_ptr() as *const u8, seeds.len() as u64, program as *const _ as *const u8, out.as_mut_ptr() as *mut u8);
-        // SAFETY: the syscalls write 32 bytes to `out` (and 1 to `bump`) on success.
+        // SAFETY: the syscall writes 32 bytes to `out` and 1 to `bump` on success.
         let rc = unsafe {
-            if find {
-                pinocchio::syscalls::sol_try_find_program_address(s, n, p, o, &mut bump)
-            } else {
-                pinocchio::syscalls::sol_create_program_address(s, n, p, o)
-            }
+            pinocchio::syscalls::sol_try_find_program_address(
+                seeds.as_ptr() as *const u8, seeds.len() as u64, program as *const _ as *const u8,
+                out.as_mut_ptr() as *mut u8, &mut bump)
         };
-        if rc == 0 { Some(unsafe { out.assume_init() }) } else { None }
+        if rc == 0 { Some((unsafe { out.assume_init() }, bump)) } else { None }
     }
     #[cfg(not(target_os = "solana"))]
     {
-        if find {
-            Address::try_find_program_address(seeds, program).map(|(a, _)| a)
-        } else {
-            Address::create_program_address(seeds, program).ok()
-        }
+        Address::try_find_program_address(seeds, program)
     }
 }
 

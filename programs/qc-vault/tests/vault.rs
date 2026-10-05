@@ -393,3 +393,85 @@ fn rejects_tampered_signature_and_seed() {
     expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 1);
     assert_eq!(balance(&env.svm, &v.ta), Some(1000));
 }
+
+/// The token account owner turns Token-2022 "require incoming memos" on.
+/// Only the owner's signature is needed, so any payee can do this.
+fn require_memo(env: &mut Env, owner: &Keypair, ta: Address) {
+    let payer = env.payer.insecure_clone();
+    let realloc = Instruction::new_with_bytes(T22, &[29u8, 8, 0], vec![
+        AccountMeta::new(ta, false), AccountMeta::new(payer.pubkey(), true),
+        AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(owner.pubkey(), true)]);
+    let enable = Instruction::new_with_bytes(T22, &[30u8, 0], vec![
+        AccountMeta::new(ta, false), AccountMeta::new_readonly(owner.pubkey(), true)]);
+    send(&mut env.svm, &payer, &[owner], &[realloc, enable]).unwrap();
+}
+
+/// The spent marker is per vault address, so a non-canonical bump would give
+/// the same WOTS key a second vault and let it sign twice. Only the canonical
+/// bump is accepted (finding R-1).
+#[test]
+fn rejects_noncanonical_bump_wots_key_reuse() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000); // canonical bump
+    let pk = wots::keys::public_key_hash(&v.master, &v.seed);
+    let (alt_pda, alt_bump) = (0..v.bump).rev().find_map(|b| {
+        Address::create_program_address(&[VAULT_SEED, &pk, v.owner.pubkey().as_ref(), &[b]], &env.prog)
+            .ok().map(|a| (a, b))
+    }).expect("a non-canonical bump exists");
+    assert_ne!(alt_pda, v.pda);
+    let (alt_ta, _) = Address::find_program_address(&[alt_pda.as_ref(), T22.as_ref(), env.mint.as_ref()], &ATA);
+    // Anyone can create and fund the alternative vault's ATA.
+    let payer = env.payer.insecure_clone();
+    let ix = Instruction::new_with_bytes(ATA, &[1], vec![
+        AccountMeta::new(payer.pubkey(), true), AccountMeta::new(alt_ta, false),
+        AccountMeta::new_readonly(alt_pda, false), AccountMeta::new_readonly(env.mint, false),
+        AccountMeta::new_readonly(Address::default(), false), AccountMeta::new_readonly(T22, false)]);
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
+    let mut d = vec![14u8]; d.extend_from_slice(&500u64.to_le_bytes()); d.push(DECIMALS);
+    let ix = Instruction::new_with_bytes(T22, &d, vec![AccountMeta::new(env.mint, false),
+        AccountMeta::new(alt_ta, false), AccountMeta::new_readonly(payer.pubkey(), true)]);
+    send(&mut env.svm, &payer, &[], &[ix]).unwrap();
+
+    // Signature #1 with the WOTS key: spend the canonical vault.
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 1000, 1000);
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+
+    // Signature #2 with the SAME WOTS key through the other bump: refused.
+    let alt = Vault { master: v.master, seed: v.seed, owner: v.owner.insecure_clone(), pda: alt_pda, bump: alt_bump, ta: alt_ta };
+    let dest2 = token_account(&mut env, &Address::new_unique());
+    let ix = spend_ix(&env, &alt, dest2, refund, payer.pubkey(), 500, 500);
+    expect_err(send(&mut env.svm, &payer, &[&alt.owner], &[cu_limit(), ix]), 2);
+    assert_eq!(balance(&env.svm, &alt_ta), Some(500));
+}
+
+/// Finding R-A, open on this release: a payee that requires incoming memos
+/// makes the spend fail (Token-2022 NoMemo = Custom(36)) and nothing moves.
+/// Clients therefore refuse such recipients before the one-time key signs;
+/// this test also pins the account layout their check reads.
+#[test]
+fn memo_required_payee_blocks_spend_known_limitation() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1_000_000);
+    let payee = Keypair::new();
+    let dest = token_account(&mut env, &payee.pubkey());
+    require_memo(&mut env, &payee, dest);
+    // Same TLV walk as requiresMemo() in client/qc.ts and chain.dart.
+    let d = env.svm.get_account(&dest).unwrap().data;
+    let (mut i, mut on) = (166, None);
+    while i + 4 <= d.len() {
+        let (t, l) = (u16::from_le_bytes([d[i], d[i + 1]]), u16::from_le_bytes([d[i + 2], d[i + 3]]) as usize);
+        if t == 8 { on = Some(d[i + 4] == 1); break; }
+        i += 4 + l;
+    }
+    assert_eq!((d[165], on), (2, Some(true)), "client memo check layout");
+
+    let refund = token_account(&mut env, &Address::new_unique());
+    let payer = env.payer.insecure_clone();
+    let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 10, 10);
+    let e = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).expect_err("spend must fail");
+    assert!(e.contains("Custom(36)"), "expected NoMemo, got {e}");
+    assert_eq!(balance(&env.svm, &v.ta), Some(1_000_000));
+    assert_ne!(env.svm.get_account(&v.pda).map(|a| a.owner), Some(env.prog), "vault not marked spent");
+}
