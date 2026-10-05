@@ -1,0 +1,223 @@
+== Mutant kill verification (sequential) ==
+
+##### M02: apply mutant (python killmut.py M02)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..945b594 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -154 +154 @@ pub fn process_instruction(
+-    if system.address() != &SYSTEM {
++    if false {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m23_more_than_nine_accounts_rejected ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m20_wrong_discriminator_is_bad_instruction ... ok
+test m02_fake_system_program_exact_error ... FAILED
+test m22_short_mint_data_is_not_a_token_account ... ok
+test m17_spend_exactly_one_token ... ok
+thread 'm02_fake_system_program_exact_error' (38860) panicked at programs\qc-vault\tests\mutant_killers.rs:163:5:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### M17: apply mutant (python killmut.py M17)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..1400378 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -244 +244 @@ pub fn process_instruction(
+-    if amount > 0 {
++    if amount > 1 {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m23_more_than_nine_accounts_rejected ... ok
+test m17_spend_exactly_one_token ... FAILED
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m02_fake_system_program_exact_error ... ok
+test m22_short_mint_data_is_not_a_token_account ... ok
+test m20_wrong_discriminator_is_bad_instruction ... ok
+thread 'm17_spend_exactly_one_token' (36172) panicked at programs\qc-vault\tests\mutant_killers.rs:201:36:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.33s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### M18: apply mutant (python killmut.py M18)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..d01061f 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -247 +247 @@ pub fn process_instruction(
+-    if rest > 0 {
++    if rest > 1 {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m02_fake_system_program_exact_error ... ok
+test m20_wrong_discriminator_is_bad_instruction ... ok
+test m22_short_mint_data_is_not_a_token_account ... ok
+test m17_spend_exactly_one_token ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... FAILED
+test m23_more_than_nine_accounts_rejected ... ok
+thread 'm18_spend_leaving_exactly_one_token_refunds_it' (21680) panicked at programs\qc-vault\tests\mutant_killers.rs:215:36:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### M20: apply mutant (python killmut.py M20)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..1d9654f 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -147 +147 @@ pub fn process_instruction(
+-    if data.len() != SPEND_DATA_LEN || data[0] != IX_SPEND {
++    if data.len() != SPEND_DATA_LEN {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m02_fake_system_program_exact_error ... ok
+test m23_more_than_nine_accounts_rejected ... ok
+test m17_spend_exactly_one_token ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m20_wrong_discriminator_is_bad_instruction ... FAILED
+test m22_short_mint_data_is_not_a_token_account ... ok
+thread 'm20_wrong_discriminator_is_bad_instruction' (32708) panicked at programs\qc-vault\tests\mutant_killers.rs:162:15:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### M22: apply mutant (python killmut.py M22)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..9eb569c 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -221 +221 @@ pub fn process_instruction(
+-    if vault_ta.data_len() < 72 || mint.data_len() < 45 {
++    if vault_ta.data_len() < 72 {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m23_more_than_nine_accounts_rejected ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m17_spend_exactly_one_token ... ok
+test m02_fake_system_program_exact_error ... ok
+test m22_short_mint_data_is_not_a_token_account ... FAILED
+test m20_wrong_discriminator_is_bad_instruction ... ok
+thread 'm22_short_mint_data_is_not_a_token_account' (23652) panicked at programs\qc-vault\tests\mutant_killers.rs:162:15:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### M23: apply mutant (python killmut.py M23)
+diff --git a/programs/qc-vault/src/lib.rs b/programs/qc-vault/src/lib.rs
+index 32c3dfc..149e971 100644
+--- a/programs/qc-vault/src/lib.rs
++++ b/programs/qc-vault/src/lib.rs
+@@ -65 +65 @@ mod entry {
+-        if ctx.remaining() != 9 {
++        if ctx.remaining() < 9 {
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --test mutant_killers --no-fail-fast
+test m23_more_than_nine_accounts_rejected ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m17_spend_exactly_one_token ... ok
+test m02_fake_system_program_exact_error ... ok
+test m20_wrong_discriminator_is_bad_instruction ... ok
+test m22_short_mint_data_is_not_a_token_account ... ok
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s
+$ git checkout -- programs/qc-vault/src
+diff lines after restore: 0
+
+##### CLEAN SOURCE: rebuild + full suite
+$ cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+build rc=0
+$ cargo test -p qc-vault --no-fail-fast
+   Compiling qc-vault v0.1.0 (E:\qc-tests-mutants\programs\qc-vault)
+warning: variable does not need to be mutable
+   --> programs\qc-vault\src\lib.rs:297:9
+    |
+297 |     let mut r = [0u64; 3];
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `qc-vault` (lib) generated 1 warning (run `cargo fix --lib -p qc-vault` to apply 1 suggestion)
+warning: `qc-vault` (lib test) generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.92s
+     Running unittests src\lib.rs (target\debug\deps\qc_vault-30a7a5d867079218.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\fuzz.rs (target\debug\deps\fuzz-c10b1be1e2450164.exe)
+
+running 14 tests
+test m1_replay_on_second_token_account_is_refused ... ok
+test f9_decoy_vault_token_account_is_refused ... ok
+test destination_owned_by_same_vault_is_accepted ... ok
+test prop_max_steps_is_6375 ... ok
+test prop_seed_layout_injective ... ok
+test prefunded_vault_pda_still_spends ... ok
+test rejects_fake_system_program ... ok
+test transfer_fee_mint_blocks_spend_until_harvest ... ok
+test prop_checksum_no_domination ... ok
+test compute_worst_case_measured has been running for over 60 seconds
+test differential_sign_verify has been running for over 60 seconds
+test fuzz_account_substitution has been running for over 60 seconds
+test fuzz_parser_random_data has been running for over 60 seconds
+test fuzz_signature_mutations has been running for over 60 seconds
+test fuzz_account_substitution ... ok
+test compute_worst_case_measured ... ok
+test differential_sign_verify ... ok
+test fuzz_parser_random_data ... ok
+test fuzz_signature_mutations ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 473.53s
+
+     Running tests\mutant_killers.rs (target\debug\deps\mutant_killers-f49e8ac810ed0c9b.exe)
+
+running 6 tests
+test m02_fake_system_program_exact_error ... ok
+test m23_more_than_nine_accounts_rejected ... ok
+test m17_spend_exactly_one_token ... ok
+test m22_short_mint_data_is_not_a_token_account ... ok
+test m18_spend_leaving_exactly_one_token_refunds_it ... ok
+test m20_wrong_discriminator_is_bad_instruction ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+     Running tests\vault.rs (target\debug\deps\vault-5f22a07ab8f6b9a3.exe)
+
+running 14 tests
+test rejects_duplicate_accounts ... ok
+test rejects_changed_amount ... ok
+test rejects_overspend ... ok
+test rejects_redirected_destination ... ok
+test rejects_missing_owner_signature ... ok
+test rejects_replay_after_spend ... ok
+test genesis_supply_spend_and_rotate ... ok
+test rejects_wrong_owner ... ok
+test wots_roundtrip_and_tamper ... ok
+test spend_fits_one_packet ... ok
+test rejects_wrong_token_program ... ok
+test rejects_noncanonical_bump_wots_key_reuse ... ok
+test rejects_tampered_signature_and_seed ... ok
+test spends_to_fresh_rent_receiver_at_any_rent ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.44s
+
+   Doc-tests qc_vault
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+test rc=0
+git diff -- programs/qc-vault/src lines: 0
+DONE
