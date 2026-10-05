@@ -1,0 +1,7 @@
+# Keep generated code and sources LF on every platform so codegen
+# drift checks do not report CRLF-only changes on Windows.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.so binary
+*.ico binary
