@@ -1,0 +1,33 @@
+start 2026-10-05T14:18:20
+id | area | mutation | result | killed by | secs
+M01 | signer/spent | lib: drop AlreadySpent check | KILLED | m1_replay_on_second_token_account_is_refused | 77
+M02 | system prog | lib: drop system program check | SURVIVED | - | 46
+M03 | signer | lib: drop owner is_signer check | KILLED | fuzz_account_substitution, rejects_missing_owner_signature | 43
+M04 | bump loop | lib: disable canonical bump loop | KILLED | rejects_noncanonical_bump_wots_key_reuse | 46
+M05 | bump loop | lib: bump loop stops at 254 (skip 255) | SURVIVED | - | 33
+M06 | token prog | lib: drop Token-2022 program check | KILLED | rejects_wrong_token_program | 34
+M07 | ATA | lib: accept any ATA address for vault_ta | KILLED | f9_decoy_vault_token_account_is_refused | 46
+M08 | pda | lib: accept any derived address for vault | KILLED | fuzz_signature_mutations, rejects_changed_amount | 123
+M09 | digest | lib: digest omits mint | SURVIVED | - | 105
+M10 | digest | lib: digest omits refund | KILLED | fuzz_account_substitution | 63
+M11 | digest | lib: digest omits rent_to | KILLED | fuzz_account_substitution | 47
+M12 | digest | lib: digest omits amount | KILLED | compute_worst_case_measured, fuzz_signature_mutations, rejects_changed_amount | 45
+M13 | digest | lib: digest omits program_id | SURVIVED | - | 49
+M14 | digest | lib: digest omits vault | SURVIVED | - | 52
+M15 | digest | lib: digest omits destination | KILLED | fuzz_account_substitution, rejects_redirected_destination | 78
+M16 | amount math | lib: checked_sub -> saturating_sub | KILLED | rejects_overspend | 85
+M17 | amount math | lib: amount transfer skipped when amount==1 | SURVIVED | - | 186
+M18 | amount math | lib: refund skipped when rest==1 | SURVIVED | - | 171
+M19 | parser | lib: data length accepts longer data | KILLED | fuzz_parser_random_data | 114
+M20 | parser | lib: drop discriminator check | SURVIVED | - | 132
+M21 | surplus | lib: never sweep surplus to rent_to | KILLED | m1_replay_on_second_token_account_is_refused, prefunded_vault_pda_still_spends, spends_to_fresh_rent_receiver_at_any_rent | 111
+M22 | mint len | lib: drop mint data_len check | KILLED | test binary error rc=1 | 278
+M23 | entry | lib: accept >9 accounts (remaining < 9) | SURVIVED | - | 105
+M24 | wots csum | wots: checksum uses digest not MAX-digest | KILLED | differential_sign_verify, prop_checksum_no_domination, prop_max_steps_is_6375 | 85
+M25 | wots csum | wots: checksum low byte zeroed | KILLED | differential_sign_verify, prop_checksum_no_domination, prop_max_steps_is_6375 | 68
+M26 | wots csum | wots: checksum high byte zeroed | KILLED | differential_sign_verify, prop_checksum_no_domination, prop_max_steps_is_6375 | 45
+M27 | wots step | wots: chain_step ignores step index | KILLED | differential_sign_verify | 39
+M28 | wots step | wots: chain_step ignores chain index | KILLED | differential_sign_verify | 67
+M29 | wots end | wots: verifier chains to MAX_STEP-1 | KILLED | compute_worst_case_measured, destination_owned_by_same_vault_is_accepted, differential_sign_verify, f9_decoy_vault_token_account_is_refused, fuzz_parser_random_data, genesis_supply_spend_and_rotate, m1_replay_on_second_token_account_is_refused, prefunded_vault_pda_still_spends, rejects_noncanonical_bump_wots_key_reuse, rejects_overspend, rejects_replay_after_spend, rejects_wrong_token_program, spends_to_fresh_rent_receiver_at_any_rent, transfer_fee_mint_blocks_spend_until_harvest, wots_roundtrip_and_tamper | 119
+end 2026-10-05T15:00:04
+git status:  diff-lines=0
