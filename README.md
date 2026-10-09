@@ -9,8 +9,8 @@ Status: **live on mainnet since 2026-09-30. Internally security reviewed by
 the maintainer; not independently audited.** Current security status, the
 exact deployed binary and every open finding:
 [audit/INTERNAL_SECURITY_AUDIT.md](audit/INTERNAL_SECURITY_AUDIT.md). Two
-findings (R-1 canonical bump, R-A payee memo freeze) are fixed or bounded in
-this repo but the R-1 fix is not yet deployed. Earlier versions of this repo claimed a live mainnet,
+findings were raised on 2026-10-04: R-1 (canonical bump) is fixed and deployed on mainnet since
+2026-10-07, and R-A (payee memo freeze) is bounded by client checks. Earlier versions of this repo claimed a live mainnet,
 1 trillion TPS and audit certificates before any of that existed. Those claims
 were removed (they remain in git history, commit "archive: …").
 
@@ -18,7 +18,7 @@ were removed (they remain in git history, commit "archive: …").
 
 | | Address |
 |---|---|
-| Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` (live binary SHA-256 `07e6b6dd…94be`, built from commit `344c2a5`, upgraded 2026-10-02; verified 2026-10-05) |
+| Vault program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` (live binary SHA-256 `4d209e48…474e`, built from commit `08f53d5`, upgraded 2026-10-07 via Squads proposal #4; verified 2026-10-09) |
 | Upgrade authority | Squads 2-of-3 multisig `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`. 24-hour time lock. Kept upgradeable until an external audit; then set final. |
 | QC mint | `AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2`: supply 22T, mint/freeze/metadata authorities revoked |
 | Allocations | `client/allocations-mainnet.json`: founder 4 × 5%, liquidity 20%, airdrop 15%, reserve 10%, treasury 35%. Founder vault 1 was spent to the founder wallet on 2026-10-02 (WHITEPAPER.md §4) |
