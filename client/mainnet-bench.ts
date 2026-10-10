@@ -33,11 +33,11 @@ const rows: Row[] = [];
 
 type Prep = { label: string; raw: Buffer; sig: string; signMs: number; amount: bigint };
 /** Creates the token accounts the spend needs, then signs it (the one-time digest is recorded first). */
-async function prepare(from: VaultKeys, destOwner: PublicKey, amount: bigint, next?: VaultKeys, refundTa?: PublicKey): Promise<Prep> {
+async function prepare(from: VaultKeys, destOwner: PublicKey, amount: bigint, refundOwner: PublicKey, next?: VaultKeys): Promise<Prep> {
   await checkSpend(conn, program, mint, from, destOwner, amount, next, payer.publicKey);
-  const dest = ataOf(destOwner), refund = next ? vaultTokenAccount(program, mint, next) : refundTa!;
+  const dest = ataOf(destOwner), refund = ataOf(refundOwner);
   const need = [createAssociatedTokenAccountIdempotentInstruction(payer.publicKey, dest, destOwner, mint, TOKEN_2022_PROGRAM_ID)];
-  if (next) need.push(createAssociatedTokenAccountIdempotentInstruction(payer.publicKey, refund, vaultAddress(program, next)[0], mint, TOKEN_2022_PROGRAM_ID));
+  need.push(createAssociatedTokenAccountIdempotentInstruction(payer.publicKey, refund, refundOwner, mint, TOKEN_2022_PROGRAM_ID));
   await sendAndConfirmTransaction(conn, new Transaction().add(...need), [payer], { commitment: "confirmed" });
   for (let i = 0; ; i++) {
     const [x, y] = await conn.getMultipleAccountsInfo([dest, refund], "processed");
@@ -72,6 +72,7 @@ async function land(p: Prep, mode: string, costLamports = 0): Promise<Row> {
     conn.onSignature(p.sig, r => mark("confirmed", r.err, "ws"), "confirmed");
     const poll = setInterval(async () => {
       if (confirmed) return clearInterval(poll);
+      if (performance.now() - s0 < 3000) return; // websocket first; polling only as a fallback (public RPC rate limits)
       const st = (await conn.getSignatureStatuses([p.sig]).catch(() => null))?.value[0];
       if (st) mark(st.confirmationStatus === "processed" ? "processed" : "confirmed", st.err, "poll");
       if (performance.now() - s0 > 60_000) { clearInterval(poll); reject(new Error(p.label + " not confirmed in 60 s")); }
@@ -87,9 +88,9 @@ async function land(p: Prep, mode: string, costLamports = 0): Promise<Row> {
   console.log(row);
   return row;
 }
-async function sequential(from: VaultKeys, destOwner: PublicKey, amount: bigint, next: VaultKeys) {
+async function sequential(from: VaultKeys, destOwner: PublicKey, amount: bigint, refundOwner: PublicKey, next?: VaultKeys) {
   const before = await conn.getBalance(payer.publicKey, "confirmed");
-  const p = await prepare(from, destOwner, amount, next);
+  const p = await prepare(from, destOwner, amount, refundOwner, next);
   const r = await land(p, "sequential");
   r.costLamports = before - (await conn.getBalance(payer.publicKey, "confirmed"));
 }
@@ -97,14 +98,16 @@ async function sequential(from: VaultKeys, destOwner: PublicKey, amount: bigint,
 // Spend 1: treasury -> chain head (P + 1 units). Chain vault i sends 1 unit to parallel vault i.
 // Then all P parallel vaults spend their 1 unit to the payer at the same moment (refund = the
 // new treasury token account, which receives nothing since rest = 0).
-const first = get(process.env.FROM!), treasuryNext = get(process.env.TREASURY_NEXT!);
+// TREASURY_NEXT_PDA: the next treasury vault by address only (its keys stay off this machine).
+const first = get(process.env.FROM!);
+const treasuryNext = process.env.TREASURY_NEXT_PDA ? new PublicKey(process.env.TREASURY_NEXT_PDA) : vaultAddress(program, get(process.env.TREASURY_NEXT!))[0];
 const chain = Array.from({ length: P + 1 }, (_, i) => get(`${TAG}-c${i + 1}`));
 const par = Array.from({ length: P }, (_, i) => get(`${TAG}-p${i + 1}`));
 await sequential(first, vaultAddress(program, chain[0])[0], BigInt(P + 1), treasuryNext);
-for (let i = 0; i < P; i++) await sequential(chain[i], vaultAddress(program, par[i])[0], 1n, chain[i + 1]);
+for (let i = 0; i < P; i++) await sequential(chain[i], vaultAddress(program, par[i])[0], 1n, vaultAddress(program, chain[i + 1])[0], chain[i + 1]);
 const before = await conn.getBalance(payer.publicKey, "confirmed");
 const preps = [];
-for (const v of par) preps.push(await prepare(v, payer.publicKey, 1n, undefined, vaultTokenAccount(program, mint, treasuryNext)));
+for (const v of par) preps.push(await prepare(v, payer.publicKey, 1n, treasuryNext));
 const wall0 = performance.now();
 await Promise.all(preps.map(p => land(p, "parallel")));
 const parallelWallMs = Math.round(performance.now() - wall0);
