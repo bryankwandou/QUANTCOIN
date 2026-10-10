@@ -101,11 +101,21 @@ export const vaultExists = (name: string) => existsSync(new URL(`vault-${name}.j
  *  so a doomed transfer (too much, own vault, token account as recipient)
  *  would lock the vault for good. A retry of the recorded digest skips this. */
 export async function checkSpend(conn: Connection, program: PublicKey, mint: PublicKey, v: VaultKeys,
-  destOwner: PublicKey, amount: bigint) {
+  destOwner: PublicKey, amount: bigint, next?: VaultKeys, rentTo?: PublicKey) {
   if (v.signed) return;
   const [pda] = vaultAddress(program, v);
   if (amount <= 0n) throw new Error("amount must be above zero");
   if (destOwner.equals(pda)) throw new Error("recipient is this vault itself");
+  // The program rejects any account passed twice. Recipient = next vault makes
+  // destination and refund the same token account; rent_to = this vault (or
+  // a token account in the spend) repeats an account too. Either way the
+  // signed spend can never land and the one-time key is burnt.
+  if (next && destOwner.equals(vaultAddress(program, next)[0]))
+    throw new Error("recipient is this wallet's next vault (it already receives the remainder)");
+  if (rentTo && [pda, vaultTokenAccount(program, mint, v),
+      getAssociatedTokenAddressSync(mint, destOwner, true, TOKEN_2022_PROGRAM_ID),
+      ...(next ? [vaultTokenAccount(program, mint, next)] : []), v.owner.publicKey, mint].some(k => k.equals(rentTo)))
+    throw new Error("RENT_TO repeats an account already used by the spend; the program would reject it");
   if ((await conn.getAccountInfo(pda))?.owner.equals(program)) throw new Error(`vault ${v.name} is already spent`);
   const ta = await conn.getAccountInfo(vaultTokenAccount(program, mint, v));
   const held = ta?.owner.equals(TOKEN_2022_PROGRAM_ID) && ta.data.length >= 72 ? ta.data.readBigUInt64LE(64) : 0n;
