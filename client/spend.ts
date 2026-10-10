@@ -13,7 +13,7 @@ const destOwner = new PublicKey(process.env.DEST_OWNER!);
 const amount = BigInt(process.env.AMOUNT!);
 // RENT_TO: where the closed vault account's rent goes (default: the fee payer).
 const rentTo = process.env.RENT_TO ? new PublicKey(process.env.RENT_TO) : payer.publicKey;
-await checkSpend(conn, program, mint, from, destOwner, amount);
+await checkSpend(conn, program, mint, from, destOwner, amount, next, rentTo);
 
 const dest = getAssociatedTokenAddressSync(mint, destOwner, true, TOKEN_2022_PROGRAM_ID);
 const nextTa = vaultTokenAccount(program, mint, next);
