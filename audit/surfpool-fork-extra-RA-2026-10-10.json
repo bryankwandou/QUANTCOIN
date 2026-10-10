@@ -1,0 +1,113 @@
+[
+  {
+    "name": "A memo turned on after signing → still lands",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "name": "B closed payee → fails, vault intact",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: incorrect program id for instruction: 14 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]\nProgram log: Memo (len 2): \"qc\"\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 794221 compute units\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\nProgram log: Instruction: TransferChecked\nProgram log: Error: IncorrectProgramId\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 791010 compute units\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 611020 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction. \nLogs: \n[\n  \"Program log: Memo (len 2): \\\"qc\\\"\",\n  \"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 794221 compute units\",\n  \"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\",\n  \"Program log: Instruction: TransferChecked\",\n  \"Program log: Error: IncorrectProgramId\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 791010 compute units\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 611020 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]\",\"Program log: Memo (len 2): \\\"qc\\\"\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 794221 compute units\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\",\"Program log: Instruction: TransferChecked\",\"Program log: Error: IncorrectProgramId\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 791010 compute units\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 611020 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction\"]"
+  },
+  {
+    "name": "B recreated ATA → same signature lands",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "name": "C late deposit → refund gets the rest",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "name": "D CPI-guarded payee → lands",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "name": "E legacy-token payee → fails, vault intact",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: incorrect program id for instruction: 14 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]\nProgram log: Memo (len 2): \"qc\"\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 753136 compute units\nProgram MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\nProgram log: Instruction: TransferChecked\nProgram log: Error: IncorrectProgramId\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 749925 compute units\nProgram TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 652105 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction. \nLogs: \n[\n  \"Program log: Memo (len 2): \\\"qc\\\"\",\n  \"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 753136 compute units\",\n  \"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\",\n  \"Program log: Instruction: TransferChecked\",\n  \"Program log: Error: IncorrectProgramId\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 749925 compute units\",\n  \"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 652105 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]\",\"Program log: Memo (len 2): \\\"qc\\\"\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 753136 compute units\",\"Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]\",\"Program log: Instruction: TransferChecked\",\"Program log: Error: IncorrectProgramId\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2180 of 749925 compute units\",\"Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 652105 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: incorrect program id for instruction\"]"
+  },
+  {
+    "name": "F amount 1001 → InsufficientBalance",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x3: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 601601 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 601601 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 601601 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3\"]"
+  },
+  {
+    "name": "F amount 18446744073709551615 → InsufficientBalance",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x3: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 560516 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 560516 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 560516 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x3\"]"
+  },
+  {
+    "name": "G amount 0, memo-required refund → refund gets all",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "name": "H no owner signature → 0x7",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x7: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 298 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x7. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 298 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x7\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 298 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x7\"]"
+  },
+  {
+    "name": "I swapped payee → BadSignature",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x2: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 644052 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 644052 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 644052 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"]"
+  },
+  {
+    "name": "I swapped refund → BadSignature",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x2: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 599967 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 599967 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 599967 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"]"
+  },
+  {
+    "name": "I swapped amount → BadSignature",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x2: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 647052 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 647052 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 647052 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"]"
+  },
+  {
+    "name": "I swapped rent_to → BadSignature",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x2: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 557382 of 1399850 compute units\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2. \nLogs: \n[\n  \"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\n  \"Program ComputeBudget111111111111111111111111111111 success\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 557382 of 1399850 compute units\",\n  \"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"\n]. \nCatch the `SendTransactionError` and call `getLogs()` on it for full details.[\"Program ComputeBudget111111111111111111111111111111 invoke [1]\",\"Program ComputeBudget111111111111111111111111111111 success\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 557382 of 1399850 compute units\",\"Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms failed: custom program error: 0x2\"]"
+  },
+  {
+    "name": "I vault intact after swaps",
+    "ok": true
+  },
+  {
+    "name": "J 200 byte flips → all rejected",
+    "ok": true,
+    "detail": {
+      "bad": 0
+    }
+  },
+  {
+    "name": "K fresh rent_to + pre-funded vault → marker = rent min",
+    "ok": true,
+    "detail": {
+      "err": null,
+      "marker": 1300480,
+      "MARKER": 1300480,
+      "got": 4676400
+    }
+  },
+  {
+    "name": "M legacy tx too large (expected limit)",
+    "ok": true,
+    "detail": "Transaction too large: 1254 > 1232[]"
+  },
+  {
+    "name": "M same spend as v0 + lookup table → lands",
+    "ok": true,
+    "detail": {
+      "err": null,
+      "size": 1166
+    }
+  },
+  {
+    "name": "L 30 random memo spends conserve balances",
+    "ok": true,
+    "detail": {
+      "fails": 0
+    }
+  }
+]

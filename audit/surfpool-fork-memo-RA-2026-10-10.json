@@ -1,0 +1,100 @@
+[
+  {
+    "name": "client sees memo flag",
+    "ok": true
+  },
+  {
+    "name": "9 accounts → NoMemo",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x24: 10 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nProgram ComputeBudget111111111111111111111111111111 success\nProgram CiupyGrAtWomKW5rDWbaMEsm3Db8pY8N"
+  },
+  {
+    "name": "vault still unspent after NoMemo",
+    "ok": true
+  },
+  {
+    "name": "same message + memo → lands",
+    "ok": true
+  },
+  {
+    "name": "payee got 400",
+    "ok": true
+  },
+  {
+    "name": "refund got 600",
+    "ok": true
+  },
+  {
+    "name": "vault marked spent",
+    "ok": true
+  },
+  {
+    "name": "memo logged twice",
+    "ok": true,
+    "detail": [
+      "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+      "Program ComputeBudget111111111111111111111111111111 success",
+      "Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms invoke [1]",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]",
+      "Program log: Memo (len 2): \"qc\"",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 839806 compute units",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]",
+      "Program log: Instruction: TransferChecked",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 3020 of 836595 compute units",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb success",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [2]",
+      "Program log: Memo (len 2): \"qc\"",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 2136 of 832583 compute units",
+      "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]",
+      "Program log: Instruction: TransferChecked",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 2355 of 829372 compute units",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb success",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [2]",
+      "Program log: Instruction: CloseAccount",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 1154 of 825974 compute units",
+      "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb success",
+      "Program 11111111111111111111111111111111 invoke [2]",
+      "Program 11111111111111111111111111111111 success",
+      "Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms consumed 576344 of 1399850 compute units",
+      "Program CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms success"
+    ]
+  },
+  {
+    "name": "both memo-required → lands",
+    "ok": true
+  },
+  {
+    "name": "full drain + memo → lands",
+    "ok": true
+  },
+  {
+    "name": "10th = memo v1 → rejected",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x1: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nPr"
+  },
+  {
+    "name": "10th = system → rejected",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x6: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nPr"
+  },
+  {
+    "name": "10th = random → rejected",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x1: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nPr"
+  },
+  {
+    "name": "9 accounts, normal payee → lands",
+    "ok": true
+  },
+  {
+    "name": "memo + normal payee → lands",
+    "ok": true
+  },
+  {
+    "name": "replay → AlreadySpent",
+    "ok": true,
+    "detail": "Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 1: custom program error: 0x8: 5 log messages:\nProgram ComputeBudget111111111111111111111111111111 invoke [1]\nPr"
+  }
+]
