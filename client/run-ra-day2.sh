@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Day 2: execute the approved R-A upgrade once its time lock ends, verify the deployed hash
-# (dd3495ee…), then measure real spend latency (treasury-9 -> bench vaults).
+# (dd3495ee…), then measure real spend latency (treasury-10 -> treasury-11).
 export PATH="/c/nvm4w/nodejs:/c/Users/arche/.local/share/solana/install/active_release/bin:/usr/bin:/mingw64/bin:$PATH"
 unset RPC_URL
+set -o pipefail   # a failed step must not count as done just because tee succeeded
 export QC_NET=mainnet PROGRAM_ID=CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms SO=/e/qc-ra.so \
   PAYER=C:/Users/arche/.config/solana/bersih-mainnet.json TAG=mainnet-ra
 K3=E:/Download/QuantCoin-multisig/kunci-3.json
@@ -22,9 +23,9 @@ for i in $(seq 1 720); do
 done
 verified || { log "FAILED: upgrade not deployed"; exit 1; }
 log "UPGRADE DONE: deployed program = dd3495ee…4acb"
-[ -f bench-done ] && exit 0
+[ -f bench-day2-done ] && exit 0
 QC_KEYDIR="E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/client/keys-mainnet" \
   RPC_URL=https://api.mainnet-beta.solana.com MINT=AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 \
-  FROM=treasury-9 TREASURY_NEXT=treasury-10 TAG=bench-ra N=5 REPORT=mainnet-bench-RA \
-  npx tsx mainnet-bench.ts 2>&1 | grep -v deprecated | tee -a "$LOG" && touch bench-done
+  FROM=treasury-10 TREASURY_NEXT=treasury-11 TAG=bench-ra PARALLEL=10 REPORT=mainnet-bench-RA-2026-10-12 \
+  npx tsx mainnet-bench.ts 2>&1 | grep -v deprecated | tee -a "$LOG" && touch bench-day2-done
 log "day2 finished"

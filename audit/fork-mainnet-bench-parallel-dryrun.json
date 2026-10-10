@@ -1,0 +1,364 @@
+{
+  "rpc": "http://127.0.0.1:8899",
+  "cuPrice": 20000,
+  "sequential": {
+    "n": 11,
+    "signMs": {
+      "p50": 118.7,
+      "max": 490.6,
+      "min": 84.1
+    },
+    "processedMs": {
+      "p50": 423,
+      "max": 953,
+      "min": 410
+    },
+    "confirmedMs": {
+      "p50": 423,
+      "max": 953,
+      "min": 410
+    },
+    "slotsToLand": {
+      "p50": 0,
+      "max": 0,
+      "min": 0
+    },
+    "cu": {
+      "p50": 574690,
+      "max": 621775,
+      "min": 488020
+    },
+    "costLamports": {
+      "p50": 4363160,
+      "max": 4413960,
+      "min": 4363160
+    }
+  },
+  "parallel": {
+    "n": 10,
+    "signMs": {
+      "p50": 74.8,
+      "max": 101.8,
+      "min": 55.5
+    },
+    "processedMs": {
+      "p50": 23473,
+      "max": 23948,
+      "min": 439
+    },
+    "confirmedMs": {
+      "p50": 23473,
+      "max": 23948,
+      "min": 439
+    },
+    "slotsToLand": {
+      "p50": 6,
+      "max": 32,
+      "min": 0
+    },
+    "cu": {
+      "p50": 618195,
+      "max": 694365,
+      "min": 438855
+    },
+    "wallMs": 24347,
+    "costLamportsTotal": -16922000
+  },
+  "leftover": "fpar-c11",
+  "rows": [
+    {
+      "mode": "sequential",
+      "from": "ftreasury-3",
+      "amount": "11",
+      "signMs": 105.8,
+      "processedMs": 881,
+      "confirmedMs": 881,
+      "slotsToLand": 0,
+      "cu": 615309,
+      "feeLamports": 10000,
+      "costLamports": 4413960,
+      "tx": "3Won6UP9rTsdpWTjspaUePcy2AAhLSt8jLHXiqpi6ZvoYPEJ8NM3ErCnBZPiBD5PnocvF9Eaxvv7DjJkTgpXB68p",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c1",
+      "amount": "1",
+      "signMs": 91.7,
+      "processedMs": 459,
+      "confirmedMs": 459,
+      "slotsToLand": 0,
+      "cu": 488020,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "2Wxv5RtAfs6Lo77Ai8A3AJnksWZeZ1PxVu9BdpMvxgXsTTVf7Ebh5ZbFRS71WEhm6JKaE95S7amrCLpe6J65viNT",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c2",
+      "amount": "1",
+      "signMs": 490.6,
+      "processedMs": 410,
+      "confirmedMs": 410,
+      "slotsToLand": 0,
+      "cu": 533605,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "2qX3bTyS9vpQeLxBYzrn3gWBJv52ZMCM2HQYDiBFTBuQpFZkPkr3hWmjU5JUSz8v2GgLF3vJF1r1UHEFZN1DsdUD",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c3",
+      "amount": "1",
+      "signMs": 85.7,
+      "processedMs": 435,
+      "confirmedMs": 435,
+      "slotsToLand": 0,
+      "cu": 621775,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "bDUeoE3GWHPevsWZWpaEUeJPwMx8Fz9ZErMet4ST273pAcGBoS8Aqfcjy47sGeWBkmdTtn3wGEc6DmW83faPCYo",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c4",
+      "amount": "1",
+      "signMs": 126.7,
+      "processedMs": 419,
+      "confirmedMs": 419,
+      "slotsToLand": 0,
+      "cu": 570190,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "uLt72qqapHKGonMrrEJesgks2jeLu2DZB4XsH2ytQjaucQiqyZzsh1durj9frkaB12ieKNyGZEYPKe2FAN8j2M4",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c5",
+      "amount": "1",
+      "signMs": 138.6,
+      "processedMs": 413,
+      "confirmedMs": 413,
+      "slotsToLand": 0,
+      "cu": 615775,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "3AA6Q9TqUReFfPD9dfzJkoTAxY5czJppxAXqsnxNEXNNhQqHXpXuVPMExdQVvKz3ZeXXmfCEWArZU5YmYxCyAutX",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c6",
+      "amount": "1",
+      "signMs": 156.8,
+      "processedMs": 953,
+      "confirmedMs": 953,
+      "slotsToLand": 0,
+      "cu": 570190,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "wC5c7nD2U3oTU7C53TDwX2AgYNQX5w1VExcvZXR3Ui8fcwRBQCzkjPwrz5TGL3Y7bLTDa4kSxrF8U1BQ3bXvh9k",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c7",
+      "amount": "1",
+      "signMs": 118.7,
+      "processedMs": 423,
+      "confirmedMs": 423,
+      "slotsToLand": 0,
+      "cu": 574690,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "26fnGSBV1YDyXaqY9p1oodkobgYuqPZkXW6C4yVjN3fitcMrypwMZ7XDyQGYs5wRks9u8HCfxJMUiNzKUmD5SdkE",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c8",
+      "amount": "1",
+      "signMs": 131,
+      "processedMs": 427,
+      "confirmedMs": 427,
+      "slotsToLand": 0,
+      "cu": 574690,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "5bE3Y7zLJk3QaToSgWAgQxMMTGuf7PRXejmfFBRVS3rEk646CBs23EKsUqqmfNgywZsF1X318cqwPF2ose7DuLLp",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c9",
+      "amount": "1",
+      "signMs": 84.1,
+      "processedMs": 417,
+      "confirmedMs": 417,
+      "slotsToLand": 0,
+      "cu": 617275,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "TeQgDH3QVpLX4DGuwxrsAH8jF8q8HNxkVRFD9rzBhm8N6jjahALQAmkq8bgu8GbH1EydjYBYkEE6wtfNYftWLH2",
+      "via": "poll"
+    },
+    {
+      "mode": "sequential",
+      "from": "fpar-c10",
+      "amount": "1",
+      "signMs": 108.7,
+      "processedMs": 417,
+      "confirmedMs": 417,
+      "slotsToLand": 0,
+      "cu": 532105,
+      "feeLamports": 10000,
+      "costLamports": 4363160,
+      "tx": "5nNmy76u34BnQspD78Vz4uGfETZddpDVi9MtfcCv6r2tf2swWSV5qt8uaGki96Q4WBsKUf7GuaUjHJ6pW2SHXtHo",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p1",
+      "amount": "1",
+      "signMs": 88.1,
+      "processedMs": 439,
+      "confirmedMs": 439,
+      "slotsToLand": 0,
+      "cu": 569610,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "4sh8YPVdG78ygkwif5wkKJsJFSJ2jvuiZgW8EDHPyonzcnrhQzCNMkFLLPJGvuudSkAwZLiVBCoADaQqwhD8h8NT",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p2",
+      "amount": "1",
+      "signMs": 77.5,
+      "processedMs": 22666,
+      "confirmedMs": 22666,
+      "slotsToLand": 0,
+      "cu": 610695,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "67BUk6ipSByFKiyzdNZ8CRub585NtYWXwyviN3rKEmhSDCXbzajBzDhv33aXFM2E2GvJvyvB9CsD77hoQ3CHM7n6",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p3",
+      "amount": "1",
+      "signMs": 101.8,
+      "processedMs": 23478,
+      "confirmedMs": 23478,
+      "slotsToLand": 1,
+      "cu": 438855,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "5aECEdZon263oda4Pt6451jErFrBtTsvX5tZD5RyXzLbkMd3w63WvjrX2U6hnmZ9e4HCE113QnSLvDUxgCR189Rb",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p8",
+      "amount": "1",
+      "signMs": 55.5,
+      "processedMs": 23461,
+      "confirmedMs": 23461,
+      "slotsToLand": 6,
+      "cu": 657780,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "2F6YytsX85Che7aqkRNexpGTJ9aAw4HMtmK2h3NWzzktAHZDsTebUBtCXiHYcTLiqpkqY4TgbvpToSNvnP9yKB6g",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p5",
+      "amount": "1",
+      "signMs": 68.8,
+      "processedMs": 23948,
+      "confirmedMs": 23948,
+      "slotsToLand": 32,
+      "cu": 525525,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "34UTFchqCAhLzKLzEtRfXvm8RWVU33CfamRy6SEWwvRKEj43LhAAqQeaofffwY11RdrNqCZTcqheyVgFQSjMFHdh",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p7",
+      "amount": "1",
+      "signMs": 74.8,
+      "processedMs": 23481,
+      "confirmedMs": 23481,
+      "slotsToLand": 15,
+      "cu": 610695,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "G54EVwtxgxLiBrhsmHeBM69CA428Htx4PMkYSkuGHQzzV2CtqqrMBgvun65XKcjgkA5MrzqnSmC1a38oE2Z4ND2",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p6",
+      "amount": "1",
+      "signMs": 100.1,
+      "processedMs": 23475,
+      "confirmedMs": 23475,
+      "slotsToLand": 9,
+      "cu": 653280,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "2hkcsZDJrvEPQvUTq3ZQXzXRDmX8QJ4xpQAf3pGxYYuPwnghFBhWk3XdFMAqHJaBHDpWBVBw4ALAerSjnGtCZy6v",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p9",
+      "amount": "1",
+      "signMs": 68,
+      "processedMs": 23468,
+      "confirmedMs": 23468,
+      "slotsToLand": 7,
+      "cu": 653280,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "28UbbvWF4cHKrFoNpx1AjMkJhYpgd1pRA5KHpETDVTnsMfHKqvmVVW9gGchBFLZfhSuF8Xa4HyMVJKWgWo3ogUTU",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p10",
+      "amount": "1",
+      "signMs": 56.5,
+      "processedMs": 23473,
+      "confirmedMs": 23473,
+      "slotsToLand": 1,
+      "cu": 618195,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "2qyX4Ss1miVi62eHzQ2NQ229t6QWaK5WZdGL3cJULzyD1YyStQgFpPG1kh4cY9QYMJQVR3JFtA1tjDTqGjoZzkL4",
+      "via": "poll"
+    },
+    {
+      "mode": "parallel",
+      "from": "fpar-p4",
+      "amount": "1",
+      "signMs": 59.5,
+      "processedMs": 23471,
+      "confirmedMs": 23471,
+      "slotsToLand": 4,
+      "cu": 694365,
+      "feeLamports": 10000,
+      "costLamports": 0,
+      "tx": "4fPHCa8Bb94gLYV4H9hmh6S8t3N3wNrrzthpWv5wiBgGDeye16crrKq4JCsUWCYx4Gr5FPPerGYwzsShBSAyxhwt",
+      "via": "poll"
+    }
+  ]
+}
