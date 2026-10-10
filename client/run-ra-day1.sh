@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Day 1 (2026-10-11): execute fund proposals #5 and #6 once their time locks end, then extend,
-# upload the R-A buffer and open + approve the upgrade proposal (TAG=mainnet-ra).
+# upload the R-A buffer and open + approve the upgrade proposal (TAG=mainnet-ra), then measure
+# real spend latency on the live binary (treasury-9 -> treasury-10, 11 sequential + 10 parallel).
 # Every step checks state first, so the script can be re-run safely.
 export PATH="/c/nvm4w/nodejs:/c/Users/arche/.local/share/solana/install/active_release/bin:/usr/bin:/mingw64/bin:$PATH"
 unset RPC_URL
+set -o pipefail   # a failed step must not count as done just because tee succeeded
 export QC_NET=mainnet PROGRAM_ID=CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms SO=/e/qc-ra.so \
   PAYER=C:/Users/arche/.config/solana/bersih-mainnet.json
 K3=E:/Download/QuantCoin-multisig/kunci-3.json K2=E:/Download/QuantCoin-multisig/kunci-2.json
@@ -47,4 +49,8 @@ up=no   # upgrade steps wait for #6: after #5 alone the deployer clears the esti
 run_fund mainnet-bench-fund || log "WARNING: #6 not executed"
 log "deployer short after both: $(short)"
 upgrade_steps && up=yes
+# Real-spend latency on the binary live today (before the Colosseum deadline); independent of the upgrade.
+if [ ! -f bench-day1-done ]; then
+  QC_KEYDIR="E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/client/keys-mainnet"     RPC_URL=https://api.mainnet-beta.solana.com MINT=AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2     FROM=treasury-9 TREASURY_NEXT=treasury-10 TAG=bench-live PARALLEL=10 REPORT=mainnet-bench-live-2026-10-11     npx tsx mainnet-bench.ts 2>&1 | grep -v deprecated | tee -a "$LOG" && touch bench-day1-done
+fi
 [ $up = yes ] && log "DAY1 DONE: upgrade proposal approved; day2 executes it after the 24 h lock" || { log "FAILED: upgrade proposal not ready"; exit 1; }
