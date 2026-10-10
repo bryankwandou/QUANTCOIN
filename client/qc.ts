@@ -2,6 +2,7 @@
 // vault derivation and the Spend instruction.
 import { createHash, randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import {
   ComputeBudgetProgram, Connection, Keypair, PublicKey, SystemProgram, TransactionInstruction,
 } from "@solana/web3.js";
@@ -69,7 +70,9 @@ export const vaultTokenAccount = (program: PublicKey, mint: PublicKey, v: VaultK
 
 // QC_NET=mainnet keeps mainnet secrets apart from the devnet ones in keys/.
 export const NET = process.env.QC_NET ?? "devnet";
-const KEYDIR = new URL(NET === "devnet" ? "./keys/" : `./keys-${NET}/`, import.meta.url);
+// QC_KEYDIR: use an existing key folder elsewhere (e.g. the main checkout's keys-mainnet).
+const KEYDIR = process.env.QC_KEYDIR ? pathToFileURL(process.env.QC_KEYDIR.replace(/[\\/]*$/, "/"))
+  : new URL(NET === "devnet" ? "./keys/" : `./keys-${NET}/`, import.meta.url);
 
 export function newVault(name: string): VaultKeys {
   // Overwriting a key file loses whatever that vault holds.
