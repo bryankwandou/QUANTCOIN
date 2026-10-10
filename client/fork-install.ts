@@ -1,5 +1,5 @@
 // Surfpool only: swap the program's bytes on a mainnet fork for SO, and set the
-// fork's Rent sysvar to mainnet's (5,080 lamports/byte-year, threshold 2.0), so
+// fork's Rent sysvar to mainnet's (5,080 lamports/byte-year, threshold 1.0, read from mainnet 2026-10-10), so
 // surfpool-suite.ts runs against the binary an upgrade would deploy.
 // Env: SURF_RPC (default http://127.0.0.1:8899), PROGRAM_ID, SO.
 import { Connection, PublicKey } from "@solana/web3.js";
@@ -33,7 +33,7 @@ await rpc("surfnet_setAccount", [pd.toBase58(), { lamports, data: data.toString(
 
 const rent = Buffer.alloc(17);
 rent.writeBigUInt64LE(5080n, 0);
-rent.writeDoubleLE(2.0, 8);
+rent.writeDoubleLE(1.0, 8);
 rent[16] = 50;
 await rpc("surfnet_setAccount", ["SysvarRent111111111111111111111111111111111",
   { data: rent.toString("hex") }]);

@@ -197,7 +197,9 @@ if (step === "plan") {
   const a = await checkBuffer(buffer);
   if (!a.equals(vault)) throw new Error(`buffer authority is ${a}, not the Squads vault`);
   const ext = await extension();
-  if (ext.extra) throw new Error(`program data holds ${ext.capacity} bytes, SO is ${so.length}; run extend first`);
+  // EXTEND_LATER=1: open the proposal now so its time lock runs while the extend is funded;
+  // execute refuses to run until the program data account is large enough.
+  if (ext.extra && !process.env.EXTEND_LATER) throw new Error(`program data holds ${ext.capacity} bytes, SO is ${so.length}; run extend first (or EXTEND_LATER=1)`);
   const fee = payer(), m = member();
   const ms = await multisig.accounts.Multisig.fromAccountAddress(conn, msPda);
   if (!ms.members.some((x) => x.key.equals(m.publicKey))) throw new Error(`${m.publicKey} is not a member`);
@@ -234,7 +236,11 @@ if (step === "plan") {
 } else if (step === "execute") {
   const { index, p, ms } = await current();
   if (p.approved.length < ms.threshold) throw new Error(`${p.approved.length} of ${ms.threshold} approvals`);
-  if (state().kind !== "fund") await checkBuffer(new PublicKey(state().buffer));
+  if (state().kind !== "fund") {
+    await checkBuffer(new PublicKey(state().buffer));
+    const ext = await extension();
+    if (ext.extra) throw new Error(`program data holds ${ext.capacity} bytes, SO is ${so.length}; run extend first`);
+  }
   const fee = payer();
   const sig = await multisig.rpc.vaultTransactionExecute({
     connection: conn, feePayer: fee, multisigPda: msPda, transactionIndex: index, member: member().publicKey,
