@@ -42,7 +42,10 @@ TAG=mainnet-ra npx tsx upgrade.ts extend 2>&1 | tee -a "$LOG" || { log "FAILED: 
 run_proposal mainnet-ra || { log "FAILED: upgrade #7 not executed"; exit 1; }
 verified || { log "FAILED: deployed bytes differ"; exit 1; }
 log "UPGRADE DONE: deployed program = dd3495ee…4acb"
-if [ ! -f bench-day1-done ]; then
+# The cloud executor (github.com/bryankwandou/qc-ra-executor) runs the same bench from the same
+# pre-signed treasury spend; the laptop waits 20 min and runs it only if treasury-9 is still unspent.
+sleep 1200
+if [ ! -f bench-day1-done ] && ! curl -s https://api.mainnet-beta.solana.com -X POST -H "content-type: application/json" \n    -d '{"jsonrpc":"2.0","id":1,"method":"getAccountInfo","params":["Hh8dMAjFfYEdfcj2xnT3s52DonzFL2gt5KEUDVezvA2h",{"encoding":"base64"}]}' \n    | grep -q CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms; then
   QC_KEYDIR="E:/000VSCODE PROJECT MULAI DARI DESEMBER 2025/QUANTCOIN/client/keys-mainnet" \
     RPC_URL=https://api.mainnet-beta.solana.com MINT=AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2 \
     FROM=treasury-9 TREASURY_NEXT=treasury-10 TAG=bench-ra PARALLEL=10 REPORT=mainnet-bench-RA-2026-10-11 \

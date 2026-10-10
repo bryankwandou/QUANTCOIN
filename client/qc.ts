@@ -58,11 +58,16 @@ export interface VaultKeys {
   /** The one message this key signed (hex digest). Re-signing the SAME digest
    *  gives the identical signature, so a failed broadcast can be retried safely. */
   signed?: string;
+  /** Hex WOTS signature of `signed`, for a key file shipped without its master secret:
+   *  it can authorise that one spend and nothing else. */
+  presig?: string;
+  /** Hex public-key hash, for a key file without its master (the vault address needs it). */
+  pkHash?: string;
 }
 
 export function vaultAddress(program: PublicKey, v: VaultKeys): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [enc("qcv"), publicKeyHash(v.master, v.seed), v.owner.publicKey.toBuffer()], program);
+    [enc("qcv"), v.pkHash ? Buffer.from(v.pkHash, "hex") : publicKeyHash(v.master, v.seed), v.owner.publicKey.toBuffer()], program);
 }
 
 export const vaultTokenAccount = (program: PublicKey, mint: PublicKey, v: VaultKeys) =>
@@ -94,7 +99,7 @@ export function saveVault(v: VaultKeys) {
 export function loadVault(name: string): VaultKeys {
   const j = JSON.parse(readFileSync(new URL(`vault-${name}.json`, KEYDIR), "utf8"));
   return { name, owner: Keypair.fromSecretKey(Uint8Array.from(j.owner)),
-    master: Buffer.from(j.master, "hex"), seed: Buffer.from(j.seed, "hex"), used: j.used, signed: j.signed };
+    master: Buffer.from(j.master, "hex"), seed: Buffer.from(j.seed, "hex"), used: j.used, signed: j.signed, presig: j.presig, pkHash: j.pkHash };
 }
 
 export const vaultExists = (name: string) => existsSync(new URL(`vault-${name}.json`, KEYDIR));
@@ -164,7 +169,7 @@ export function spendIxs(program: PublicKey, mint: PublicKey, v: VaultKeys, dest
   if (v.signed ? v.signed !== digest.toString("hex") : v.used)
     throw new Error(`vault ${v.name} already signed a different message; WOTS keys are one-time`);
   if (!v.signed) { v.signed = digest.toString("hex"); v.used = true; saveVault(v); }
-  const sig = sign(v.master, v.seed, digest);
+  const sig = v.presig ? Buffer.from(v.presig, "hex") : sign(v.master, v.seed, digest);
   const a = Buffer.alloc(8); a.writeBigUInt64LE(amount);
   const data = Buffer.concat([Buffer.from([0, bump]), v.seed, a, sig]);
   return [
