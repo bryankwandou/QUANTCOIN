@@ -58,4 +58,18 @@ mints.
   finding F5/Q-1 in the audit report).
 - The program is upgradeable by a Squads v4 2-of-3 multisig
   (`A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, 24-hour time lock).
-  Whoever controls two member keys can replace the program.
+  Whoever controls two member keys can replace the program. Member keys are
+  Ed25519, so the vault's post-quantum guarantee holds only after the
+  upgrade authority is removed. As of 2026-10-16 two of the three member
+  keys are on the same operator machine; moving one to a separate device is
+  pending (`client/squads-rotate.ts`).
+- The deployed binary is SBPF v0. Feature SIMD-0500 (not yet active on
+  mainnet) will refuse new deployments of SBPF v0-v2, so the next upgrade
+  must be built with `cargo build-sbf --arch v3` (SBPF v3 is active on
+  mainnet since epoch 993). The current source builds as v3 and passes the
+  local test suite; the mainnet-fork suite has not been re-run on v3 yet.
+  Removing the upgrade authority must wait until the program is v3.
+- The token metadata URI is pinned forever (metadata authority revoked) to
+  `raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/metadata.json`.
+  The repository must keep that name and path; `main` is protected against
+  force pushes and deletion.
