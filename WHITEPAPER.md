@@ -93,7 +93,7 @@ units (worst case ~1.09M of 1.4M).
 
 | Where QC is held | Survives a quantum attacker? |
 |---|---|
-| Hybrid vault | **Yes** |
+| Hybrid vault | **Yes, once the program is immutable.** Today the program is upgradeable by a Squads multisig whose members are Ed25519 keys; a quantum attacker who forges two of them could replace the program. Until the upgrade authority is removed (planned after the external audit) or held by post-quantum keys, the vault is only as quantum-safe as that multisig |
 | Normal wallet, exchange, DEX pool | No. That depends on Solana itself |
 
 If Solana later adds post-quantum accounts, QC works with them automatically,

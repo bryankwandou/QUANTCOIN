@@ -47,6 +47,15 @@ Rules a wallet MUST enforce:
 
 1. Store the signed digest before broadcasting. Re-sign only that same
    digest (a safe retry); refuse any other message for that key.
+   **A failed transaction still publishes its WOTS signature on chain.**
+   If a spend fails (recipient account closed, blockhash expired, RPC
+   error), fix the cause and resend the *same* signed instruction data:
+   recreate the recipient token account at the same address if needed.
+   Never build a new spend with different recipients or amount for that
+   vault: two signatures from one key let anyone forge a third, and only
+   the Ed25519 owner key would still protect the vault.
+   Before signing, check what would make the spend fail and refuse it
+   (`checkSpend` in `client/qc.ts` does this).
 2. `refund` should be a freshly generated vault owned by the same user.
 3. Request 1,400,000 compute units.
 4. Keep both secrets (Ed25519 key, WOTS master + seed) encrypted. Losing
