@@ -115,9 +115,9 @@ OPEN — NON-BLOCKING FOLLOW-UP.
 | I-2 | Arbitrary Token-2022 mints (permanent delegate, transfer hook, transfer fee), see also PR #15 | Info | DOCUMENTED DESIGN PROPERTY: the vault is built for the QC mint only |
 | I-3 | Entrypoint comment said eight accounts | Info | FIXED in `08f53d5` |
 | Q-4 | Site RPC proxy open relay | Low | Mitigated (origin allowlist); keyed upstream is the follow-up |
-| Q-5 | Dependency advisories (astro, bigint-buffer) | Low | OPEN — NON-BLOCKING FOLLOW-UP |
+| Q-5 | Dependency advisories in off-chain tooling | Low | PARTLY FIXED 2026-10-18: `web/` 0 advisories (astro upgraded); `app/` shell-quote critical fixed. Still open: bigint-buffer (`app/`, `client/`, via @solana/spl-token, no patched release) and braces (`app/`, transitive via metro). None ship in the on-chain program |
 | Q-6 | Pool fees claimable by a hot wallet | Low | FIXED: 2.62 SOL moved to the Squads vault |
-| MT-1 | Mutation testing left 9 of 29 mutants alive (PR #14) | Test quality | OPEN — NON-BLOCKING FOLLOW-UP: add tests that kill them |
+| MT-1 | Mutation testing left 9 of 29 mutants alive (PR #14) | Test quality | FIXED 2026-10-18: new tests in `tests/vault.rs` (independent digest reference, program/vault/mint binding, 1-token amount and rest, discriminator, short mint and token-account data) kill all 9 (M02, M09, M13, M14, M17, M18, M20, M22 mint and token account). Run log: `audit/mutants-mt1-2026-10-18.txt`; lib.rs unchanged, clean rebuild hash `51f64e1a…be62` |
 
 ## Evidence
 

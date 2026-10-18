@@ -1,0 +1,12 @@
+# MT-1 re-run 2026-10-18: PR #14 surviving mutants vs current tests (vault 23 tests, fuzz rejects_fake_system_program)
+# script: one exact text replacement in programs/qc-vault/src/lib.rs per mutant, cargo build-sbf --arch v3, cargo test --release
+M02 KILLED by: rejects_fake_system_program 
+M09 KILLED by: rejects_short_mint_and_short_vault_token_account spend_digest_matches_independent_reference signature_binds_program_vault_and_mint 
+M13 KILLED by: spend_digest_matches_independent_reference rejects_short_mint_and_short_vault_token_account signature_binds_program_vault_and_mint 
+M14 KILLED by: rejects_short_mint_and_short_vault_token_account spend_digest_matches_independent_reference signature_binds_program_vault_and_mint 
+M17 KILLED by: one_token_amount_and_one_token_rest 
+M18 KILLED by: one_token_amount_and_one_token_rest 
+M20 KILLED by: rejects_wrong_discriminator 
+M22-mint KILLED by: rejects_short_mint_and_short_vault_token_account 
+M22-ta KILLED by: rejects_short_mint_and_short_vault_token_account 
+clean rebuild: 51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62
