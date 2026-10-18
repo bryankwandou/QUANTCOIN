@@ -34,7 +34,7 @@ bash audit/verify.sh --mutants   # also re-run the 9 MT-1 mutants (~30 min)
 Needs the Solana CLI (Agave 2.x, `cargo build-sbf`) and Rust. The script
 prints PASS/FAIL per step and exits non-zero on any failure. Maintainer run
 of 2026-10-18 at commit `982f406`: `audit/verify-run-2026-10-18.txt` (all
-checks passed; vault 23/23, fuzz 14/14).
+checks passed; vault 23/23, fuzz 14/14). Fresh clone from GitHub at `2aaf4c2` with `--mutants`: `audit/verify-fresh-clone-2026-10-18.txt` (all checks passed, 9/9 mutants killed).
 
 What this does not cover: key custody (F5 / Q-1, the one open gate below)
 cannot be shown by a script, and none of this is an independent audit.

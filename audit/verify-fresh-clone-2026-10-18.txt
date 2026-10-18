@@ -1,0 +1,38 @@
+# Final check 2026-10-18: fresh clone of github.com/bryankwandou/QUANTCOIN (main @ 2aaf4c2), bash audit/verify.sh --mutants
+
+== commit
+2aaf4c22d267673bf64acf6a25939b0201c18a05 audit: one-command reviewer check (verify.sh): rebuild, byte-compare with the live mainnet binary, run tests, optional MT-1 mutants; maintainer run log
+
+== build (cargo build-sbf --arch v3)
+local  51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62  (6760 bytes)
+PASS  local build = expected live hash
+
+== on-chain binary (https://api.mainnet-beta.solana.com)
+chain  51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62  (first 6760 bytes; 0 non-zero bytes after them)
+PASS  on-chain program = this build
+Authority: 45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez
+Last Deployed In Slot: 458336425
+
+== tests (cargo test --release)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 62.42s
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+PASS  all test suites
+
+== MT-1 mutants (each must be KILLED)
+M02 KILLED by: rejects_fake_system_program 
+M09 KILLED by: spend_digest_matches_independent_reference rejects_short_mint_and_short_vault_token_account signature_binds_program_vault_and_mint 
+M13 KILLED by: spend_digest_matches_independent_reference rejects_short_mint_and_short_vault_token_account signature_binds_program_vault_and_mint 
+M14 KILLED by: spend_digest_matches_independent_reference rejects_short_mint_and_short_vault_token_account signature_binds_program_vault_and_mint 
+M17 KILLED by: one_token_amount_and_one_token_rest 
+M18 KILLED by: one_token_amount_and_one_token_rest 
+M20 KILLED by: rejects_wrong_discriminator 
+M22-mint KILLED by: rejects_short_mint_and_short_vault_token_account 
+M22-ta KILLED by: rejects_short_mint_and_short_vault_token_account 
+clean rebuild: 51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62
+PASS  all mutants killed
+
+== result
+ALL CHECKS PASSED
+exit=0
