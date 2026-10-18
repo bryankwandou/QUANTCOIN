@@ -28,7 +28,7 @@ Last verified: 2026-10-18 06:35 UTC (slot 458336425).
 | | Live on mainnet now (since 2026-10-18) | Previous binary (2026-10-11 to 2026-10-18) |
 |---|---|---|
 | Program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` | same program |
-| Source | R-A source (branch `upgrade/r-a`), built with `cargo build-sbf --arch v3` | R-A source (branch `upgrade/r-a`, commit `184c7bd`), SBPF v0 |
+| Source | `programs/qc-vault` at commit `d3cc437` (`main`), built with `cargo build-sbf --arch v3`; clean-checkout rebuild on 2026-10-18 gives the same hash | R-A source (branch `upgrade/r-a`, commit `184c7bd`), SBPF v0 |
 | Binary SHA-256 | `51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62` (6,760 B, SBPF v3) | `dd3495ee…4acb` (8,072 B) |
 | Deployed | 2026-10-18 06:34 UTC, slot 458336425, Squads proposal #8 | 2026-10-11, Squads proposal #7 |
 | Upgrade authority | Squads v4 2-of-3 `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`, time lock 86,400 s | same |
