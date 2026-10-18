@@ -1,0 +1,24 @@
+# bash audit/verify.sh, maintainer machine (Windows, Git Bash), 2026-10-18
+
+== commit
+982f406d01e56b70625df50b5868b5c449e174e4 tests: kill all 9 PR #14 surviving mutants (MT-1 fixed); deps: web 0 advisories, app shell-quote fixed (Q-5 partly)
+
+== build (cargo build-sbf --arch v3)
+local  51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62  (6760 bytes)
+PASS  local build = expected live hash
+
+== on-chain binary (https://api.mainnet-beta.solana.com)
+chain  51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62  (first 6760 bytes; 0 non-zero bytes after them)
+PASS  on-chain program = this build
+Authority: 45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez
+Last Deployed In Slot: 458336425
+
+== tests (cargo test --release)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 55.34s
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.49s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+PASS  all test suites
+
+== result
+ALL CHECKS PASSED

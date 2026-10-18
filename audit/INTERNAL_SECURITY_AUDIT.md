@@ -23,6 +23,22 @@ this file is current.
 
 Last verified: 2026-10-18 06:35 UTC (slot 458336425).
 
+### Check it yourself (one command)
+
+```bash
+git clone https://github.com/bryankwandou/QUANTCOIN && cd QUANTCOIN
+bash audit/verify.sh             # rebuild, compare with the live mainnet binary, run all tests (~5 min)
+bash audit/verify.sh --mutants   # also re-run the 9 MT-1 mutants (~30 min)
+```
+
+Needs the Solana CLI (Agave 2.x, `cargo build-sbf`) and Rust. The script
+prints PASS/FAIL per step and exits non-zero on any failure. Maintainer run
+of 2026-10-18 at commit `982f406`: `audit/verify-run-2026-10-18.txt` (all
+checks passed; vault 23/23, fuzz 14/14).
+
+What this does not cover: key custody (F5 / Q-1, the one open gate below)
+cannot be shown by a script, and none of this is an independent audit.
+
 ## Release identity
 
 | | Live on mainnet now (since 2026-10-18) | Previous binary (2026-10-11 to 2026-10-18) |
