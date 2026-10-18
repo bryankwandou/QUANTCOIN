@@ -71,7 +71,7 @@ button{background:transparent;color:var(--accent);border:1px solid var(--accent)
 <div><div class="k">Internal audit</div><div class="v ok">Done — 13/13 on-chain attacks blocked</div></div>
 <div><div class="k">External audit</div><div class="v warn">Pending</div></div>
 </div>
-<p class="note"><a id="auditlink" target="_blank" rel="noopener">AUDIT.md</a> · <a id="wplink" target="_blank" rel="noopener">Whitepaper</a> · The program has not had an external audit yet. Nothing here is investment advice.</p>
+<p class="note"><a id="auditlink" target="_blank" rel="noopener">Internal audit</a> · <a id="wplink" target="_blank" rel="noopener">Whitepaper</a> · The program has not had an external audit yet. Nothing here is investment advice.</p>
 </div>
 
 <h2>Bug bounty</h2>
@@ -102,7 +102,7 @@ const CONFIG = {
     {key:"reserve",   label:"Reserve (audit, MM)",  pct:10, vault:"3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93", tokenAccount:"GBJ3jbwm7kt1o7GLEkAVSa9FwvMFq7zpH5a4WxeeSXXW", color:"--c5"}
   ]
 };
-const BOUNTY = null; // no bug bounty vault on mainnet yet; devnet bounty: D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE
+const BOUNTY = null; // no bug bounty vault on mainnet yet
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -157,7 +157,7 @@ const GOV = {
 function staticParts() {
   $("cluster").textContent = CONFIG.cluster;
   try { $("rpcurl").textContent = new URL(RPC).host; } catch { $("rpcurl").textContent = RPC; }
-  $("auditlink").href = CONFIG.repo + "/blob/main/audit/AUDIT.md";
+  $("auditlink").href = CONFIG.repo + "/blob/main/audit/INTERNAL_SECURITY_AUDIT.md";
   $("wplink").href = CONFIG.repo + "/blob/main/WHITEPAPER.md";
   $("bar").innerHTML = CONFIG.vaults.map(v => `<div style="width:${v.pct}%;background:var(${v.color})" title="${esc(v.label)} ${v.pct}%"></div>`).join("");
   $("legend").innerHTML = CONFIG.vaults.map(v => `<span><span class="sw" style="background:var(${v.color})"></span>${esc(v.label)} ${v.pct}%</span>`).join("");

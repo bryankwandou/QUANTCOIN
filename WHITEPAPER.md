@@ -1,6 +1,6 @@
 # QuantCoin (QC) Whitepaper
 
-Version 1.0 · 2026-09-24 · Status: devnet, pre-audit
+Version 1.0 · 2026-09-24 · Status: live on mainnet since 2026-09-29, no external audit yet
 
 ## 1. Abstract
 
@@ -150,8 +150,9 @@ No private sale. No presale. No inflation.
 
 ## 6. Security
 
-- Internal audit, live devnet and mainnet attack runs; 27 local tests and a
-  1,633-case mainnet-fork suite pass ([audit/AUDIT.md](audit/AUDIT.md)).
+- Internal audit, live mainnet attack runs; 27 local tests and a
+  1,642-case mainnet-fork suite pass on the live SBPF v3 binary
+  ([audit/INTERNAL_SECURITY_AUDIT.md](audit/INTERNAL_SECURITY_AUDIT.md)).
 - **No external audit yet.** Mainnet launched on 2026-09-29 before one,
   which differs from the earlier plan of auditing first.
 - The program is upgradeable. The upgrade authority is a Squads 2-of-3
@@ -168,8 +169,8 @@ No private sale. No presale. No inflation.
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| 0 | Program, tests, devnet genesis, internal audit, Codama client | Done |
-| 1 | Allocation vaults on devnet, whitepaper, integration guide | Done |
+| 0 | Program, tests, genesis, internal audit, Codama client | Done |
+| 1 | Allocation vaults, whitepaper, integration guide | Done |
 | 2 | Mainnet: program (upgradeable, Squads 2-of-3), genesis, allocations | Done 2026-09-29 |
 | 3 | Liquidity pool on Meteora DAMM v2 (opened before the external audit) | In progress |
 | 3b | External audit, then `--final` | Next |
@@ -197,9 +198,6 @@ No further dates are promised before the audit.
 | QC/SOL pool (Meteora DAMM v2, opens 2026-10-02 15:30 UTC (22:30 WIB)) | `AyS1vByiVFsVdsekRZE1mGVY5MHY1YMs59DeGwDwbbwB` |
 | Airdrop vault | `9JhPWgx96ckNUqBRERww5pzQF5aqpb2Qu6SnJkBgRR6T` |
 | Reserve vault | `3S8oyyPGcz45ETbs7PFrdZ7V8QTKdQUpzySMiESybx93` |
-
-Devnet addresses (test deployment, 10% founder split) are in
-`audit/allocations-devnet.json`.
 
 Launch commitments and runbook: [docs/LAUNCH.md](docs/LAUNCH.md).
 

@@ -9,9 +9,9 @@ The ten trust commitments, what each one needs, and its status. Mainnet launched
 | 3 | Pool liquidity permanently locked | Meteora DAMM v2, runbook below |
 | 4 | Live transparency dashboard | `transparency/index.html` |
 | 5 | Fair launch | Policy below |
-| 6 | Quantum Safe app | `app/` (devnet) |
+| 6 | Quantum Safe app | `app/` (mainnet, served at `/app/`) |
 | 7 | Airdrop to real users | Policy below |
-| 8 | Public bug bounty vault | Live on devnet: `D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE`, 1,000,000,000 QC |
+| 8 | Public bug bounty vault | None on mainnet (0 QC); report vulnerabilities privately through a GitHub security advisory |
 | 9 | Known founder identity | Founder's decision (below) |
 | 10 | Honest communication | Rules below |
 
@@ -34,8 +34,8 @@ The ten trust commitments, what each one needs, and its status. Mainnet launched
 4. Is there any input that exceeds 1.4M CU and locks a vault?
 5. Is the one-time key rule in the client enough?
 
-**Provide:** this repo, `audit/AUDIT.md`, `audit/devnet-attack-run.json`, the
-devnet program ID.
+**Provide:** this repo, `audit/INTERNAL_SECURITY_AUDIT.md`, `audit/mainnet-attack-run.json`, the
+mainnet program ID.
 
 **Candidates:** OtterSec, Neodyme, Zellic, Sec3, Accretion, Halborn. Ask two
 or three for quotes. Expect roughly USD 5,000–30,000 for this size. The
@@ -48,7 +48,7 @@ solana program deploy target/deploy/qc_vault.so --keypair <deployer>   # ~0.036 
 solana program set-upgrade-authority <PROGRAM_ID> --final
 npx tsx client/genesis.ts        # mint, metadata, full supply into vault, revoke authorities
 npx tsx client/allocate.ts       # split into the five allocation vaults
-npx tsx client/audit-devnet.ts   # optional: small live attack run on mainnet with a tiny vault
+QC_NET=mainnet npx tsx client/audit-mainnet.ts   # optional: live attack run on mainnet
 ```
 
 Afterwards, verify publicly: `solana program show <ID>` shows no upgrade
@@ -113,7 +113,7 @@ returns exactly to the opening price.
 ## 7. Airdrop policy
 
 - 3–4 waves from the airdrop vault (3.3T QC total).
-- Eligibility based on real use: devnet vault creators in Quantum Safe, bug
+- Eligibility based on real use: vault creators in Quantum Safe, bug
   reporters, contributors, early liquidity providers.
 - Sybil filtering: one claim per wallet with history older than the
   snapshot; exclude clusters funded from the same source.

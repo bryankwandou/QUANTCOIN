@@ -8,7 +8,7 @@ const DOCS = [
   ["WHITEPAPER.md", "whitepaper", "Whitepaper"],
   ["docs/LAUNCH.md", "launch", "Launch commitments"],
   ["docs/INTEGRATION.md", "docs", "Integration guide"],
-  ["audit/AUDIT.md", "audit", "Internal audit"],
+  ["audit/INTERNAL_SECURITY_AUDIT.md", "audit", "Internal audit"],
 ];
 
 export function getStaticPaths() {
@@ -16,7 +16,7 @@ export function getStaticPaths() {
     ["WHITEPAPER.md", "whitepaper", "Whitepaper"],
     ["docs/LAUNCH.md", "launch", "Launch commitments"],
     ["docs/INTEGRATION.md", "docs", "Integration guide"],
-    ["audit/AUDIT.md", "audit", "Internal audit"],
+    ["audit/INTERNAL_SECURITY_AUDIT.md", "audit", "Internal audit"],
   ].map(([src, doc, label]) => ({ params: { doc }, props: { src, label } }));
 }
 

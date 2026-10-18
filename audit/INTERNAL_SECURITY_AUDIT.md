@@ -14,42 +14,47 @@ this file is current.
   2026-10-07 12:35:09 UTC (slot 454224541), deployed through Squads
   proposal #4, transaction
   `UgtLiMZHS8XiVJAAF587Y4B3SEEs3H2SVnvQmqxZDqaso3DCwfvcvDEB8v8UfhXCWSpjaCCqjDk828J4r7Yqh7P`.
-- R-A (payee memo freeze) is bounded by client checks on this release; the
-  program-level fix is ready on branch `fix/memo-cpi` but does not fit the
-  deployed program's size without an extension the project cannot fund yet.
+- The R-A fix (memo CPI before each transfer) went live on 2026-10-11
+  through Squads proposal #7 (binary `dd3495ee…4acb`).
+- The live binary is the same program rebuilt as SBPF v3 (`51f64e1a…be62`),
+  deployed 2026-10-18 06:34 UTC (slot 458336425) through Squads proposal #8,
+  transaction
+  `3QFgw1utfbBNdEmTEd5byyPvCi8m1WXKt9y6GtXWqSPwiHcc4ioHpjQegnTffjwWF9Ki5DJCDkRKFPQzAjRYoUh7`.
 
-Last verified: 2026-10-09 17:11 UTC (slot 454937263).
+Last verified: 2026-10-18 06:35 UTC (slot 458336425).
 
 ## Release identity
 
-| | Live on mainnet now (since 2026-10-07) | Previous binary (2026-10-02 to 2026-10-07) |
+| | Live on mainnet now (since 2026-10-18) | Previous binary (2026-10-11 to 2026-10-18) |
 |---|---|---|
 | Program | `CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms` | same program |
-| Source | `programs/qc-vault` at commit `08f53d5` (`main`) | `programs/qc-vault` at commit `344c2a5` (unchanged through `acb36f8`) |
-| Binary SHA-256 | `4d209e485742abbcd7a52ece3f142eba72dda44314c8dbde2216ee5515dd474e` (7,464 B, fills the account exactly) | `07e6b6dd45e6bb7f26ef4ce85f1e6168f8dd1b4bde2b0f4979a5fad6769194be` (7,456 B) |
-| Deployed | 2026-10-07 12:35:09 UTC, slot 454224541, Squads proposal #4 | 2026-10-02 |
+| Source | R-A source (branch `upgrade/r-a`), built with `cargo build-sbf --arch v3` | R-A source (branch `upgrade/r-a`, commit `184c7bd`), SBPF v0 |
+| Binary SHA-256 | `51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62` (6,760 B, SBPF v3) | `dd3495ee…4acb` (8,072 B) |
+| Deployed | 2026-10-18 06:34 UTC, slot 458336425, Squads proposal #8 | 2026-10-11, Squads proposal #7 |
 | Upgrade authority | Squads v4 2-of-3 `A9tdTp68GVvGVLherFjDUgJptoHMWja5r4uWH5DFou2P`, vault `45nAvRrgqxkdnsDmW9dmukHNcxE1TM5PnJsH27cTXxez`, time lock 86,400 s | same |
 
 Earlier hashes in other documents belong to earlier builds:
-`0462c658…730b` (devnet genesis build, 2026-09-23), `93abe8ef…9b2e`
+`0462c658…730b` (first test build, 2026-09-23), `93abe8ef…9b2e`
 (first mainnet deploy, 2026-09-30, replaced on 2026-10-02 because a
 hard-coded rent value broke spends to fresh rent receivers), `07e6b6dd…94be`
-(2026-10-02, replaced on 2026-10-07 by the R-1 fix).
+(2026-10-02, replaced on 2026-10-07 by the R-1 fix), `4d209e48…474e`
+(R-1 fix, commit `08f53d5`, replaced on 2026-10-11 by R-A), `dd3495ee…4acb`
+(R-A, replaced on 2026-10-18 by the SBPF v3 build).
 
-How the live hash was checked (2026-10-09):
+How the live hash was checked (2026-10-18):
 
 ```bash
-solana program show -um CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms   # Last Deployed In Slot: 454224541
+solana program show -um CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms   # Last Deployed In Slot: 458336425
 solana program dump -um CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms onchain.so
-sha256sum onchain.so                    # 4d209e48…474e, no padding: the binary is 7,464 B
-git checkout 08f53d5 && cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
-sha256sum target/deploy/qc_vault.so     # 4d209e48…474e, identical (clean worktree rebuild 2026-10-06)
+head -c 6760 onchain.so | sha256sum     # 51f64e1a…be62 (account is larger; the rest is zero padding)
+cargo build-sbf --arch v3 --manifest-path programs/qc-vault/Cargo.toml
+sha256sum target/deploy/qc_vault.so     # 51f64e1a…be62
 ```
 
 Tests on the release candidate:
 
 ```bash
-cargo build-sbf --manifest-path programs/qc-vault/Cargo.toml
+cargo build-sbf --arch v3 --manifest-path programs/qc-vault/Cargo.toml
 cargo test --manifest-path programs/qc-vault/Cargo.toml --release
 ```
 
@@ -61,12 +66,12 @@ line below is true. Today one is not.
 | Gate | State |
 |---|---|
 | Canonical-bump fix (R-1) is in the deployed binary | Yes, since 2026-10-07 (Squads proposal #4) |
-| Memo freeze (R-A) fixed or explicitly bounded | Bounded: clients refuse memo-required recipients before signing; program fix pending (see R-A) |
-| Deployed hash recomputed from the chain and tied to a commit | Yes: `4d209e48…474e` = commit `08f53d5` (above) |
+| Memo freeze (R-A) fixed or explicitly bounded | Yes: program fix live since 2026-10-11 (Squads proposal #7), kept in the v3 build |
+| Deployed hash recomputed from the chain and tied to a build | Yes: `51f64e1a…be62` = the approved v3 build (above) |
 | Vault and multisig keys in encrypted offline storage | **No** (F5 / Q-1) |
 | Upgrade authority documented as it is | Yes (above) |
-| Adversarial tests pass on the release commit | Yes: 29/29 on 2026-10-05 (`vault.rs` 15, `fuzz.rs` 14, release profile) |
-| Release candidate deployed and re-verified by hash | Yes: deployed 2026-10-07, re-verified 2026-10-09 |
+| Adversarial tests pass on the release build | Yes: mainnet-fork suites on the v3 binary 1642/1642, memo 16/16, extra 20/20 (2026-10-16/17) |
+| Release candidate deployed and re-verified by hash | Yes: deployed 2026-10-18, re-verified the same day |
 
 ## Scope
 
@@ -94,7 +99,7 @@ OPEN — NON-BLOCKING FOLLOW-UP.
 | ID | Finding | Severity | State |
 |---|---|---|---|
 | R-1 | Caller-chosen PDA bump: one WOTS key could guard several vault addresses, and the per-address spent marker would let it sign twice (was I-1, raised 2026-10-04 in PR #1) | Medium (needs the owner's Ed25519 key too; both clients only derive the canonical bump) | FIXED on mainnet 2026-10-07 (Squads proposal #4, tx `UgtLiMZH…Yqh7P`); VERIFIED ON CURRENT RELEASE. Test `rejects_noncanonical_bump_wots_key_reuse` |
-| R-A | A payee that turns on Token-2022 "require incoming memos" makes the signed spend fail; the client has already recorded the digest, so the balance waits until the payee turns it off (PR #13) | Medium for wallets that pay third parties | **OPEN — RELEASE BLOCKER**, bounded: `checkSpend` in `client/qc.ts` and `send.dart` refuse such recipients before signing. Remaining gap: a payee who switches it on between that check and the transaction. Program fix (memo CPI before each transfer, optional 10th account) on branch `fix/memo-cpi`, 8,072 B, needs a program extension. Test `memo_required_payee_blocks_spend_known_limitation` |
+| R-A | A payee that turns on Token-2022 "require incoming memos" makes the signed spend fail; the client has already recorded the digest, so the balance waits until the payee turns it off (PR #13) | Medium for wallets that pay third parties | FIXED on mainnet 2026-10-11 (Squads proposal #7: memo CPI before each transfer, optional 10th account); kept in the v3 build (fork memo suite 16/16). Clients still refuse memo-required recipients before signing |
 | F5 / Q-1 | Vault secrets and multisig member keys are stored in plaintext on the operator machine | High (operational) | **OPEN — RELEASE BLOCKER** |
 | Q-2 | While upgradeable, every vault is only as quantum-safe as the Ed25519 multisig keys | High | DOCUMENTED DESIGN PROPERTY until the program is made final |
 | F6 | Upgrade authority | — | VERIFIED ON CURRENT RELEASE: Squads 2-of-3, 24 h time lock |
@@ -119,8 +124,8 @@ OPEN — NON-BLOCKING FOLLOW-UP.
 | Evidence | File |
 |---|---|
 | 13 live attacks on the mainnet treasury vault, each rejected with the expected code | `audit/mainnet-attack-run.json` |
-| Program suite on a mainnet fork | `audit/INTERNAL-TEST-EVIDENCE-2026-10-04.md` |
-| Devnet attack run | `audit/devnet-attack-run.json` |
+| Program suite on a mainnet fork, v3 binary (1642/1642) | `audit/surfpool-fork-v3-2026-10-17.json` |
+| Earlier mainnet-fork evidence | `audit/INTERNAL-TEST-EVIDENCE-2026-10-04.md` |
 | Program unit, adversarial and fuzz tests | `programs/qc-vault/tests/` |
 
 Reports in open pull requests (property tests, static analysis, mutation
