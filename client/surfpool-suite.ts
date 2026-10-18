@@ -40,15 +40,17 @@ const codeOf = (err: unknown) => {
 };
 
 // ---------- cheatcodes ----------
-// The fork pulls unknown accounts from public mainnet RPC, which answers 429 under
-// load; such a request never touched the program, so it is retried with backoff.
+// The fork pulls unknown accounts from public mainnet RPC, which answers 429 or drops
+// the connection under load; such a request never touched the program, so it is
+// retried with backoff.
+const remoteFail = (e: unknown) => /429|Failed to fetch account|error sending request/.test(JSON.stringify(e ?? null));
 async function rpc(method: string, paramsJson: string) {
   for (let attempt = 0; ; attempt++) {
     const r = await fetch(RPC, { method: "POST", headers: { "content-type": "application/json" },
       body: `{"jsonrpc":"2.0","id":1,"method":"${method}","params":${paramsJson}}` });
     const j = await r.json();
     if (!j.error) return j.result;
-    if (!JSON.stringify(j.error).includes("429") || attempt === 9) throw new Error(`${method}: ${JSON.stringify(j.error)}`);
+    if (!remoteFail(j.error) || attempt === 9) throw new Error(`${method}: ${JSON.stringify(j.error)}`);
     await new Promise((res) => setTimeout(res, 1000 * (attempt + 1)));
   }
 }
@@ -103,8 +105,11 @@ const staleHash = (e: unknown) => JSON.stringify(e ?? null).includes("BlockhashN
 async function retryStale<T extends { err: unknown }>(run: () => Promise<T>): Promise<T> {
   for (let attempt = 0; ; attempt++) {
     const r = await run().catch((e) => ({ err: String(e?.message ?? e), cu: 0 }) as unknown as T);
-    if (!staleHash(r.err) || attempt === 9) return r;
-    await new Promise((res) => setTimeout(res, 200));
+    // Surfpool's own mainnet fetches fail now and then ("error sending request", bare
+    // "Internal error" with no program logs); those are the fork, not the program.
+    const infra = remoteFail(r.err) || /tx not landed \(dropped by fork\)/.test(String(r.err)) || /Simulation failed. \\nMessage: Internal error|Message: Internal error/.test(JSON.stringify(r.err ?? null));
+    if ((!staleHash(r.err) && !infra) || attempt === 9) return r;
+    await new Promise((res) => setTimeout(res, infra ? 1000 * (attempt + 1) : 200));
   }
 }
 /** Send for real; returns {err, cu}. */
@@ -126,7 +131,13 @@ async function sendOnce(ix: TransactionInstruction, signers: Keypair[]) {
     t = await conn.getTransaction(sig, { commitment: "confirmed", maxSupportedTransactionVersion: 0 });
     if (!t) await new Promise((r) => setTimeout(r, 100));
   }
-  if (!t) return { err: thrown ?? "tx not found", cu: 0, sig };
+  // Not in the ledger at all: the fork dropped it before the program ran. Marked so
+  // retryStale rebuilds and resends it (a landed tx is never resent).
+  if (!t) {
+    const st = (await conn.getSignatureStatuses([sig], { searchTransactionHistory: true })).value[0];
+    if (!st) return { err: `tx not landed (dropped by fork): ${sig}`, cu: 0, sig };
+    return { err: st.err ?? thrown ?? "tx not found", cu: 0, sig };
+  }
   return { err: t.meta?.err ?? null, cu: t.meta?.computeUnitsConsumed ?? 0, sig };
 }
 async function simulateOnce(ix: TransactionInstruction, signers: Keypair[]) {
@@ -279,7 +290,14 @@ if (run("G6")) {
     t.feePayer = payer.publicKey; t.recentBlockhash = blockhash; t.sign(payer, v.owner); return t;
   });
   const t0 = Date.now();
-  const sigs = await Promise.all(txs.map((t) => conn.sendRawTransaction(t.serialize(), { skipPreflight: true })));
+  // A send rejected while the fork fetches from mainnet never executed; resend the same bytes.
+  const sendRaw = async (raw: Buffer) => {
+    for (let a = 0; ; a++) {
+      try { return await conn.sendRawTransaction(raw, { skipPreflight: true }); }
+      catch (e) { if (a === 9 || !remoteFail(String(e))) throw e; await new Promise((r) => setTimeout(r, 1000 * (a + 1))); }
+    }
+  };
+  const sigs = await Promise.all(txs.map((t) => sendRaw(t.serialize())));
   // the same raw tx three more times, concurrently
   const dupSigs = await Promise.all([0, 1, 2].map(() => conn.sendRawTransaction(txs[0].serialize(), { skipPreflight: true }).catch((e) => String(e))));
   // At 100 ms slots a blockhash lives ~15 s, and under this burst the fork can still be

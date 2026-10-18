@@ -61,14 +61,15 @@ mints.
   Whoever controls two member keys can replace the program. Member keys are
   Ed25519, so the vault's post-quantum guarantee holds only after the
   upgrade authority is removed. As of 2026-10-16 two of the three member
-  keys are on the same operator machine; moving one to a separate device is
-  pending (`client/squads-rotate.ts`).
-- The deployed binary is SBPF v0. Feature SIMD-0500 (not yet active on
-  mainnet) will refuse new deployments of SBPF v0-v2, so the next upgrade
-  must be built with `cargo build-sbf --arch v3` (SBPF v3 is active on
-  mainnet since epoch 993). The current source builds as v3 and passes the
-  local test suite; the mainnet-fork suite has not been re-run on v3 yet.
-  Removing the upgrade authority must wait until the program is v3.
+  keys are on the same operator machine. A member rotation was proposed
+  (`client/squads-rotate.ts`) and declined by the community on 2026-10-16;
+  the members stay as they are, and this risk is accepted, not fixed.
+- The deployed binary is SBPF v3 (sha256 `51f64e1a…be62`, 6,760 B), deployed
+  through Squads proposal #8 on 2026-10-18 in slot 458336425 (tx
+  `3QFgw1ut…AzjRYoUh7`). Before execution it passed the mainnet-fork suites on
+  v3: 1642/1642 (`audit/surfpool-fork-v3-2026-10-17.json`), memo 16/16 and
+  extra 20/20. Feature SIMD-0500 (not yet active) will refuse new SBPF v0-v2
+  deployments, so every later upgrade must also use `cargo build-sbf --arch v3`.
 - The token metadata URI is pinned forever (metadata authority revoked) to
   `raw.githubusercontent.com/bryankwandou/QUANTCOIN/main/brand/metadata.json`.
   The repository must keep that name and path; `main` is protected against

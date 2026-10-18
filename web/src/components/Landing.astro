@@ -6,10 +6,8 @@ const { lang } = Astro.props;
 const T = t(lang);
 
 const ex = (a: string) => `https://explorer.solana.com/address/${a}`;
-const exDev = (a: string) => `https://explorer.solana.com/address/${a}?cluster=devnet`;
 const MINT = "AsEEaydVYMpghdNTrQoVZTAhJSewZT5xD9WE9hpA68W2";
 const PROGRAM = "CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms";
-const BOUNTY = "D4k27sCwemEeU73tiATQDn2YKuhwoAqWedXWiBQuYjeE"; // devnet test vault
 
 // Mainnet vaults (client/allocations-mainnet.json). Founder vault 1 was spent on
 // 2026-10-02 to the founder wallet, where that 5% stays (unlocked).
@@ -130,6 +128,7 @@ const shots = [
   <div class="shots">
     {shots.map(([src, w, h, k, cls]) => <figure class={`tilt reveal ${cls}`}><img src={src} alt={T(k)} width={w} height={h} loading="lazy"><figcaption>{T(k)}</figcaption></figure>)}
   </div>
+  <p style="color:var(--muted);margin-top:12px">{T("apps.mock")}</p>
 </div></section>
 
 <section id="token"><div class="wrap">
@@ -165,7 +164,7 @@ const shots = [
     <div class="stat reveal"><b><span data-count="13">13</span>/13</b><span>{T("sec.s2")}</span></div>
     <div class="stat reveal"><b>2/3</b><span>{T("sec.s3")}</span></div>
   </div>
-  <p class="reveal">{T("sec.bounty")} <a class="addr" href={exDev(BOUNTY)}>{BOUNTY}</a></p>
+  <p class="reveal">{T("sec.bounty")}</p>
   <p class="reveal"><a href="/audit/">{T("sec.read")}</a>{T("sec.read2")}</p>
 </div></section>
 

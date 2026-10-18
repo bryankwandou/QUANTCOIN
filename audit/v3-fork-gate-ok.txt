@@ -1,0 +1,5 @@
+v3 fork suites passed on binary 51f64e1a81de78056e886f0d9f55855f56f9e149fb612f9f5f328a8a9100be62
+main: surfpool-fork-v3-2026-10-17.json total=1642 passed=1642 failed=0 (2026-10-17T16:19:00Z)
+memo: surfpool-fork-memo-v3-2026-10-16.json 16/16
+extra: surfpool-fork-extra-v3-2026-10-16.json 20/20
+written 2026-10-18T06:29:45Z

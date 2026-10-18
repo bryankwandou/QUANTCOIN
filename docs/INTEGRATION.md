@@ -84,7 +84,7 @@ Codama renderer from `client/codama.ts`.
 | `client/genesis.ts` | Create the mint, mint the full supply into a vault, revoke all authorities |
 | `client/allocate.ts` | Split the treasury into founder / liquidity / airdrop / reserve vaults |
 | `client/spend.ts` | Spend from a vault to any wallet |
-| `client/audit-devnet.ts` | Run the live attack suite against a deployment |
+| `client/audit-mainnet.ts` | Run the live attack suite against the mainnet program |
 
 ## 6. Integration checklist
 
