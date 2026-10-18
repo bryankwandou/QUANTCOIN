@@ -551,7 +551,10 @@ fn rejects_fake_system_program() {
     let mut acc = metas(&env, &v, dest, refund, rent_to);
     acc[8].pubkey = Address::new_unique();
     let ix = Instruction { program_id: env.prog, accounts: acc, data: spend_data(&env, &v, dest, refund, rent_to, 1_000) };
-    assert!(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).is_err());
+    // Exact code: without the address check the later Assign CPI fails anyway,
+    // so a bare is_err() let the dropped check survive mutation (M02).
+    let e = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).expect_err("fake system program must fail");
+    assert!(e.contains("Custom(1)"), "expected BadInstruction, got:\n{e}");
     assert_eq!(balance(&env.svm, &v.ta), Some(1_000));
 }
 

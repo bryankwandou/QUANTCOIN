@@ -541,3 +541,148 @@ fn spend_with_memo_fits_one_packet() {
     let cu = send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
     println!("spend + memo CU: {cu}");
 }
+
+// Tests for the mutants that survived the PR #14 mutation run (finding MT-1).
+
+/// Independent reference for the signed message: SHA-256 from the sha2 crate
+/// (not the program's hashv) over the domain tag and every bound field, first
+/// 24 bytes. Clients must produce exactly this.
+fn ref_digest(prog: &Address, vault: &Address, mint: &Address, dest: &Address, refund: &Address, rent_to: &Address, amount: u64) -> [u8; 24] {
+    use sha2::{Digest, Sha256};
+    let amt = amount.to_le_bytes();
+    let mut h = Sha256::new();
+    for p in [b"QCV1/msg".as_slice(), prog.as_ref(), vault.as_ref(), mint.as_ref(), dest.as_ref(), refund.as_ref(), rent_to.as_ref(), &amt] {
+        h.update(p);
+    }
+    let full: [u8; 32] = h.finalize().into();
+    full[..24].try_into().unwrap()
+}
+
+/// A Spend whose WOTS signature covers `digest`, with `mint` as account 2.
+#[allow(clippy::too_many_arguments)]
+fn spend_ix_signed(env: &Env, v: &Vault, mint: Address, dest: Address, refund: Address, rent_to: Address, amount: u64, digest: &[u8; 24]) -> Instruction {
+    let sig = wots::keys::sign(&v.master, &v.seed, digest);
+    let mut d = vec![0u8, v.bump];
+    d.extend_from_slice(&v.seed);
+    d.extend_from_slice(&amount.to_le_bytes());
+    d.extend_from_slice(&sig);
+    Instruction::new_with_bytes(env.prog, &d, vec![
+        AccountMeta::new(v.pda, false), AccountMeta::new(v.ta, false), AccountMeta::new_readonly(mint, false),
+        AccountMeta::new(dest, false), AccountMeta::new(refund, false), AccountMeta::new(rent_to, false),
+        AccountMeta::new_readonly(T22, false), AccountMeta::new_readonly(v.owner.pubkey(), true),
+        AccountMeta::new_readonly(Address::default(), false)])
+}
+
+#[test]
+fn spend_digest_matches_independent_reference() {
+    for _ in 0..200 {
+        let a: Vec<Address> = (0..6).map(|_| Address::new_unique()).collect();
+        let amount = u64::from_le_bytes(rand_bytes());
+        assert_eq!(
+            spend_digest(a[0].as_array(), a[1].as_array(), a[2].as_array(), a[3].as_array(), a[4].as_array(), a[5].as_array(), amount),
+            ref_digest(&a[0], &a[1], &a[2], &a[3], &a[4], &a[5], amount));
+    }
+}
+
+/// The deployed program must hash program id, vault and mint into the signed
+/// message (mutants M09/M13/M14 dropped one of them and still passed every
+/// test, because the tests signed with the program's own spend_digest).
+/// A signature over the reference digest is accepted; one over the same
+/// message for another program, vault or mint is refused.
+#[test]
+fn signature_binds_program_vault_and_mint() {
+    let mut env = setup();
+    let payer = env.payer.insecure_clone();
+    let rent_to = payer.pubkey();
+    for wrong in 0..3 {
+        let v = new_vault(&mut env, 1000);
+        let dest = token_account(&mut env, &Address::new_unique());
+        let refund = token_account(&mut env, &Address::new_unique());
+        let other = Address::new_unique();
+        let (p, vault, mint) = match wrong {
+            0 => (other, v.pda, env.mint),
+            1 => (env.prog, other, env.mint),
+            _ => (env.prog, v.pda, other),
+        };
+        let bad = ref_digest(&p, &vault, &mint, &dest, &refund, &rent_to, 1000);
+        let ix = spend_ix_signed(&env, &v, env.mint, dest, refund, rent_to, 1000, &bad);
+        expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 2);
+        assert_eq!(balance(&env.svm, &v.ta), Some(1000));
+    }
+    let v = new_vault(&mut env, 1000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let good = ref_digest(&env.prog, &v.pda, &env.mint, &dest, &refund, &rent_to, 400);
+    let ix = spend_ix_signed(&env, &v, env.mint, dest, refund, rent_to, 400, &good);
+    send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).expect("reference digest must be accepted");
+    assert_eq!(balance(&env.svm, &dest), Some(400));
+    assert_eq!(balance(&env.svm, &refund), Some(600));
+}
+
+/// One-token edges of both transfers (mutants M17/M18 skipped a transfer of 1).
+#[test]
+fn one_token_amount_and_one_token_rest() {
+    for (amount, to_dest, to_refund) in [(1u64, 1u64, 999u64), (999, 999, 1)] {
+        let mut env = setup();
+        let v = new_vault(&mut env, 1000);
+        let dest = token_account(&mut env, &Address::new_unique());
+        let refund = token_account(&mut env, &Address::new_unique());
+        let payer = env.payer.insecure_clone();
+        let ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), amount, amount);
+        send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]).unwrap();
+        assert_eq!(balance(&env.svm, &dest), Some(to_dest), "amount {amount}: destination");
+        assert_eq!(balance(&env.svm, &refund), Some(to_refund), "amount {amount}: refund");
+        assert_eq!(balance(&env.svm, &v.ta), None, "amount {amount}: vault token account closed");
+    }
+}
+
+/// Byte 0 is the instruction discriminator; the signature does not cover it,
+/// so only this check refuses an otherwise valid spend with another byte (M20).
+#[test]
+fn rejects_wrong_discriminator() {
+    let mut env = setup();
+    let v = new_vault(&mut env, 1000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let payer = env.payer.insecure_clone();
+    for b in [1u8, 2, 255] {
+        let mut ix = spend_ix(&env, &v, dest, refund, payer.pubkey(), 1000, 1000);
+        ix.data[0] = b;
+        env.svm.expire_blockhash();
+        expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 1);
+    }
+    assert_eq!(balance(&env.svm, &v.ta), Some(1000));
+}
+
+/// Short account data is refused with NotATokenAccount before any read
+/// (M22): a vault token account under 72 bytes, and a "mint" under 45 bytes
+/// whose associated token account address holds a full-size account.
+#[test]
+fn rejects_short_mint_and_short_vault_token_account() {
+    let mut env = setup();
+    let payer = env.payer.insecure_clone();
+    let rent_to = payer.pubkey();
+
+    let v = new_vault(&mut env, 1000);
+    let dest = token_account(&mut env, &Address::new_unique());
+    let refund = token_account(&mut env, &Address::new_unique());
+    let mut short_ta = env.svm.get_account(&v.ta).unwrap();
+    short_ta.data.truncate(50);
+    env.svm.set_account(v.ta, short_ta).unwrap();
+    let ix = spend_ix(&env, &v, dest, refund, rent_to, 1000, 1000);
+    expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 4);
+
+    let v = new_vault(&mut env, 1000);
+    let fake_mint = Address::new_unique();
+    let mut m = env.svm.get_account(&env.mint).unwrap();
+    m.data = vec![0u8; 10];
+    env.svm.set_account(fake_mint, m).unwrap();
+    let (fake_ta, _) = Address::find_program_address(&[v.pda.as_ref(), T22.as_ref(), fake_mint.as_ref()], &ATA);
+    let full = env.svm.get_account(&v.ta).unwrap();
+    env.svm.set_account(fake_ta, full).unwrap();
+    let digest = ref_digest(&env.prog, &v.pda, &fake_mint, &dest, &refund, &rent_to, 1000);
+    let mut ix = spend_ix_signed(&env, &v, fake_mint, dest, refund, rent_to, 1000, &digest);
+    ix.accounts[1].pubkey = fake_ta;
+    expect_err(send(&mut env.svm, &payer, &[&v.owner], &[cu_limit(), ix]), 4);
+    assert_eq!(balance(&env.svm, &v.ta), Some(1000));
+}
