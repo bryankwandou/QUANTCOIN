@@ -49,8 +49,16 @@ Uint8List wotsSign(List<int> master, List<int> seed, List<int> digest) {
   return out.takeBytes();
 }
 
+final _u64Max = (BigInt.one << 64) - BigInt.one;
+
+/// Little-endian u64. Refuses out-of-range values: BigInt.toInt clamps them,
+/// and a clamped amount would sign a different spend than the one shown.
 Uint8List _u64(BigInt v) {
-  final b = ByteData(8)..setUint64(0, v.toInt(), Endian.little);
+  if (v.isNegative || v > _u64Max) throw RangeError('amount out of u64 range: $v');
+  final b = ByteData(8);
+  for (var i = 0; i < 8; i++) {
+    b.setUint8(i, ((v >> (8 * i)) & BigInt.from(255)).toInt());
+  }
   return b.buffer.asUint8List();
 }
 
