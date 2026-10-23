@@ -38,7 +38,7 @@ also needs Node 20+ and Flutter (a missing Flutter is reported as SKIP, never
 as PASS). The script
 prints PASS/FAIL per step and exits non-zero on any failure. Maintainer run
 of 2026-10-18 at commit `982f406`: `audit/verify-run-2026-10-18.txt` (all
-checks passed; vault 23/23, fuzz 14/14). Fresh clone from GitHub at `2aaf4c2` with `--mutants`: `audit/verify-fresh-clone-2026-10-18.txt` (all checks passed, 9/9 mutants killed).
+checks passed; vault 23/23, fuzz 14/14). Fresh clone from GitHub at `2aaf4c2` with `--mutants`: `audit/verify-fresh-clone-2026-10-18.txt` (all checks passed, 9/9 mutants killed). Fresh clone from GitHub at `a7fc07a` with `--clients`: `audit/verify-fresh-clone-2026-10-23.txt` (all checks passed: build and on-chain hash `51f64e1a…`, fuzz 14, vault 23, vectors 1, TS vectors and Codama, web app 18/18, Android app 33 passed with 2 devnet-send tests skipped).
 
 What this does not cover: key custody (F5 / Q-1, the one open gate below)
 cannot be shown by a script, and none of this is an independent audit. Every
