@@ -6,7 +6,7 @@ import {
   createTransferCheckedInstruction, getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 import { Buffer } from "buffer";
-import { SEED_LEN, MASTER_LEN, concat, equal, publicKeyHash, recoverPkHash, sha, sign, spendDigest, toHex, u64le } from "./wots";
+import { SEED_LEN, MASTER_LEN, U64_MAX, concat, equal, publicKeyHash, recoverPkHash, sha, sign, spendDigest, toHex, u64le } from "./wots";
 
 export interface VaultSecret { master: Uint8Array; seed: Uint8Array }
 
@@ -97,7 +97,9 @@ export function parseAmount(s: string, decimals: number): bigint {
   if (!m) throw new Error("invalid amount");
   const frac = m[2] ?? "";
   if (frac.length > decimals) throw new Error(`max ${decimals} decimals`);
-  return BigInt(m[1]) * 10n ** BigInt(decimals) + BigInt(frac.padEnd(decimals, "0") || "0");
+  const v = BigInt(m[1]) * 10n ** BigInt(decimals) + BigInt(frac.padEnd(decimals, "0") || "0");
+  if (v > U64_MAX) throw new Error("amount too large");
+  return v;
 }
 
 export function formatAmount(v: bigint, decimals: number): string {

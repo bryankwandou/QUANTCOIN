@@ -53,7 +53,11 @@ export function recoverPkHash(seed: Uint8Array, digest: Uint8Array, sig: Uint8Ar
   return sha(D_PK, seed, concat(...ends));
 }
 
+export const U64_MAX = 2n ** 64n - 1n;
+
+/** setBigUint64 silently wraps out-of-range values; a wrapped amount would sign a different spend. */
 export const u64le = (v: bigint) => {
+  if (v < 0n || v > U64_MAX) throw new Error("amount out of u64 range");
   const a = new Uint8Array(8);
   new DataView(a.buffer).setBigUint64(0, v, true);
   return a;

@@ -52,7 +52,8 @@ bool isOnCurve(List<int> key) {
   for (var i = 31; i >= 0; i--) {
     y = (y << 8) | BigInt.from(b[i]);
   }
-  if (y >= _p) return false;
+  // Solana (curve25519-dalek) reduces a non-canonical y mod p instead of rejecting it.
+  y = y % _p;
   final y2 = (y * y) % _p;
   final u = (y2 - BigInt.one) % _p;
   final v = (_d * y2 + BigInt.one) % _p;

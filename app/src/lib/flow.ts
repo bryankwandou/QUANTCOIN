@@ -43,6 +43,12 @@ export async function withdraw(ctx: FlowCtx, rec: VaultRecord, amount: bigint, p
     if (!next) throw new Error("the next vault of the signed spend is missing; import its backup first");
   } else {
     if (rec.signed || payload.used) throw new Error("vault key already used but spend parameters are missing");
+    // Check BEFORE the digest is recorded: once recorded, only this exact spend can
+    // ever be retried, so an impossible amount would leave the vault stuck.
+    if (amount <= 0n) throw new Error("amount must be above zero");
+    const held = await balanceOf(ctx.conn, tokenAccountOf(ctx.mint, new PublicKey(rec.id)));
+    if (held === null) throw new Error("this vault has no token account yet; deposit first");
+    if (amount > held) throw new Error(`vault holds ${held} base units, asked to withdraw ${amount}`);
     ctx.log("Creating the next vault (receives the remainder)...");
     next = (await createVault(ctx.program, ctx.mint, ctx.owner, password)).record;
     await ctx.backup(next);

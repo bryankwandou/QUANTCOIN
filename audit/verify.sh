@@ -4,9 +4,12 @@
 #
 #   bash audit/verify.sh             # build + on-chain hash + tests (~5 min)
 #   bash audit/verify.sh --mutants   # also re-run the MT-1 mutants (~30 min)
+#   bash audit/verify.sh --clients   # also check the TS client, web app and Android app (~10 min)
+#   (flags combine: --clients --mutants)
 #
 # Needs: solana CLI (Agave 2.x) with cargo build-sbf, Rust, internet access to
-# mainnet RPC. Set RPC=<url> to use another endpoint. Exits non-zero on any failure.
+# mainnet RPC; for --clients also Node 20+ and Flutter (skipped with a notice if absent).
+# Set RPC=<url> to use another endpoint. Exits non-zero on any failure.
 set -u
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)" || exit 1
 PROGRAM=CiupyGrAtWomKW5rDWbaMEsm3Db8pY8NPECgL2FfACms
@@ -51,13 +54,40 @@ else
   grep -E "FAILED|panicked|^test result" "$TMP/test.log" | head -30; bad "tests"
 fi
 
-if [ "${1:-}" = "--mutants" ]; then
+case " $* " in *" --clients "*)
+  step "client vectors (client/vectors.ts must reproduce audit/test-vectors.txt)"
+  (cd client && { [ -d node_modules ] || npm ci --silent; } && npx tsx vectors.ts >/dev/null 2>&1) \
+    && git diff --quiet -- audit/test-vectors.txt && ok "TS client = committed vectors (= on-chain code, tests/vectors.rs)" \
+    || bad "client/vectors.ts output differs from audit/test-vectors.txt"
+  (cd client && npx tsx codama-check.ts) && ok "Codama client = qc.ts" || bad "Codama client differs"
+
+  step "web app tests (app/, vitest)"
+  if (cd app && { [ -d node_modules ] || npm ci --silent; } && npx vitest run >"$TMP/app.log" 2>&1); then
+    grep -E "Test Files|Tests " "$TMP/app.log"; ok "web app tests"
+  else
+    grep -E "FAIL|×|Tests " "$TMP/app.log" | head -20; bad "web app tests"
+  fi
+
+  step "Android app tests (apps/native, flutter test; devnet-send tests stay skipped)"
+  if ! command -v flutter >/dev/null; then
+    echo "SKIP  flutter not installed; this step was NOT checked"
+  elif (cd apps/native && flutter test >"$TMP/flutter.log" 2>&1); then
+    tail -1 "$TMP/flutter.log"; ok "Android app tests"
+  else
+    grep -E "\[E\]|Some tests failed|Expected|Actual" "$TMP/flutter.log" | head -20; bad "Android app tests"
+  fi
+  git checkout -q -- apps/native/linux apps/native/macos apps/native/windows 2>/dev/null   # flutter regenerates these
+  ;;
+esac
+
+case " $* " in *" --mutants "*)
   step "MT-1 mutants (each must be KILLED)"
   OUT="$TMP/mutants.txt" bash audit/mutants-mt1.sh >/dev/null 2>&1
   cat "$TMP/mutants.txt"
   grep -q "SURVIVED\|PATTERN-MISS" "$TMP/mutants.txt" && bad "a mutant survived" || ok "all mutants killed"
   git diff --quiet -- programs/qc-vault/src/lib.rs || bad "lib.rs not restored"
-fi
+  ;;
+esac
 
 step "result"
 [ $fail = 0 ] && echo "ALL CHECKS PASSED" || echo "SOME CHECKS FAILED"

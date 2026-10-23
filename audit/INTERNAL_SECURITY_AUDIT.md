@@ -29,15 +29,23 @@ Last verified: 2026-10-18 06:35 UTC (slot 458336425).
 git clone https://github.com/bryankwandou/QUANTCOIN && cd QUANTCOIN
 bash audit/verify.sh             # rebuild, compare with the live mainnet binary, run all tests (~5 min)
 bash audit/verify.sh --mutants   # also re-run the 9 MT-1 mutants (~30 min)
+bash audit/verify.sh --clients   # also the TS client, web app and Android app (~10 min)
+bash audit/verify.sh --clients --mutants   # everything
 ```
 
-Needs the Solana CLI (Agave 2.x, `cargo build-sbf`) and Rust. The script
+Needs the Solana CLI (Agave 2.x, `cargo build-sbf`) and Rust; `--clients`
+also needs Node 20+ and Flutter (a missing Flutter is reported as SKIP, never
+as PASS). The script
 prints PASS/FAIL per step and exits non-zero on any failure. Maintainer run
 of 2026-10-18 at commit `982f406`: `audit/verify-run-2026-10-18.txt` (all
 checks passed; vault 23/23, fuzz 14/14). Fresh clone from GitHub at `2aaf4c2` with `--mutants`: `audit/verify-fresh-clone-2026-10-18.txt` (all checks passed, 9/9 mutants killed).
 
 What this does not cover: key custody (F5 / Q-1, the one open gate below)
-cannot be shown by a script, and none of this is an independent audit.
+cannot be shown by a script, and none of this is an independent audit. Every
+review so far, including the reports in PRs #2–#14, was done by the maintainer
+with AI assistance; no human third party has reviewed the code yet. Tests show
+that the failures someone thought of do not happen; they cannot show that no
+other failure exists.
 
 ## Release identity
 
@@ -131,9 +139,14 @@ OPEN — NON-BLOCKING FOLLOW-UP.
 | I-2 | Arbitrary Token-2022 mints (permanent delegate, transfer hook, transfer fee), see also PR #15 | Info | DOCUMENTED DESIGN PROPERTY: the vault is built for the QC mint only |
 | I-3 | Entrypoint comment said eight accounts | Info | FIXED in `08f53d5` |
 | Q-4 | Site RPC proxy open relay | Low | Mitigated (origin allowlist); keyed upstream is the follow-up |
-| Q-5 | Dependency advisories in off-chain tooling | Low | PARTLY FIXED 2026-10-18: `web/` 0 advisories (astro upgraded); `app/` shell-quote critical fixed. Still open: bigint-buffer (`app/`, `client/`, via @solana/spl-token, no patched release) and braces (`app/`, transitive via metro). None ship in the on-chain program |
+| Q-5 | Dependency advisories in off-chain tooling | Low | PARTLY FIXED 2026-10-18: `web/` 0 advisories (astro upgraded); `app/` shell-quote critical fixed. Remaining two have no patched release and are ACCEPTED RISK after a reachability check (2026-10-19): **bigint-buffer** GHSA-3gc7-fjrx-p6mg (`toBigIntLE`, via @solana/spl-token → buffer-layout-utils). npm's only "fix" is spl-token 0.1.8, which has no Token-2022 support. The web app never decodes account layouts with spl-token (balances come from `getTokenAccountBalance` JSON), so the function is not on its path; in `client/` only maintainer scripts call `unpackAccount`/`getMint` on RPC data of fixed length. A community fork exists but was not swapped in (supply-chain risk). **braces** GHSA-vfj7-8cjw-p6xm (≤3.0.3; 3.0.3 is the latest release), reached only through react-native → metro, a build-time bundler pulled in by the mobile wallet adapter; it only expands the bundler's own glob patterns and is not in the browser bundle. None ship in the on-chain program |
 | Q-6 | Pool fees claimable by a hot wallet | Low | FIXED: 2.62 SOL moved to the Squads vault |
 | MT-1 | Mutation testing left 9 of 29 mutants alive (PR #14) | Test quality | FIXED 2026-10-18: new tests in `tests/vault.rs` (independent digest reference, program/vault/mint binding, 1-token amount and rest, discriminator, short mint and token-account data) kill all 9 (M02, M09, M13, M14, M17, M18, M20, M22 mint and token account). Run log: `audit/mutants-mt1-2026-10-18.txt`; lib.rs unchanged, clean rebuild hash `51f64e1a…be62` |
+| W-1 | Web app: a withdrawal for more than the vault holds (or zero, or from a vault never funded) recorded the signed digest BEFORE the balance check. From then on the app only allowed retrying that exact, impossible spend, so the vault was stuck in the app (funds safe on chain, nothing broadcast; recovery needed manual storage edits or the CLI) | Medium (client) | FIXED 2026-10-19 in `app/src/lib/flow.ts`: amount > 0, token account exists and balance ≥ amount are checked before anything is recorded. Test `app/test/withdraw-guard.test.ts` (3 cases; all 3 fail on the old code). The CLI (`client/spend.ts` → `checkSpend`) and the Android app (`checkSpend` before `persist`) already checked first |
+| W-2 | Amounts above 2⁶⁴−1: the web app's `u64le` (`setBigUint64`) wrapped them silently and the Android app's `BigInt.toInt()` clamped them, so the signed amount could differ from the typed one. The vault-balance check stopped this before signing in practice | Low | FIXED 2026-10-19: `u64le` refuses out-of-range values in both apps; `parseAmount` refuses amounts above u64. Tests in `app/test/vectors.test.ts`, `apps/native/test/vectors_test.dart` |
+| W-3 | Android app `isOnCurve` returned "off curve" for a non-canonical y (≥ p), while Solana (curve25519-dalek) reduces y mod p. A PDA search could then pick a bump Solana rejects. Probability ~19/2²⁵⁵ per hash | Info | FIXED 2026-10-19 (`apps/native/lib/pda.dart`), regression test with y = p + 1 |
+| W-4 | `client/qc.ts` `spendIxs` with a shipped pre-signature (`presig`, no master secret) does not self-check it the way the web app does | Info | ACCEPTED RISK: maintainer tool only; `presig` must belong to the recorded digest, and a wrong one fails on chain without burning the key |
+| X-1 | No single fixture tied the on-chain WOTS/digest/PDA code to every client (only pairwise TS↔web and TS↔Dart checks) | Test quality | FIXED 2026-10-19: `audit/test-vectors.txt` (written by `client/vectors.ts`: 3 keys, 9 signatures incl. all-0 and all-255 digests, 4 digests incl. amount 2⁶⁴−1, 3 PDAs + token accounts on the mainnet program id). Checked by the program's own code (`tests/vectors.rs`, which also runs the on-chain verifier `recover_pk_hash` on each client signature), the web app and the Android app. `verify.sh --clients` regenerates the file and fails if it changes |
 
 ## Evidence
 
@@ -143,6 +156,8 @@ OPEN — NON-BLOCKING FOLLOW-UP.
 | Program suite on a mainnet fork, v3 binary (1642/1642) | `audit/surfpool-fork-v3-2026-10-17.json` |
 | Earlier mainnet-fork evidence | `audit/INTERNAL-TEST-EVIDENCE-2026-10-04.md` |
 | Program unit, adversarial and fuzz tests | `programs/qc-vault/tests/` |
+| Cross-implementation vectors (program, TS client, web app, Android app) | `audit/test-vectors.txt`, `programs/qc-vault/tests/vectors.rs`, `app/test/vectors.test.ts`, `apps/native/test/vectors_test.dart` |
+| Client tests (web app 18, Android app 33 offline + 2 devnet-only, skipped) | `app/test/`, `apps/native/test/` |
 
 Reports in open pull requests (property tests, static analysis, mutation
 testing, Token-2022 hostile extensions, digest binding) were posted by the
